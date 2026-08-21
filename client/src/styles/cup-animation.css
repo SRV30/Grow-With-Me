@@ -12,7 +12,12 @@
   width: min(82%, 430px);
   aspect-ratio: 1;
   border-radius: 50%;
-  background: radial-gradient(circle, #f5c400 0 62%, rgba(245, 196, 0, 0.72) 63%, rgba(245, 196, 0, 0) 72%);
+  background: radial-gradient(
+    circle,
+    #f5c400 0 62%,
+    rgba(245, 196, 0, 0.72) 63%,
+    rgba(245, 196, 0, 0) 72%
+  );
   box-shadow: 0 34px 70px rgba(17, 17, 17, 0.12);
   animation: cup-halo-pulse 5s ease-in-out infinite;
 }
@@ -99,40 +104,95 @@
 }
 
 @keyframes cup-float {
-  0%, 100% { transform: translate3d(0, 4px, 0) rotate(-2deg); }
-  50% { transform: translate3d(0, -14px, 0) rotate(2deg); }
+  0%,
+  100% {
+    transform: translate3d(0, 4px, 0) rotate(-2deg);
+  }
+  50% {
+    transform: translate3d(0, -14px, 0) rotate(2deg);
+  }
 }
 
 @keyframes cup-tilt {
-  0%, 100% { transform: rotate(-2deg); }
-  50% { transform: rotate(3deg) scale(1.025); }
+  0%,
+  100% {
+    transform: rotate(-2deg);
+  }
+  50% {
+    transform: rotate(3deg) scale(1.025);
+  }
 }
 
 @keyframes cup-steam {
-  0% { opacity: 0; transform: translate3d(0, 18px, 0) rotate(-8deg) scaleY(0.55); }
-  20% { opacity: 0.55; }
-  100% { opacity: 0; transform: translate3d(14px, -30px, 0) rotate(10deg) scaleY(1.1); }
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0) rotate(-8deg) scaleY(0.55);
+  }
+  20% {
+    opacity: 0.55;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(14px, -30px, 0) rotate(10deg) scaleY(1.1);
+  }
 }
 
 @keyframes cup-spark {
-  0%, 100% { opacity: 0.35; transform: scale(0.8) rotate(0deg); }
-  50% { opacity: 1; transform: scale(1.2) rotate(18deg); }
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.8) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2) rotate(18deg);
+  }
 }
 
 @keyframes cup-halo-pulse {
-  0%, 100% { transform: scale(0.98); opacity: 0.94; }
-  50% { transform: scale(1.035); opacity: 1; }
+  0%,
+  100% {
+    transform: scale(0.98);
+    opacity: 0.94;
+  }
+  50% {
+    transform: scale(1.035);
+    opacity: 1;
+  }
 }
 
 @media (max-width: 767px) {
-  .row-cup-stage { min-height: 340px; }
-  .row-cup-halo { width: min(76%, 300px); }
-  .row-cup { width: 112px; height: 112px; border-radius: 26px 26px 38px 38px; }
-  .row-cup-icon { width: 58px; height: 58px; }
-  .row-cup::before { right: -27px; top: 28px; width: 36px; height: 45px; border-width: 8px; }
-  .row-cup::after { width: 142px; }
-  .row-cup-steam-one { top: calc(50% - 120px); }
-  .row-cup-steam-two { top: calc(50% - 130px); }
+  .row-cup-stage {
+    min-height: 340px;
+  }
+  .row-cup-halo {
+    width: min(76%, 300px);
+  }
+  .row-cup {
+    width: 112px;
+    height: 112px;
+    border-radius: 26px 26px 38px 38px;
+  }
+  .row-cup-icon {
+    width: 58px;
+    height: 58px;
+  }
+  .row-cup::before {
+    right: -27px;
+    top: 28px;
+    width: 36px;
+    height: 45px;
+    border-width: 8px;
+  }
+  .row-cup::after {
+    width: 142px;
+  }
+  .row-cup-steam-one {
+    top: calc(50% - 120px);
+  }
+  .row-cup-steam-two {
+    top: calc(50% - 130px);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -140,5 +200,7 @@
   .row-cup-icon,
   .row-cup-halo,
   .row-cup-steam,
-  .row-cup-spark { animation: none; }
+  .row-cup-spark {
+    animation: none;
+  }
 }
