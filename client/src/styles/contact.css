@@ -1,0 +1,98 @@
+#contact {
+  color: var(--ink);
+}
+
+#contact .contact-field {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+#contact .contact-field > span {
+  display: block;
+  color: rgba(17, 17, 17, 0.78);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+#contact .contact-field input,
+#contact .contact-field select,
+#contact .contact-field textarea {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  border-bottom: 1.5px solid rgba(17, 17, 17, 0.45);
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink);
+  padding: 12px 0 14px;
+  outline: none;
+  font: inherit;
+  font-size: 1rem;
+  line-height: 1.45;
+  box-shadow: none;
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+#contact .contact-field input::placeholder,
+#contact .contact-field textarea::placeholder {
+  color: rgba(17, 17, 17, 0.4);
+}
+
+#contact .contact-field input:focus,
+#contact .contact-field select:focus,
+#contact .contact-field textarea:focus {
+  border-bottom-color: var(--ink);
+  box-shadow: 0 2px 0 var(--ink);
+}
+
+#contact .contact-field select {
+  appearance: none;
+  cursor: pointer;
+  padding-right: 32px;
+  background-image: linear-gradient(45deg, transparent 50%, var(--ink) 50%),
+    linear-gradient(135deg, var(--ink) 50%, transparent 50%);
+  background-position:
+    calc(100% - 8px) 50%,
+    calc(100% - 3px) 50%;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+}
+
+#contact .contact-field textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+#contact .contact-field:focus-within > span {
+  color: var(--ink);
+}
+
+#contact .dark-button {
+  min-height: 52px;
+  padding-inline: 22px;
+}
+
+#contact .dark-button:hover {
+  box-shadow: 7px 7px 0 rgba(17, 17, 17, 0.2);
+}
+
+#contact form {
+  width: 100%;
+}
+
+@media (max-width: 767px) {
+  #contact .contact-field input,
+  #contact .contact-field select,
+  #contact .contact-field textarea {
+    font-size: 16px;
+  }
+
+  #contact .contact-field textarea {
+    min-height: 130px;
+  }
+}
