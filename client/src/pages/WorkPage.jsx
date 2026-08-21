@@ -7,7 +7,14 @@ import CloudinaryImage from '../components/CloudinaryImage.jsx'
 import { EmptyState, LoadingState, ErrorState } from '../components/StatusState.jsx'
 import '../styles/work-page.css'
 
-const filters = ['All', 'Social Media', 'Video', 'Graphic Design', 'Digital Marketing', 'Web Design']
+const filters = [
+  'All',
+  'Social Media',
+  'Video',
+  'Graphic Design',
+  'Digital Marketing',
+  'Web Design',
+]
 
 const normalizeCategory = (value = '') => value.toLowerCase().replaceAll('-', ' ').trim()
 
@@ -44,7 +51,9 @@ function ProjectCard({ project, index }) {
         <ArrowUpRight size={20} />
       </span>
       <div className="work-project-content">
-        <p>{category} {project.year ? `· ${project.year}` : ''}</p>
+        <p>
+          {category} {project.year ? `· ${project.year}` : ''}
+        </p>
         <h2>{project.title}</h2>
       </div>
     </Link>
@@ -92,13 +101,19 @@ export default function WorkPage() {
         <div className="work-container work-header-inner">
           <Link className="work-logo" to="/" aria-label="Grow With Me home">
             <span>G</span>
-            <strong>GROW WITH <em>ME</em></strong>
+            <strong>
+              GROW WITH <em>ME</em>
+            </strong>
           </Link>
           <nav className="work-nav" aria-label="Portfolio navigation">
             <Link to="/#services">Services</Link>
-            <Link className="is-active" to="/work">Work</Link>
+            <Link className="is-active" to="/work">
+              Work
+            </Link>
             <Link to="/#about">About</Link>
-            <Link className="work-nav-cta" to="/#contact">Start a project <ArrowRight size={14} /></Link>
+            <Link className="work-nav-cta" to="/#contact">
+              Start a project <ArrowRight size={14} />
+            </Link>
           </nav>
         </div>
       </header>
@@ -107,16 +122,24 @@ export default function WorkPage() {
         <div className="work-container work-hero-grid">
           <div>
             <p className="work-eyebrow">01 / Selected work</p>
-            <h1>Ideas that<br /><span>get noticed.</span></h1>
+            <h1>
+              Ideas that
+              <br />
+              <span>get noticed.</span>
+            </h1>
           </div>
           <div className="work-hero-side">
             <p>
-              A curated selection of creative campaigns, digital experiences and brand work built
-              to make businesses look sharper and communicate better.
+              A curated selection of creative campaigns, digital experiences and brand work built to
+              make businesses look sharper and communicate better.
             </p>
             <div className="work-hero-meta">
-              <span><strong>{projects.length}</strong> projects</span>
-              <span><strong>2020—26</strong> studio</span>
+              <span>
+                <strong>{projects.length}</strong> projects
+              </span>
+              <span>
+                <strong>2020—26</strong> studio
+              </span>
             </div>
           </div>
         </div>
@@ -125,7 +148,9 @@ export default function WorkPage() {
       <section className="work-filter-section" aria-label="Project filters">
         <div className="work-container">
           <div className="work-filter-bar">
-            <span className="work-filter-label"><Filter size={14} /> Filter</span>
+            <span className="work-filter-label">
+              <Filter size={14} /> Filter
+            </span>
             <div className="work-filters" role="group" aria-label="Filter projects">
               {filters.map((filter) => (
                 <button
@@ -171,7 +196,11 @@ export default function WorkPage() {
         <section className="work-bottom-cta">
           <div className="work-container">
             <p className="work-eyebrow">02 / Let's build something</p>
-            <h2>Have a project<br /><span>in mind?</span></h2>
+            <h2>
+              Have a project
+              <br />
+              <span>in mind?</span>
+            </h2>
             <Link className="work-yellow-button" to="/#contact">
               Start a conversation <ArrowUpRight size={17} />
             </Link>
