@@ -16,6 +16,21 @@ export const getProject = async (slug) => {
   return data.data
 }
 
+export const getHomepage = async () => {
+  const { data } = await api.get('/homepage')
+  return data.data
+}
+
+export const getServices = async () => {
+  const { data } = await api.get('/services')
+  return data.data
+}
+
+export const submitEnquiry = async (payload) => {
+  const { data } = await api.post('/enquiries', payload)
+  return data.data
+}
+
 export const getHealth = async () => {
   const { data } = await api.get('/health')
   return data
