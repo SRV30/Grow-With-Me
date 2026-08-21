@@ -9,13 +9,14 @@ import ErrorBoundary from './components/ErrorBoundary.jsx'
 import ScrollChoreography from './components/ScrollChoreography.jsx'
 import PageTransition from './components/PageTransition.jsx'
 import Hero3D from './components/Hero3D.jsx'
+import HeaderEnhancer from './components/HeaderEnhancer.jsx'
 import './styles/index.css'
 import './admin/admin.css'
 
 const isAdminRoute = window.location.pathname === '/admin' || window.location.pathname.startsWith('/admin/')
 
 function PublicApp() {
-  return <BrowserRouter><PageTransition/><Routes><Route path="/" element={<App />} /><Route path="/work" element={<WorkPage />} /><Route path="/work/:slug" element={<ProjectPage />} /></Routes><Hero3D /></BrowserRouter>
+  return <BrowserRouter><PageTransition/><Routes><Route path="/" element={<App />} /><Route path="/work" element={<WorkPage />} /><Route path="/work/:slug" element={<ProjectPage />} /></Routes><Hero3D /><HeaderEnhancer /></BrowserRouter>
 }
 
 function Root() {
