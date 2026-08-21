@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import { useLocation, useNavigationType } from 'react-router-dom'
 import gsap from 'gsap'
 import '../styles/opening-animation.css'
+import '../styles/contact-polish.css'
 
 const PHONE = '8434305404'
 const WHATSAPP = '918434305404'
@@ -20,19 +21,15 @@ export default function PageTransition() {
   useEffect(() => {
     const node = layer.current
     if (!node) return
-
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
     if (first.current) {
       first.current = false
-
       if (reduced) {
         gsap.set(node, { autoAlpha: 0, pointerEvents: 'none' })
         return
       }
-
       node.dataset.openingActive = 'true'
-
       const tl = gsap.timeline({
         defaults: { ease: 'power4.out' },
         onComplete: () => {
@@ -40,31 +37,22 @@ export default function PageTransition() {
           gsap.set(node, { pointerEvents: 'none' })
         },
       })
-
       gsap.set(node, { autoAlpha: 1, clipPath: 'inset(0 0 0 0)' })
       gsap.set(logoMark.current, { scale: 0, rotate: -18 })
       gsap.set(logoWord.current, { y: 28, autoAlpha: 0 })
       gsap.set(tagline.current, { y: 16, autoAlpha: 0 })
       gsap.set(line.current, { scaleX: 0, transformOrigin: 'left center' })
-
       tl.to(logoMark.current, { scale: 1, rotate: 0, duration: 0.65, ease: 'back.out(1.7)' })
         .to(logoWord.current, { y: 0, autoAlpha: 1, duration: 0.55 }, '-=0.3')
         .to(line.current, { scaleX: 1, duration: 0.65 }, '-=0.2')
         .to(tagline.current, { y: 0, autoAlpha: 1, duration: 0.45 }, '-=0.25')
         .to({}, { duration: 0.25 })
-        .to(node, {
-          clipPath: 'inset(0 0 100% 0)',
-          duration: 0.9,
-          ease: 'power4.inOut',
-        })
+        .to(node, { clipPath: 'inset(0 0 100% 0)', duration: 0.9, ease: 'power4.inOut' })
         .set(node, { autoAlpha: 0 })
-
       return
     }
 
-    if (node.dataset.openingActive === 'true') return
-    if (reduced) return
-
+    if (node.dataset.openingActive === 'true' || reduced) return
     gsap.set(node, {
       autoAlpha: 1,
       clipPath: 'inset(0 0 0 0)',
@@ -100,17 +88,18 @@ export default function PageTransition() {
 
       const form = document.querySelector('.figma-contact-form')
       if (form) {
-        const placeholders = {
-          name: 'Enter your full name',
-          email: 'you@company.com',
-          phone: '+91 98765 43210',
-          company: 'Your company or brand name',
-          message: 'Tell us about your project, goals, budget and timeline...',
-        }
-        Object.entries(placeholders).forEach(([name, placeholder]) => {
-          const field = form.querySelector(`[name="${name}"]`)
-          if (field) field.placeholder = placeholder
+        const inputs = form.querySelectorAll('input')
+        const placeholders = [
+          'Enter your full name',
+          'you@company.com',
+          '+91 98765 43210',
+          'Your company or brand name',
+        ]
+        inputs.forEach((field, index) => {
+          if (placeholders[index]) field.placeholder = placeholders[index]
         })
+        const message = form.querySelector('textarea')
+        if (message) message.placeholder = 'Tell us about your project, goals, budget and timeline...'
       }
     }
 
@@ -125,14 +114,7 @@ export default function PageTransition() {
       const link = event.target.closest('a')
       if (!link || link.target === '_blank' || link.hasAttribute('download')) return
       const href = link.getAttribute('href')
-      if (
-        !href ||
-        href.startsWith('#') ||
-        href.startsWith('mailto:') ||
-        href.startsWith('tel:') ||
-        href.startsWith('http')
-      )
-        return
+      if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('http')) return
       const url = new URL(href, window.location.href)
       if (url.origin !== window.location.origin) return
       if (url.pathname === window.location.pathname && url.search === window.location.search) return
@@ -159,16 +141,10 @@ export default function PageTransition() {
     <div ref={layer} className="page-transition opening-animation" aria-hidden="true">
       <div className="opening-animation-glow" />
       <div ref={logo} className="opening-animation-content">
-        <div ref={logoMark} className="opening-animation-mark">
-          G
-        </div>
-        <div ref={logoWord} className="opening-animation-word">
-          GROW WITH <span>ME</span>
-        </div>
+        <div ref={logoMark} className="opening-animation-mark">G</div>
+        <div ref={logoWord} className="opening-animation-word">GROW WITH <span>ME</span></div>
         <div ref={line} className="opening-animation-line" />
-        <p ref={tagline} className="opening-animation-tagline">
-          Creative digital solutions since 2020
-        </p>
+        <p ref={tagline} className="opening-animation-tagline">Creative digital solutions since 2020</p>
       </div>
       <div className="opening-animation-corner" />
     </div>
