@@ -1,0 +1,51 @@
+import { useEffect, useRef } from 'react'
+import gsap from 'gsap'
+import { ArrowUpRight } from 'lucide-react'
+
+export default function PortfolioShowcase({ projects = [] }) {
+  const root = useRef(null)
+  useEffect(() => {
+    if (!root.current) return undefined
+    const ctx = gsap.context(() => {
+      gsap.utils.toArray('.portfolio-card').forEach((card) => {
+        const image = card.querySelector('.portfolio-image')
+        const media = card.querySelector('.portfolio-media')
+        const title = card.querySelector('.portfolio-title')
+        const meta = card.querySelector('.portfolio-meta')
+        const move = (event) => {
+          const rect = card.getBoundingClientRect()
+          const px = (event.clientX - rect.left) / rect.width - 0.5
+          const py = (event.clientY - rect.top) / rect.height - 0.5
+          gsap.to(media, { rotateY: px * 7, rotateX: py * -7, scale: 1.015, duration: .45, ease: 'power3.out', overwrite: true })
+          gsap.to(image, { x: px * -18, y: py * -18, scale: 1.09, duration: .6, ease: 'power3.out', overwrite: true })
+          gsap.to(title, { x: px * 10, y: py * 6, duration: .5, ease: 'power3.out', overwrite: true })
+          gsap.to(meta, { x: px * 6, duration: .5, ease: 'power3.out', overwrite: true })
+        }
+        const leave = () => {
+          gsap.to(media, { rotateY: 0, rotateX: 0, scale: 1, duration: .7, ease: 'power3.out' })
+          gsap.to(image, { x: 0, y: 0, scale: 1, duration: .7, ease: 'power3.out' })
+          gsap.to(title, { x: 0, y: 0, duration: .55, ease: 'power3.out' })
+          gsap.to(meta, { x: 0, duration: .55, ease: 'power3.out' })
+        }
+        card.addEventListener('pointermove', move)
+        card.addEventListener('pointerleave', leave)
+        return () => { card.removeEventListener('pointermove', move); card.removeEventListener('pointerleave', leave) }
+      })
+    }, root)
+    return () => ctx.revert()
+  }, [projects])
+
+  if (!projects.length) return <div className="portfolio-empty">Featured projects will appear here once they are published from the CMS.</div>
+
+  return <div ref={root} className="portfolio-showcase">
+    {projects.slice(0, 6).map((project, index) => <a href={`/work/${project.slug}`} key={project._id} className="portfolio-card" data-cursor="View project">
+      <div className="portfolio-media">
+        {project.coverImage?.url ? <img className="portfolio-image" src={project.coverImage.url} alt={project.coverImage.alt || project.title} loading="lazy" /> : <div className="portfolio-image portfolio-image-placeholder" />}
+        <div className="portfolio-overlay" />
+        <span className="portfolio-index">0{index + 1}</span>
+        <span className="portfolio-view"><ArrowUpRight size={18} /></span>
+        <div className="portfolio-content"><p className="portfolio-meta">{project.category?.replaceAll('-', ' ') || 'Creative project'}</p><h3 className="portfolio-title">{project.title}</h3></div>
+      </div>
+    </a>)}
+  </div>
+}
