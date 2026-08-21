@@ -5,6 +5,7 @@ import App from './App.jsx'
 import ProjectPage from './pages/ProjectPage.jsx'
 import AdminApp from './admin/AdminApp.jsx'
 import ErrorBoundary from './components/ErrorBoundary.jsx'
+import ScrollChoreography from './components/ScrollChoreography.jsx'
 import './styles/index.css'
 import './admin/admin.css'
 
@@ -14,8 +15,10 @@ function PublicApp() {
   return <BrowserRouter><Routes><Route path="/" element={<App />} /><Route path="/work/:slug" element={<ProjectPage />} /></Routes></BrowserRouter>
 }
 
+function Root() {
+  return <ErrorBoundary>{isAdminRoute ? <AdminApp /> : <><PublicApp /><ScrollChoreography /></>}</ErrorBoundary>
+}
+
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <ErrorBoundary>{isAdminRoute ? <AdminApp /> : <PublicApp />}</ErrorBoundary>
-  </React.StrictMode>,
+  <React.StrictMode><Root /></React.StrictMode>,
 )
