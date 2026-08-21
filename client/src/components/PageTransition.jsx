@@ -99,7 +99,8 @@ export default function PageTransition() {
           if (placeholders[index]) field.placeholder = placeholders[index]
         })
         const message = form.querySelector('textarea')
-        if (message) message.placeholder = 'Tell us about your project, goals, budget and timeline...'
+        if (message)
+          message.placeholder = 'Tell us about your project, goals, budget and timeline...'
       }
     }
 
@@ -114,7 +115,14 @@ export default function PageTransition() {
       const link = event.target.closest('a')
       if (!link || link.target === '_blank' || link.hasAttribute('download')) return
       const href = link.getAttribute('href')
-      if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('http')) return
+      if (
+        !href ||
+        href.startsWith('#') ||
+        href.startsWith('mailto:') ||
+        href.startsWith('tel:') ||
+        href.startsWith('http')
+      )
+        return
       const url = new URL(href, window.location.href)
       if (url.origin !== window.location.origin) return
       if (url.pathname === window.location.pathname && url.search === window.location.search) return
@@ -141,10 +149,16 @@ export default function PageTransition() {
     <div ref={layer} className="page-transition opening-animation" aria-hidden="true">
       <div className="opening-animation-glow" />
       <div ref={logo} className="opening-animation-content">
-        <div ref={logoMark} className="opening-animation-mark">G</div>
-        <div ref={logoWord} className="opening-animation-word">GROW WITH <span>ME</span></div>
+        <div ref={logoMark} className="opening-animation-mark">
+          G
+        </div>
+        <div ref={logoWord} className="opening-animation-word">
+          GROW WITH <span>ME</span>
+        </div>
         <div ref={line} className="opening-animation-line" />
-        <p ref={tagline} className="opening-animation-tagline">Creative digital solutions since 2020</p>
+        <p ref={tagline} className="opening-animation-tagline">
+          Creative digital solutions since 2020
+        </p>
       </div>
       <div className="opening-animation-corner" />
     </div>
