@@ -29,6 +29,7 @@ export default function PageTransition() {
         gsap.set(node, { autoAlpha: 0, pointerEvents: 'none' })
         return
       }
+
       node.dataset.openingActive = 'true'
       const tl = gsap.timeline({
         defaults: { ease: 'power4.out' },
@@ -37,22 +38,35 @@ export default function PageTransition() {
           gsap.set(node, { pointerEvents: 'none' })
         },
       })
+
       gsap.set(node, { autoAlpha: 1, clipPath: 'inset(0 0 0 0)' })
-      gsap.set(logoMark.current, { scale: 0, rotate: -18 })
-      gsap.set(logoWord.current, { y: 28, autoAlpha: 0 })
-      gsap.set(tagline.current, { y: 16, autoAlpha: 0 })
+      gsap.set(logoMark.current, { scale: 0, rotate: -12 })
+      gsap.set(logoWord.current, { y: 18, autoAlpha: 0 })
+      gsap.set(tagline.current, { y: 10, autoAlpha: 0 })
       gsap.set(line.current, { scaleX: 0, transformOrigin: 'left center' })
-      tl.to(logoMark.current, { scale: 1, rotate: 0, duration: 0.65, ease: 'back.out(1.7)' })
-        .to(logoWord.current, { y: 0, autoAlpha: 1, duration: 0.55 }, '-=0.3')
-        .to(line.current, { scaleX: 1, duration: 0.65 }, '-=0.2')
-        .to(tagline.current, { y: 0, autoAlpha: 1, duration: 0.45 }, '-=0.25')
-        .to({}, { duration: 0.25 })
-        .to(node, { clipPath: 'inset(0 0 100% 0)', duration: 0.9, ease: 'power4.inOut' })
+
+      tl.to(logoMark.current, {
+        scale: 1,
+        rotate: 0,
+        duration: 0.35,
+        ease: 'back.out(1.5)',
+      })
+        .to(logoWord.current, { y: 0, autoAlpha: 1, duration: 0.35 }, '-=0.2')
+        .to(line.current, { scaleX: 1, duration: 0.35 }, '-=0.15')
+        .to(tagline.current, { y: 0, autoAlpha: 1, duration: 0.3 }, '-=0.15')
+        .to({}, { duration: 0.1 })
+        .to(node, {
+          clipPath: 'inset(0 0 100% 0)',
+          duration: 0.45,
+          ease: 'power4.inOut',
+        })
         .set(node, { autoAlpha: 0 })
+
       return
     }
 
     if (node.dataset.openingActive === 'true' || reduced) return
+
     gsap.set(node, {
       autoAlpha: 1,
       clipPath: 'inset(0 0 0 0)',
@@ -60,8 +74,8 @@ export default function PageTransition() {
     })
     gsap.to(node, {
       clipPath: navigationType === 'POP' ? 'inset(100% 0 0 0)' : 'inset(0 0 100% 0)',
-      duration: 0.75,
-      delay: 0.04,
+      duration: 0.55,
+      delay: 0.02,
       ease: 'power4.inOut',
       onComplete: () => {
         gsap.set(node, { autoAlpha: 0, pointerEvents: 'none' })
@@ -99,15 +113,18 @@ export default function PageTransition() {
           if (placeholders[index]) field.placeholder = placeholders[index]
         })
         const message = form.querySelector('textarea')
-        if (message)
+        if (message) {
           message.placeholder = 'Tell us about your project, goals, budget and timeline...'
+        }
       }
     }
 
-    polishContact()
-    const observer = new MutationObserver(polishContact)
-    observer.observe(document.body, { childList: true, subtree: true })
-    return () => observer.disconnect()
+    // Run once after React paints instead of observing every DOM mutation.
+    const frame = requestAnimationFrame(() => {
+      requestAnimationFrame(polishContact)
+    })
+
+    return () => cancelAnimationFrame(frame)
   }, [location.key])
 
   useEffect(() => {
@@ -123,17 +140,20 @@ export default function PageTransition() {
         href.startsWith('http')
       )
         return
+
       const url = new URL(href, window.location.href)
       if (url.origin !== window.location.origin) return
       if (url.pathname === window.location.pathname && url.search === window.location.search) return
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
       event.preventDefault()
       const node = layer.current
       if (!node) return
+
       gsap.set(node, { autoAlpha: 1, clipPath: 'inset(100% 0 0 0)' })
       gsap.to(node, {
         clipPath: 'inset(0 0 0 0)',
-        duration: 0.55,
+        duration: 0.45,
         ease: 'power4.inOut',
         onComplete: () => {
           window.history.pushState({}, '', url.href)
@@ -141,6 +161,7 @@ export default function PageTransition() {
         },
       })
     }
+
     document.addEventListener('click', onClick)
     return () => document.removeEventListener('click', onClick)
   }, [])
