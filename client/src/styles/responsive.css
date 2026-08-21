@@ -1,0 +1,16 @@
+/* Production responsive safety layer */
+html { overflow-x: clip; }
+img, video, canvas { max-width: 100%; }
+button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
+@media (max-width: 767px) {
+  .container-gwm { width: min(100% - 2rem, 1400px); margin-inline: auto; }
+  .display { font-size: clamp(3rem, 15vw, 5.5rem); line-height: .9; }
+  .section-title { font-size: clamp(2.5rem, 12vw, 4.5rem); line-height: .92; }
+  .project-cover, .project-gallery-image { width: 100%; height: auto; min-height: 0; object-fit: cover; }
+  .yellow-button, .dark-button { min-height: 48px; }
+  .contact-field input, .contact-field select, .contact-field textarea { font-size: 16px; }
+}
+@media (min-width: 768px) and (max-width: 1199px) {
+  .container-gwm { width: min(100% - 3rem, 1400px); margin-inline: auto; }
+}
+@media (pointer: coarse) { .magnetic { transform: none !important; } }
