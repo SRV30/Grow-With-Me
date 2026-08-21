@@ -45,21 +45,12 @@ export default function PageTransition() {
       gsap.set(tagline.current, { y: 10, autoAlpha: 0 })
       gsap.set(line.current, { scaleX: 0, transformOrigin: 'left center' })
 
-      tl.to(logoMark.current, {
-        scale: 1,
-        rotate: 0,
-        duration: 0.35,
-        ease: 'back.out(1.5)',
-      })
+      tl.to(logoMark.current, { scale: 1, rotate: 0, duration: 0.35, ease: 'back.out(1.5)' })
         .to(logoWord.current, { y: 0, autoAlpha: 1, duration: 0.35 }, '-=0.2')
         .to(line.current, { scaleX: 1, duration: 0.35 }, '-=0.15')
         .to(tagline.current, { y: 0, autoAlpha: 1, duration: 0.3 }, '-=0.15')
         .to({}, { duration: 0.1 })
-        .to(node, {
-          clipPath: 'inset(0 0 100% 0)',
-          duration: 0.45,
-          ease: 'power4.inOut',
-        })
+        .to(node, { clipPath: 'inset(0 0 100% 0)', duration: 0.45, ease: 'power4.inOut' })
         .set(node, { autoAlpha: 0 })
 
       return
@@ -74,9 +65,9 @@ export default function PageTransition() {
     })
     gsap.to(node, {
       clipPath: navigationType === 'POP' ? 'inset(100% 0 0 0)' : 'inset(0 0 100% 0)',
-      duration: 0.55,
-      delay: 0.02,
-      ease: 'power4.inOut',
+      duration: 0.3,
+      delay: 0,
+      ease: 'power3.inOut',
       onComplete: () => {
         gsap.set(node, { autoAlpha: 0, pointerEvents: 'none' })
         window.scrollTo({ top: 0, behavior: 'instant' })
@@ -119,7 +110,6 @@ export default function PageTransition() {
       }
     }
 
-    // Run once after React paints instead of observing every DOM mutation.
     const frame = requestAnimationFrame(() => {
       requestAnimationFrame(polishContact)
     })
@@ -153,8 +143,8 @@ export default function PageTransition() {
       gsap.set(node, { autoAlpha: 1, clipPath: 'inset(100% 0 0 0)' })
       gsap.to(node, {
         clipPath: 'inset(0 0 0 0)',
-        duration: 0.45,
-        ease: 'power4.inOut',
+        duration: 0.25,
+        ease: 'power3.inOut',
         onComplete: () => {
           window.history.pushState({}, '', url.href)
           window.dispatchEvent(new PopStateEvent('popstate'))
@@ -170,16 +160,10 @@ export default function PageTransition() {
     <div ref={layer} className="page-transition opening-animation" aria-hidden="true">
       <div className="opening-animation-glow" />
       <div ref={logo} className="opening-animation-content">
-        <div ref={logoMark} className="opening-animation-mark">
-          G
-        </div>
-        <div ref={logoWord} className="opening-animation-word">
-          GROW WITH <span>ME</span>
-        </div>
+        <div ref={logoMark} className="opening-animation-mark">G</div>
+        <div ref={logoWord} className="opening-animation-word">GROW WITH <span>ME</span></div>
         <div ref={line} className="opening-animation-line" />
-        <p ref={tagline} className="opening-animation-tagline">
-          Creative digital solutions since 2020
-        </p>
+        <p ref={tagline} className="opening-animation-tagline">Creative digital solutions since 2020</p>
       </div>
       <div className="opening-animation-corner" />
     </div>
