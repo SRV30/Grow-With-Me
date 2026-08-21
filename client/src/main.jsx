@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import App from './App.jsx'
 import ProjectPage from './pages/ProjectPage.jsx'
 import AdminApp from './admin/AdminApp.jsx'
+import ErrorBoundary from './components/ErrorBoundary.jsx'
 import './styles/index.css'
 import './admin/admin.css'
 
@@ -15,6 +16,6 @@ function PublicApp() {
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    {isAdminRoute ? <AdminApp /> : <PublicApp />}
+    <ErrorBoundary>{isAdminRoute ? <AdminApp /> : <PublicApp />}</ErrorBoundary>
   </React.StrictMode>,
 )
