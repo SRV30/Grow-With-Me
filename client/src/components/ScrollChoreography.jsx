@@ -23,20 +23,18 @@ export default function ScrollChoreography() {
           },
         )
       })
-      gsap.utils
-        .toArray('[data-scroll-line]')
-        .forEach((line) =>
-          gsap.fromTo(
-            line,
-            { scaleX: 0, transformOrigin: 'left center' },
-            {
-              scaleX: 1,
-              duration: 1.1,
-              ease: 'power3.inOut',
-              scrollTrigger: { trigger: line, start: 'top 90%', once: true },
-            },
-          ),
-        )
+      gsap.utils.toArray('[data-scroll-line]').forEach((line) =>
+        gsap.fromTo(
+          line,
+          { scaleX: 0, transformOrigin: 'left center' },
+          {
+            scaleX: 1,
+            duration: 1.1,
+            ease: 'power3.inOut',
+            scrollTrigger: { trigger: line, start: 'top 90%', once: true },
+          },
+        ),
+      )
       gsap.utils.toArray('[data-scroll-stagger]').forEach((group) => {
         const children = group.querySelectorAll('[data-scroll-item]')
         gsap.fromTo(

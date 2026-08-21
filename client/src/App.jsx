@@ -141,21 +141,19 @@ function App() {
         delay: 0.35,
         ease: 'power4.out',
       })
-      gsap.utils
-        .toArray('.reveal')
-        .forEach((element) =>
-          gsap.fromTo(
-            element,
-            { y: 45, opacity: 0 },
-            {
-              y: 0,
-              opacity: 1,
-              duration: 0.9,
-              ease: 'power3.out',
-              scrollTrigger: { trigger: element, start: 'top 88%', once: true },
-            },
-          ),
-        )
+      gsap.utils.toArray('.reveal').forEach((element) =>
+        gsap.fromTo(
+          element,
+          { y: 45, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.9,
+            ease: 'power3.out',
+            scrollTrigger: { trigger: element, start: 'top 88%', once: true },
+          },
+        ),
+      )
       gsap.to('.hero-card', {
         yPercent: 16,
         rotate: -3,
