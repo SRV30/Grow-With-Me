@@ -1,0 +1,39 @@
+name: Format Code
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Format repository
+        run: npx --yes prettier@latest --write .
+
+      - name: Commit formatting changes
+        run: |
+          if git diff --quiet; then
+            echo "No formatting changes required."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "style: format source files with Prettier"
+          git push
