@@ -15,6 +15,7 @@ import './styles/accessibility.css'
 import './styles/responsive.css'
 import './styles/contact.css'
 import './styles/figma-overrides.css'
+import './styles/brand-theme.css'
 import './admin/admin.css'
 
 const isAdminRoute =
@@ -45,7 +46,7 @@ function Root() {
           <PublicApp />
           <ScrollChoreography />
         </>
-      )}
+      ) : null}
     </ErrorBoundary>
   )
 }
