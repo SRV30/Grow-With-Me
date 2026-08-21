@@ -1,0 +1,192 @@
+/* Professional typography and readability layer */
+
+.figma-site {
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.figma-site p,
+.figma-site li,
+.figma-site label,
+.figma-site input,
+.figma-site select,
+.figma-site textarea,
+.figma-site button {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.figma-nav a,
+.figma-mobile-nav a {
+  font-size: 13px;
+  line-height: 1.3;
+}
+
+.figma-yellow-button,
+.figma-outline-button,
+.figma-dark-button {
+  min-height: 46px;
+  padding-inline: 20px;
+  font-size: 13px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.figma-eyebrow {
+  font-size: 11px;
+  line-height: 1.4;
+  letter-spacing: 0.14em;
+}
+
+.figma-hero-services {
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.figma-hero-description {
+  font-size: 14px;
+  line-height: 1.75;
+  max-width: 600px;
+}
+
+.figma-section-heading p:not(.figma-eyebrow) {
+  font-size: 14px;
+  line-height: 1.7;
+  max-width: 560px;
+}
+
+.figma-service-card h3 {
+  font-size: 21px;
+  line-height: 1.15;
+}
+
+.figma-service-card p {
+  font-size: 13px;
+  line-height: 1.65;
+  max-width: 250px;
+}
+
+.figma-service-number {
+  font-size: 11px;
+}
+
+.figma-project-overlay span {
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+.figma-project-overlay strong {
+  font-size: 15px;
+  line-height: 1.25;
+}
+
+.figma-work-filters button {
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.figma-process-grid article strong {
+  font-size: 12px;
+}
+
+.figma-process-grid article h3 {
+  font-size: 17px;
+  line-height: 1.25;
+}
+
+.figma-process-grid article p {
+  margin: 7px auto 0;
+  max-width: 210px;
+  color: var(--brand-muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.figma-industries-grid > div b {
+  font-size: 14px;
+  line-height: 1.3;
+}
+
+.figma-about-copy p {
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.figma-quote {
+  font-size: 17px;
+  line-height: 1.45;
+}
+
+.figma-quote span {
+  font-size: 22px;
+  line-height: 1.25;
+}
+
+.figma-cta-section p {
+  font-size: 15px;
+  line-height: 1.7;
+  max-width: 650px;
+}
+
+.figma-cta-section h2 {
+  line-height: 0.98;
+}
+
+.figma-contact-form label span {
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.figma-contact-form input,
+.figma-contact-form select,
+.figma-contact-form textarea {
+  min-height: 48px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.figma-contact-form textarea {
+  min-height: 150px;
+}
+
+.figma-contact-success h3 {
+  font-size: 22px;
+}
+
+.figma-contact-success p {
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+@media (max-width: 640px) {
+  .figma-site p,
+  .figma-site li,
+  .figma-site label,
+  .figma-site input,
+  .figma-site select,
+  .figma-site textarea,
+  .figma-site button {
+    font-size: 14px;
+  }
+
+  .figma-hero-services {
+    font-size: 14px;
+  }
+
+  .figma-hero-description {
+    font-size: 14px;
+  }
+
+  .figma-service-card h3 {
+    font-size: 20px;
+  }
+
+  .figma-service-card p,
+  .figma-process-grid article p {
+    font-size: 13px;
+  }
+
+  .figma-section-heading p:not(.figma-eyebrow) {
+    font-size: 14px;
+  }
+}
