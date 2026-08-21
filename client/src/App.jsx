@@ -26,6 +26,8 @@ import {
 } from 'lucide-react'
 import { services, industries, process } from './data/site.js'
 import { api, getHomepage, getProjects } from './services/api.js'
+import SEO from './components/SEO.jsx'
+import { OrganizationSchema } from './components/StructuredData.jsx'
 import './styles/figma-home.css'
 
 const industryIcons = [
@@ -592,6 +594,12 @@ export default function App() {
   const ctaImage = cta?.media?.url || featuredProjects[2]?.coverImage?.url
   return (
     <div className="figma-site row-layout-site">
+      <SEO
+        title="Creative Digital Solutions"
+        description="Grow With Me helps businesses grow online through social media management, creative content, video editing, graphic design, digital marketing and web design."
+        path="/"
+      />
+      <OrganizationSchema />
       <header className="figma-header row-header">
         <div className="row-container row-header-inner">
           <Logo />
