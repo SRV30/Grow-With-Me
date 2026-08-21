@@ -11,6 +11,8 @@ import PageTransition from './components/PageTransition.jsx'
 import Hero3D from './components/Hero3D.jsx'
 import HeaderEnhancer from './components/HeaderEnhancer.jsx'
 import './styles/index.css'
+import './styles/accessibility.css'
+import './styles/responsive.css'
 import './admin/admin.css'
 
 const isAdminRoute = window.location.pathname === '/admin' || window.location.pathname.startsWith('/admin/')
