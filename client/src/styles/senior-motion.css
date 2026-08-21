@@ -1,0 +1,178 @@
+/* Senior-level motion system: subtle, purposeful, and production-safe. */
+
+.row-section {
+  position: relative;
+  overflow: clip;
+}
+
+.row-section::before {
+  position: absolute;
+  top: 0;
+  right: 8%;
+  width: 1px;
+  height: 0;
+  background: linear-gradient(180deg, transparent, rgba(245, 196, 0, 0.65), transparent);
+  content: '';
+  pointer-events: none;
+}
+
+.row-section:hover::before {
+  height: 100%;
+  transition: height 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.row-hero-art {
+  will-change: transform;
+}
+
+.row-art-bubble,
+.row-art-badge {
+  will-change: transform;
+  animation: brand-float 5.5s ease-in-out infinite;
+}
+
+.bubble-two {
+  animation-delay: -2.2s;
+}
+
+.row-art-badge {
+  animation-duration: 6.5s;
+  animation-delay: -1s;
+}
+
+.row-service-icon,
+.row-process-icon,
+.row-industries-grid article svg {
+  transition:
+    transform 260ms cubic-bezier(0.16, 1, 0.3, 1),
+    color 260ms ease,
+    background-color 260ms ease;
+}
+
+.row-service-card:hover .row-service-icon {
+  transform: translateY(-4px) rotate(-4deg);
+}
+
+.row-process-grid article:hover .row-process-icon {
+  transform: translateY(-4px) scale(1.05);
+}
+
+.row-industries-grid article:hover svg {
+  transform: translateY(-3px) scale(1.08);
+}
+
+.row-work-filters button,
+.figma-yellow-button,
+.figma-outline-button,
+.figma-dark-button {
+  will-change: transform;
+}
+
+.row-work-filters button:hover {
+  transform: translateY(-2px);
+}
+
+.figma-yellow-button:hover,
+.figma-outline-button:hover,
+.figma-dark-button:hover {
+  transform: translateY(-3px);
+}
+
+.row-quote {
+  position: relative;
+  overflow: hidden;
+}
+
+.row-quote::after {
+  position: absolute;
+  top: -70px;
+  left: -90px;
+  width: 180px;
+  height: 180px;
+  border: 1px solid rgba(245, 196, 0, 0.2);
+  border-radius: 50%;
+  content: '';
+  transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.row-quote:hover::after {
+  transform: translate(70px, 40px) scale(1.12);
+}
+
+.row-cta-image,
+.row-about-image {
+  overflow: hidden;
+}
+
+.row-cta-image img,
+.row-about-image img {
+  transition: transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.row-cta-image:hover img,
+.row-about-image:hover img {
+  transform: scale(1.045);
+}
+
+.figma-contact-form {
+  transition:
+    transform 300ms ease,
+    box-shadow 300ms ease;
+}
+
+.figma-contact-form:focus-within {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 48px rgba(17, 17, 17, 0.09);
+}
+
+.hero-3d {
+  position: fixed !important;
+  top: 120px;
+  right: 4vw;
+  z-index: 4;
+  width: min(28vw, 390px);
+  height: min(28vw, 390px);
+  pointer-events: none !important;
+  opacity: 0.82;
+  mix-blend-mode: multiply;
+}
+
+.hero-3d canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+@keyframes brand-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -9px, 0);
+  }
+}
+
+@media (max-width: 980px) {
+  .hero-3d {
+    top: 160px;
+    right: 2vw;
+    width: 260px;
+    height: 260px;
+    opacity: 0.34;
+  }
+}
+
+@media (max-width: 767px), (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .hero-3d {
+    display: none !important;
+  }
+
+  .row-art-bubble,
+  .row-art-badge {
+    animation: none;
+  }
+
+  .row-section::before {
+    display: none;
+  }
+}
