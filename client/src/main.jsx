@@ -9,6 +9,7 @@ import ErrorBoundary from './components/ErrorBoundary.jsx'
 import ScrollChoreography from './components/ScrollChoreography.jsx'
 import PageTransition from './components/PageTransition.jsx'
 import Hero3D from './components/Hero3D.jsx'
+import PageMotion from './components/PageMotion.jsx'
 import HeaderEnhancer from './components/HeaderEnhancer.jsx'
 import './styles/index.css'
 import './styles/accessibility.css'
@@ -19,6 +20,7 @@ import './styles/brand-theme.css'
 import './styles/professional-type.css'
 import './styles/senior-polish.css'
 import './styles/row-layout.css'
+import './styles/senior-motion.css'
 import './admin/admin.css'
 
 const isAdminRoute =
@@ -33,6 +35,7 @@ function PublicApp() {
         <Route path="/work" element={<WorkPage />} />
         <Route path="/work/:slug" element={<ProjectPage />} />
       </Routes>
+      <PageMotion />
       <Hero3D />
       <HeaderEnhancer />
     </BrowserRouter>
