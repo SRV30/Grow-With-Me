@@ -17,6 +17,7 @@ import './styles/contact.css'
 import './styles/figma-overrides.css'
 import './styles/brand-theme.css'
 import './styles/professional-type.css'
+import './styles/senior-polish.css'
 import './admin/admin.css'
 
 const isAdminRoute =
