@@ -6,13 +6,14 @@ import ProjectPage from './pages/ProjectPage.jsx'
 import AdminApp from './admin/AdminApp.jsx'
 import ErrorBoundary from './components/ErrorBoundary.jsx'
 import ScrollChoreography from './components/ScrollChoreography.jsx'
+import PageTransition from './components/PageTransition.jsx'
 import './styles/index.css'
 import './admin/admin.css'
 
 const isAdminRoute = window.location.pathname === '/admin' || window.location.pathname.startsWith('/admin/')
 
 function PublicApp() {
-  return <BrowserRouter><Routes><Route path="/" element={<App />} /><Route path="/work/:slug" element={<ProjectPage />} /></Routes></BrowserRouter>
+  return <BrowserRouter><PageTransition/><Routes><Route path="/" element={<App />} /><Route path="/work/:slug" element={<ProjectPage />} /></Routes></BrowserRouter>
 }
 
 function Root() {
