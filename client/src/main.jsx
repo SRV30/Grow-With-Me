@@ -21,6 +21,7 @@ import './styles/professional-type.css'
 import './styles/senior-polish.css'
 import './styles/row-layout.css'
 import './styles/senior-motion.css'
+import './styles/cup-animation.css'
 import './admin/admin.css'
 
 const isAdminRoute =
