@@ -1,9 +1,15 @@
 import { useEffect, useRef } from 'react'
 import { useLocation, useNavigationType } from 'react-router-dom'
 import gsap from 'gsap'
+import '../styles/opening-animation.css'
 
 export default function PageTransition() {
   const layer = useRef(null)
+  const logo = useRef(null)
+  const logoMark = useRef(null)
+  const logoWord = useRef(null)
+  const tagline = useRef(null)
+  const line = useRef(null)
   const location = useLocation()
   const navigationType = useNavigationType()
   const first = useRef(true)
@@ -11,25 +17,61 @@ export default function PageTransition() {
   useEffect(() => {
     const node = layer.current
     if (!node) return
+
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
     if (first.current) {
       first.current = false
-      if (reduced) return
-      gsap.fromTo(
-        node,
-        { scaleY: 1, transformOrigin: 'top' },
-        { scaleY: 0, duration: 0.8, ease: 'power4.inOut' },
-      )
-      return
+
+      if (reduced) {
+        gsap.set(node, { autoAlpha: 0, pointerEvents: 'none' })
+        return
+      }
+
+      const tl = gsap.timeline({
+        defaults: { ease: 'power4.out' },
+        onComplete: () => {
+          gsap.set(node, { pointerEvents: 'none' })
+        },
+      })
+
+      gsap.set(node, { autoAlpha: 1, scaleY: 1, transformOrigin: 'top' })
+      gsap.set(logoMark.current, { scale: 0, rotate: -18 })
+      gsap.set(logoWord.current, { y: 28, autoAlpha: 0 })
+      gsap.set(tagline.current, { y: 16, autoAlpha: 0 })
+      gsap.set(line.current, { scaleX: 0, transformOrigin: 'left center' })
+
+      tl.to(logoMark.current, { scale: 1, rotate: 0, duration: 0.65, ease: 'back.out(1.7)' })
+        .to(logoWord.current, { y: 0, autoAlpha: 1, duration: 0.55 }, '-=0.3')
+        .to(line.current, { scaleX: 1, duration: 0.65 }, '-=0.2')
+        .to(tagline.current, { y: 0, autoAlpha: 1, duration: 0.45 }, '-=0.25')
+        .to({}, { duration: 0.25 })
+        .to(node, {
+          clipPath: 'inset(0 0 100% 0)',
+          duration: 0.9,
+          ease: 'power4.inOut',
+        })
+        .set(node, { autoAlpha: 0 })
+
+      return () => tl.kill()
     }
+
     if (reduced) return
-    gsap.set(node, { scaleY: 1, transformOrigin: navigationType === 'POP' ? 'bottom' : 'top' })
+
+    gsap.set(node, {
+      autoAlpha: 1,
+      clipPath: 'inset(0 0 0 0)',
+      transformOrigin: navigationType === 'POP' ? 'bottom' : 'top',
+    })
     gsap.to(node, {
-      scaleY: 0,
-      duration: 0.85,
-      delay: 0.05,
+      clipPath: navigationType === 'POP' ? 'inset(100% 0 0 0)' : 'inset(0 0 100% 0)',
+      duration: 0.75,
+      delay: 0.04,
       ease: 'power4.inOut',
-      onComplete: () => window.scrollTo({ top: 0, behavior: 'instant' }),
+      onComplete: () => {
+        gsap.set(node, { autoAlpha: 0, pointerEvents: 'none' })
+        window.scrollTo({ top: 0, behavior: 'instant' })
+      },
     })
   }, [location.key, navigationType])
 
@@ -53,10 +95,10 @@ export default function PageTransition() {
       event.preventDefault()
       const node = layer.current
       if (!node) return
+      gsap.set(node, { autoAlpha: 1, clipPath: 'inset(100% 0 0 0)' })
       gsap.to(node, {
-        scaleY: 1,
-        transformOrigin: 'bottom',
-        duration: 0.65,
+        clipPath: 'inset(0 0 0 0)',
+        duration: 0.55,
         ease: 'power4.inOut',
         onComplete: () => {
           window.history.pushState({}, '', url.href)
@@ -69,8 +111,15 @@ export default function PageTransition() {
   }, [])
 
   return (
-    <div ref={layer} className="page-transition" aria-hidden="true">
-      <span className="page-transition-mark">GROW WITH ME</span>
+    <div ref={layer} className="page-transition opening-animation" aria-hidden="true">
+      <div className="opening-animation-glow" />
+      <div ref={logo} className="opening-animation-content">
+        <div ref={logoMark} className="opening-animation-mark">G</div>
+        <div ref={logoWord} className="opening-animation-word">GROW WITH <span>ME</span></div>
+        <div ref={line} className="opening-animation-line" />
+        <p ref={tagline} className="opening-animation-tagline">Creative digital solutions since 2020</p>
+      </div>
+      <div className="opening-animation-corner" />
     </div>
   )
 }
