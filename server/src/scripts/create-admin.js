@@ -1,4 +1,4 @@
-import 'dotenv/config'
+import '../config/env.js'
 import { connectDatabase } from '../config/db.js'
 import { User } from '../models/User.js'
 
@@ -19,9 +19,11 @@ await connectDatabase()
 const existing = await User.findOne({ email })
 if (existing) {
   console.log(`Admin already exists: ${email}`)
+  await import('mongoose').then(({ default: mongoose }) => mongoose.disconnect())
   process.exit(0)
 }
 
 await User.create({ name, email, password, role: 'admin' })
 console.log(`Admin created: ${email}`)
+await import('mongoose').then(({ default: mongoose }) => mongoose.disconnect())
 process.exit(0)
