@@ -12,6 +12,7 @@ import mediaRoutes from './routes/media.routes.js'
 import serviceRoutes from './routes/service.routes.js'
 import homepageRoutes from './routes/homepage.routes.js'
 import enquiryRoutes from './routes/enquiry.routes.js'
+import sitemapRoutes from './routes/sitemap.js'
 import { notFound, errorHandler } from './middleware/errorHandler.js'
 
 const app = express()
@@ -34,6 +35,7 @@ app.use('/api/homepage', homepageRoutes)
 app.use('/api/enquiries', enquiryRoutes)
 app.use('/api/admin/projects', adminProjectRoutes)
 app.use('/api/admin/media', mediaRoutes)
+app.use('/', sitemapRoutes)
 
 app.use(notFound)
 app.use(errorHandler)
