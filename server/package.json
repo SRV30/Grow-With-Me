@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "node --watch src/server.js",
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "admin:create": "node src/scripts/create-admin.js"
   },
   "dependencies": {
     "bcryptjs": "3.0.2",
