@@ -23,8 +23,14 @@ await writeFile(resolve(dist, 'sitemap.xml'), sitemap, 'utf8')
 await writeFile(resolve(dist, 'robots.txt'), robots, 'utf8')
 
 let html = await readFile(indexPath, 'utf8')
-html = html.replace(/<link rel="canonical" href="[^"]*"\s*\/>/, `<link rel="canonical" href="${siteUrl}/" />`)
-html = html.replace(/<meta property="og:url" content="[^"]*"\s*\/>/, `<meta property="og:url" content="${siteUrl}/" />`)
+html = html.replace(
+  /<link rel="canonical" href="[^"]*"\s*\/>/,
+  `<link rel="canonical" href="${siteUrl}/" />`,
+)
+html = html.replace(
+  /<meta property="og:url" content="[^"]*"\s*\/>/,
+  `<meta property="og:url" content="${siteUrl}/" />`,
+)
 await writeFile(indexPath, html, 'utf8')
 
 console.log(`SEO files generated for ${siteUrl}`)
