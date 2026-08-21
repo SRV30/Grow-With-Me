@@ -3,13 +3,19 @@
   "private": true,
   "version": "0.1.0",
   "description": "Grow With Me full-stack application",
+  "workspaces": [
+    "client",
+    "server"
+  ],
   "scripts": {
     "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
-    "dev:client": "npm --prefix client run dev",
-    "dev:server": "npm --prefix server run dev",
-    "build": "npm --prefix client run build",
-    "start": "npm --prefix server start",
-    "install:all": "npm install && npm --prefix client install && npm --prefix server install"
+    "dev:client": "npm --workspace grow-with-me-client run dev",
+    "dev:server": "npm --workspace grow-with-me-server run dev",
+    "build": "npm --workspace grow-with-me-client run build",
+    "preview": "npm --workspace grow-with-me-client run preview",
+    "start": "npm --workspace grow-with-me-server run start",
+    "install:all": "npm install",
+    "check": "npm run build"
   },
   "devDependencies": {
     "concurrently": "9.2.1"
