@@ -145,9 +145,7 @@ export default function Enquiries() {
                   <td>{item.company || '—'}</td>
                   <td>{item.service || '—'}</td>
                   <td>
-                    <span className={`status-pill ${item.status}`}>
-                      {item.status}
-                    </span>
+                    <span className={`status-pill ${item.status}`}>{item.status}</span>
                   </td>
                   <td>{new Date(item.createdAt).toLocaleDateString()}</td>
                 </tr>
@@ -241,9 +239,7 @@ export default function Enquiries() {
               <span>Status</span>
               <select
                 value={selected.status}
-                onChange={(event) =>
-                  update(selected._id, { status: event.target.value })
-                }
+                onChange={(event) => update(selected._id, { status: event.target.value })}
               >
                 {statuses.map((key) => (
                   <option key={key} value={key}>
@@ -257,18 +253,13 @@ export default function Enquiries() {
               <span>Internal notes</span>
               <textarea
                 defaultValue={selected.notes}
-                onBlur={(event) =>
-                  update(selected._id, { notes: event.target.value })
-                }
+                onBlur={(event) => update(selected._id, { notes: event.target.value })}
                 placeholder="Add private notes…"
               />
             </label>
 
             <div className="admin-danger-row">
-              <button
-                type="button"
-                onClick={() => update(selected._id, { status: 'contacted' })}
-              >
+              <button type="button" onClick={() => update(selected._id, { status: 'contacted' })}>
                 <Check size={16} />
                 Mark contacted
               </button>
