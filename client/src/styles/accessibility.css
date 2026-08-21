@@ -1,0 +1,7 @@
+/* Accessibility and interaction safety layer */
+:where(a, button, input, select, textarea, summary):focus-visible { outline: 3px solid #f5d90a; outline-offset: 4px; }
+:where(a, button):focus:not(:focus-visible) { outline: none; }
+button:disabled { cursor: not-allowed; }
+@media (prefers-reduced-motion: reduce) { html:focus-within { scroll-behavior: auto; } *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; } }
+.sr-only-accessible { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+@media (pointer: coarse) { [data-cursor], .magnetic { transform: none !important; } }
