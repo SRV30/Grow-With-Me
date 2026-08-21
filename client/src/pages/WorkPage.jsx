@@ -1,165 +1,163 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { ArrowUpRight, Filter } from 'lucide-react'
-import gsap from 'gsap'
+import { useEffect, useMemo, useState } from 'react'
+import { ArrowRight, ArrowUpRight, Filter } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { getProjects } from '../services/api.js'
 import SEO from '../components/SEO.jsx'
 import CloudinaryImage from '../components/CloudinaryImage.jsx'
 import { EmptyState, LoadingState, ErrorState } from '../components/StatusState.jsx'
+import '../styles/work-page.css'
 
-const filters = [
-  'All',
-  'Social Media',
-  'Video',
-  'Graphic Design',
-  'Digital Marketing',
-  'Web Design',
-]
+const filters = ['All', 'Social Media', 'Video', 'Graphic Design', 'Digital Marketing', 'Web Design']
+
+const normalizeCategory = (value = '') => value.toLowerCase().replaceAll('-', ' ').trim()
+
+function ProjectCard({ project, index }) {
+  const featured = index === 0
+  const category = project.category?.replaceAll('-', ' ') || 'Creative project'
+
+  return (
+    <Link
+      to={`/work/${project.slug}`}
+      className={`work-project-card ${featured ? 'work-project-featured' : ''}`}
+      data-cursor="View project"
+    >
+      <div className="work-project-media">
+        {project.coverImage?.url ? (
+          <CloudinaryImage
+            src={project.coverImage.url}
+            alt={project.coverImage.alt || project.title}
+            className="work-project-image"
+            width={featured ? 1400 : 900}
+            sizes={featured ? '(max-width: 900px) 100vw, 66vw' : '(max-width: 900px) 100vw, 33vw'}
+            priority={featured}
+            blur={false}
+          />
+        ) : (
+          <div className="work-project-placeholder" aria-hidden="true">
+            <span>GWM</span>
+          </div>
+        )}
+      </div>
+      <div className="work-project-shade" />
+      <span className="work-project-index">{String(index + 1).padStart(2, '0')}</span>
+      <span className="work-project-arrow" aria-hidden="true">
+        <ArrowUpRight size={20} />
+      </span>
+      <div className="work-project-content">
+        <p>{category} {project.year ? `· ${project.year}` : ''}</p>
+        <h2>{project.title}</h2>
+      </div>
+    </Link>
+  )
+}
 
 export default function WorkPage() {
-  const [projects, setProjects] = useState([]),
-    [active, setActive] = useState('All'),
-    [loading, setLoading] = useState(true),
-    [error, setError] = useState('')
-  const grid = useRef(null)
-  const load = () => {
+  const [projects, setProjects] = useState([])
+  const [active, setActive] = useState('All')
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+
+  const load = async () => {
     setLoading(true)
     setError('')
-    getProjects()
-      .then(setProjects)
-      .catch((e) => setError(e.response?.data?.message || 'Unable to load projects.'))
-      .finally(() => setLoading(false))
+    try {
+      const data = await getProjects()
+      setProjects(Array.isArray(data) ? data : [])
+    } catch (requestError) {
+      setError(requestError.response?.data?.message || 'Unable to load projects.')
+    } finally {
+      setLoading(false)
+    }
   }
+
   useEffect(() => {
     load()
   }, [])
-  const visible = useMemo(
-    () =>
-      active === 'All'
-        ? projects
-        : projects.filter(
-            (project) =>
-              (project.category || '').toLowerCase().replaceAll('-', ' ') === active.toLowerCase(),
-          ),
-    [projects, active],
-  )
-  const changeFilter = (next) => {
-    if (next === active) return
-    const cards = grid.current?.querySelectorAll('[data-work-card]')
-    if (!cards?.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches)
-      return setActive(next)
-    gsap.to(cards, {
-      opacity: 0,
-      y: 18,
-      duration: 0.18,
-      stagger: 0.025,
-      onComplete: () => {
-        setActive(next)
-        requestAnimationFrame(() =>
-          gsap.fromTo(
-            grid.current?.querySelectorAll('[data-work-card]') || [],
-            { opacity: 0, y: 30 },
-            { opacity: 1, y: 0, duration: 0.55, stagger: 0.06, ease: 'power3.out' },
-          ),
-        )
-      },
-    })
-  }
+
+  const visible = useMemo(() => {
+    if (active === 'All') return projects
+    const selected = normalizeCategory(active)
+    return projects.filter((project) => normalizeCategory(project.category) === selected)
+  }, [projects, active])
+
   return (
-    <main className="work-page bg-[#f6f4ee] text-[#111]">
+    <main className="work-page work-theme">
       <SEO
         title="Selected Work"
-        description="Explore social campaigns, videos, graphic design, digital marketing and websites created through the Grow With Me studio."
+        description="Explore selected social campaigns, videos, graphic design, digital marketing and websites created through the Grow With Me studio."
         path="/work"
       />
-      <section className="container-gwm pt-32 pb-20 md:pt-44 md:pb-28">
-        <p className="eyebrow">Selected work</p>
-        <h1 className="display mt-6 max-w-6xl">
-          Work that
-          <br />
-          <span className="text-[#8b8980]">gets noticed.</span>
-        </h1>
-        <p className="mt-9 max-w-xl text-lg leading-8 text-[#68675f]">
-          Explore social campaigns, videos, graphic design, digital marketing and websites created
-          through the Grow With Me studio.
-        </p>
-      </section>
-      <section className="container-gwm pb-10">
-        <div
-          className="flex flex-wrap gap-2 border-y border-black/10 py-5"
-          role="group"
-          aria-label="Filter projects"
-        >
-          <span className="mr-2 flex items-center gap-2 px-2 text-xs font-bold uppercase tracking-[.14em]">
-            <Filter size={14} aria-hidden="true" /> Filter
-          </span>
-          {filters.map((filter) => (
-            <button
-              type="button"
-              key={filter}
-              aria-pressed={active === filter}
-              onClick={() => changeFilter(filter)}
-              className={`min-h-11 px-4 py-2 text-xs font-bold uppercase tracking-[.1em] transition ${active === filter ? 'bg-[#111] text-white' : 'border border-black/10 hover:bg-[#ebe8df]'}`}
-            >
-              {filter}
-            </button>
-          ))}
+
+      <header className="work-header">
+        <div className="work-container work-header-inner">
+          <Link className="work-logo" to="/" aria-label="Grow With Me home">
+            <span>G</span>
+            <strong>GROW WITH <em>ME</em></strong>
+          </Link>
+          <nav className="work-nav" aria-label="Portfolio navigation">
+            <Link to="/#services">Services</Link>
+            <Link className="is-active" to="/work">Work</Link>
+            <Link to="/#about">About</Link>
+            <Link className="work-nav-cta" to="/#contact">Start a project <ArrowRight size={14} /></Link>
+          </nav>
+        </div>
+      </header>
+
+      <section className="work-hero">
+        <div className="work-container work-hero-grid">
+          <div>
+            <p className="work-eyebrow">01 / Selected work</p>
+            <h1>Ideas that<br /><span>get noticed.</span></h1>
+          </div>
+          <div className="work-hero-side">
+            <p>
+              A curated selection of creative campaigns, digital experiences and brand work built
+              to make businesses look sharper and communicate better.
+            </p>
+            <div className="work-hero-meta">
+              <span><strong>{projects.length}</strong> projects</span>
+              <span><strong>2020—26</strong> studio</span>
+            </div>
+          </div>
         </div>
       </section>
+
+      <section className="work-filter-section" aria-label="Project filters">
+        <div className="work-container">
+          <div className="work-filter-bar">
+            <span className="work-filter-label"><Filter size={14} /> Filter</span>
+            <div className="work-filters" role="group" aria-label="Filter projects">
+              {filters.map((filter) => (
+                <button
+                  type="button"
+                  key={filter}
+                  aria-pressed={active === filter}
+                  className={active === filter ? 'is-active' : ''}
+                  onClick={() => setActive(filter)}
+                >
+                  {filter}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {loading ? (
-        <section className="container-gwm pb-32">
+        <section className="work-container work-state">
           <LoadingState label="Loading selected work…" />
         </section>
       ) : error ? (
-        <section className="container-gwm pb-32">
+        <section className="work-container work-state">
           <ErrorState message={error} onRetry={load} />
         </section>
       ) : (
-        <section ref={grid} className="container-gwm grid gap-5 pb-32 md:grid-cols-2">
+        <section className="work-container work-project-grid" aria-live="polite">
           {visible.map((project, index) => (
-            <Link
-              key={project._id}
-              to={`/work/${project.slug}`}
-              data-work-card
-              data-cursor="View project"
-              className={`group relative overflow-hidden bg-[#222] ${index === 0 ? 'md:col-span-2' : ''}`}
-            >
-              <div className={`${index === 0 ? 'aspect-[16/8]' : 'aspect-[4/5]'} overflow-hidden`}>
-                <div className="h-full w-full transition-transform duration-700 group-hover:scale-105">
-                  {project.coverImage?.url ? (
-                    <CloudinaryImage
-                      src={project.coverImage.url}
-                      alt={project.coverImage.alt || project.title}
-                      className="h-full w-full object-cover"
-                      width={1600}
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                      priority={index === 0}
-                    />
-                  ) : (
-                    <div className="h-full w-full bg-[#2a2a27]" aria-hidden="true" />
-                  )}
-                </div>
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent" />
-              <span
-                className="absolute right-6 top-6 grid h-12 w-12 place-items-center rounded-full border border-white/40 text-white transition duration-500 group-hover:rotate-45 group-hover:bg-[#f5d90a] group-hover:text-[#111] group-hover:border-[#f5d90a]"
-                aria-hidden="true"
-              >
-                <ArrowUpRight size={19} />
-              </span>
-              <div className="absolute bottom-6 left-6 right-6 text-white">
-                <p className="text-[10px] uppercase tracking-[.18em] text-white/55">
-                  {project.category?.replaceAll('-', ' ') || 'Creative project'} ·{' '}
-                  {project.year || ''}
-                </p>
-                <h2 className="mt-2 text-3xl font-black tracking-[-.05em] md:text-5xl">
-                  {project.title}
-                </h2>
-              </div>
-            </Link>
+            <ProjectCard key={project._id || project.slug} project={project} index={index} />
           ))}
           {!visible.length && (
-            <div className="md:col-span-2">
+            <div className="work-empty">
               <EmptyState
                 title="No projects yet"
                 description="Publish a project from the admin dashboard and it will appear here."
@@ -168,6 +166,18 @@ export default function WorkPage() {
           )}
         </section>
       )}
+
+      {!loading && !error && visible.length > 0 ? (
+        <section className="work-bottom-cta">
+          <div className="work-container">
+            <p className="work-eyebrow">02 / Let's build something</p>
+            <h2>Have a project<br /><span>in mind?</span></h2>
+            <Link className="work-yellow-button" to="/#contact">
+              Start a conversation <ArrowUpRight size={17} />
+            </Link>
+          </div>
+        </section>
+      ) : null}
     </main>
   )
 }
