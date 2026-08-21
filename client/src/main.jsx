@@ -46,7 +46,7 @@ function Root() {
           <PublicApp />
           <ScrollChoreography />
         </>
-      ) : null}
+      )}
     </ErrorBoundary>
   )
 }
