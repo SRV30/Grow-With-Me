@@ -1,5 +1,5 @@
 import express from 'express'
-import Project from '../models/Project.js'
+import { Project } from '../models/Project.js'
 
 const router = express.Router()
 const siteUrl = process.env.CLIENT_URL || process.env.FRONTEND_URL || 'https://growwithmeayush.vercel.app'
