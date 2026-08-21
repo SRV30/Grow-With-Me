@@ -33,11 +33,21 @@
   border-bottom: 1px solid var(--gwm-line);
 }
 
-.row-light { background: var(--gwm-paper); }
-.row-soft { background: var(--gwm-paper-alt); }
-.row-white { background: var(--gwm-white); }
-.row-about { background: #f0eee7; }
-.row-cta { background: var(--gwm-paper); }
+.row-light {
+  background: var(--gwm-paper);
+}
+.row-soft {
+  background: var(--gwm-paper-alt);
+}
+.row-white {
+  background: var(--gwm-white);
+}
+.row-about {
+  background: #f0eee7;
+}
+.row-cta {
+  background: var(--gwm-paper);
+}
 
 .row-layout-site .figma-eyebrow {
   color: #b28700;
@@ -53,8 +63,13 @@
   margin-inline: auto;
 }
 
-.row-heading-center { text-align: center; }
-.row-heading-left { text-align: left; margin-inline: 0; }
+.row-heading-center {
+  text-align: center;
+}
+.row-heading-left {
+  text-align: left;
+  margin-inline: 0;
+}
 
 .row-heading h2 {
   margin: 0;
@@ -125,8 +140,7 @@
 .row-hero {
   padding: clamp(72px, 9vw, 128px) 0 clamp(68px, 8vw, 112px);
   background:
-    radial-gradient(circle at 75% 35%, rgba(245, 196, 0, 0.14), transparent 26%),
-    var(--gwm-paper);
+    radial-gradient(circle at 75% 35%, rgba(245, 196, 0, 0.14), transparent 26%), var(--gwm-paper);
 }
 
 .row-hero-grid {
@@ -228,8 +242,14 @@
   font-size: 17px;
 }
 
-.bubble-one { top: 11%; right: 8%; }
-.bubble-two { bottom: 16%; left: 3%; }
+.bubble-one {
+  top: 11%;
+  right: 8%;
+}
+.bubble-two {
+  bottom: 16%;
+  left: 3%;
+}
 
 .row-art-badge {
   right: 0;
@@ -263,8 +283,12 @@
   border-right: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.row-trust article:first-child { padding-left: 0; }
-.row-trust article:last-child { border-right: 0; }
+.row-trust article:first-child {
+  padding-left: 0;
+}
+.row-trust article:last-child {
+  border-right: 0;
+}
 
 .row-trust article > svg {
   flex: 0 0 auto;
@@ -313,7 +337,10 @@
   background: var(--gwm-white);
   padding: 28px;
   box-shadow: var(--gwm-shadow);
-  transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+  transition:
+    transform 220ms ease,
+    box-shadow 220ms ease,
+    border-color 220ms ease;
 }
 
 .row-service-card:hover {
@@ -776,7 +803,9 @@
   text-decoration: none;
 }
 
-.row-footer-contact a:last-child { border-right: 0; }
+.row-footer-contact a:last-child {
+  border-right: 0;
+}
 
 .row-footer-contact span {
   font-size: 0.72rem;
@@ -828,7 +857,9 @@
   color: rgba(255, 255, 255, 0.8);
   font-size: 0.92rem;
   text-decoration: none;
-  transition: color 160ms ease, transform 160ms ease;
+  transition:
+    color 160ms ease,
+    transform 160ms ease;
 }
 
 .row-footer-main a:hover {
