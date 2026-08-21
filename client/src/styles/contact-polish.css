@@ -15,7 +15,10 @@
   font-size: 14px;
   font-weight: 800;
   letter-spacing: -0.01em;
-  transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    background 180ms ease;
 }
 
 .row-cta-copy .figma-actions a:first-child {
@@ -53,7 +56,10 @@
   background: rgba(255, 252, 238, 0.9);
   border: 1px solid rgba(17, 17, 17, 0.22);
   border-radius: 10px;
-  transition: border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background 180ms ease;
 }
 
 .figma-contact-form input,
