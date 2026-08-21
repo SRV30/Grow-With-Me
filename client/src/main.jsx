@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import App from './App.jsx'
 import WorkPage from './pages/WorkPage.jsx'
 import ProjectPage from './pages/ProjectPage.jsx'
@@ -52,10 +52,13 @@ function DeferredHero3D() {
   )
 }
 
-function PublicApp() {
+function PublicShell() {
+  const location = useLocation()
+  const isWorkRoute = location.pathname === '/work'
+
   return (
-    <BrowserRouter>
-      <PageTransition />
+    <>
+      {!isWorkRoute && <PageTransition />}
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/work" element={<WorkPage />} />
@@ -64,6 +67,14 @@ function PublicApp() {
       <PageMotion />
       <DeferredHero3D />
       <HeaderEnhancer />
+    </>
+  )
+}
+
+function PublicApp() {
+  return (
+    <BrowserRouter>
+      <PublicShell />
     </BrowserRouter>
   )
 }
