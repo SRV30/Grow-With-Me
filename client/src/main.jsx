@@ -1,4 +1,4 @@
-import React from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import App from './App.jsx'
@@ -8,7 +8,6 @@ import AdminApp from './admin/AdminApp.jsx'
 import ErrorBoundary from './components/ErrorBoundary.jsx'
 import ScrollChoreography from './components/ScrollChoreography.jsx'
 import PageTransition from './components/PageTransition.jsx'
-import Hero3D from './components/Hero3D.jsx'
 import PageMotion from './components/PageMotion.jsx'
 import HeaderEnhancer from './components/HeaderEnhancer.jsx'
 import './styles/index.css'
@@ -24,8 +23,34 @@ import './styles/senior-motion.css'
 import './styles/cup-animation.css'
 import './admin/admin.css'
 
+const Hero3D = lazy(() => import('./components/Hero3D.jsx'))
+
 const isAdminRoute =
   window.location.pathname === '/admin' || window.location.pathname.startsWith('/admin/')
+
+function DeferredHero3D() {
+  const [ready, setReady] = useState(false)
+
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined
+
+    const start = () => setReady(true)
+    if ('requestIdleCallback' in window) {
+      const id = window.requestIdleCallback(start, { timeout: 1800 })
+      return () => window.cancelIdleCallback(id)
+    }
+
+    const id = window.setTimeout(start, 1200)
+    return () => window.clearTimeout(id)
+  }, [])
+
+  if (!ready) return null
+  return (
+    <Suspense fallback={null}>
+      <Hero3D />
+    </Suspense>
+  )
+}
 
 function PublicApp() {
   return (
@@ -37,7 +62,7 @@ function PublicApp() {
         <Route path="/work/:slug" element={<ProjectPage />} />
       </Routes>
       <PageMotion />
-      <Hero3D />
+      <DeferredHero3D />
       <HeaderEnhancer />
     </BrowserRouter>
   )
@@ -59,7 +84,5 @@ function Root() {
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <Root />
-  </React.StrictMode>,
+  <Root />,
 )
