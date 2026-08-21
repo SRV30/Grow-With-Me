@@ -86,8 +86,11 @@ export default function PageMotion() {
         })
       })
 
-      gsap.utils.toArray('.row-about-copy, .row-about-image, .row-quote, .row-cta-copy, .row-cta-image, .row-contact-copy, .figma-contact-form').forEach(
-        (item) => {
+      gsap.utils
+        .toArray(
+          '.row-about-copy, .row-about-image, .row-quote, .row-cta-copy, .row-cta-image, .row-contact-copy, .figma-contact-form',
+        )
+        .forEach((item) => {
           gsap.from(item, {
             y: 30,
             opacity: 0,
@@ -99,16 +102,19 @@ export default function PageMotion() {
               once: true,
             },
           })
-        },
-      )
+        })
 
       gsap.utils.toArray('.figma-project-card').forEach((card) => {
         const image = card.querySelector('img')
         if (!image) return
 
         gsap.set(image, { scale: 1.02 })
-        card.addEventListener('mouseenter', () => gsap.to(image, { scale: 1.07, duration: 0.55, ease: 'power3.out' }))
-        card.addEventListener('mouseleave', () => gsap.to(image, { scale: 1.02, duration: 0.55, ease: 'power3.out' }))
+        card.addEventListener('mouseenter', () =>
+          gsap.to(image, { scale: 1.07, duration: 0.55, ease: 'power3.out' }),
+        )
+        card.addEventListener('mouseleave', () =>
+          gsap.to(image, { scale: 1.02, duration: 0.55, ease: 'power3.out' }),
+        )
       })
 
       const refresh = () => ScrollTrigger.refresh()
