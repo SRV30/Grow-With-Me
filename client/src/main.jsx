@@ -15,14 +15,41 @@ import './styles/accessibility.css'
 import './styles/responsive.css'
 import './admin/admin.css'
 
-const isAdminRoute = window.location.pathname === '/admin' || window.location.pathname.startsWith('/admin/')
+const isAdminRoute =
+  window.location.pathname === '/admin' || window.location.pathname.startsWith('/admin/')
 
 function PublicApp() {
-  return <BrowserRouter><PageTransition/><Routes><Route path="/" element={<App />} /><Route path="/work" element={<WorkPage />} /><Route path="/work/:slug" element={<ProjectPage />} /></Routes><Hero3D /><HeaderEnhancer /></BrowserRouter>
+  return (
+    <BrowserRouter>
+      <PageTransition />
+      <Routes>
+        <Route path="/" element={<App />} />
+        <Route path="/work" element={<WorkPage />} />
+        <Route path="/work/:slug" element={<ProjectPage />} />
+      </Routes>
+      <Hero3D />
+      <HeaderEnhancer />
+    </BrowserRouter>
+  )
 }
 
 function Root() {
-  return <ErrorBoundary>{isAdminRoute ? <AdminApp /> : <><PublicApp /><ScrollChoreography /></>}</ErrorBoundary>
+  return (
+    <ErrorBoundary>
+      {isAdminRoute ? (
+        <AdminApp />
+      ) : (
+        <>
+          <PublicApp />
+          <ScrollChoreography />
+        </>
+      )}
+    </ErrorBoundary>
+  )
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(<React.StrictMode><Root /></React.StrictMode>)
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <Root />
+  </React.StrictMode>,
+)

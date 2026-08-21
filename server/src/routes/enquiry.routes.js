@@ -1,5 +1,10 @@
 import { Router } from 'express'
-import { createEnquiry, listEnquiries, updateEnquiry, deleteEnquiry } from '../controllers/enquiry.controller.js'
+import {
+  createEnquiry,
+  listEnquiries,
+  updateEnquiry,
+  deleteEnquiry,
+} from '../controllers/enquiry.controller.js'
 import { requireAuth } from '../middleware/auth.js'
 
 const router = Router()

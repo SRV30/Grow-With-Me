@@ -17,7 +17,10 @@ const cookieOptions = () => ({
   path: '/',
 })
 
-const signToken = (user) => jwt.sign({ sub: user._id.toString(), role: user.role }, env.jwtSecret, { expiresIn: env.jwtExpiresIn })
+const signToken = (user) =>
+  jwt.sign({ sub: user._id.toString(), role: user.role }, env.jwtSecret, {
+    expiresIn: env.jwtExpiresIn,
+  })
 
 export const login = async (req, res, next) => {
   try {
@@ -33,17 +36,28 @@ export const login = async (req, res, next) => {
     await user.save()
 
     res.cookie('gwm_token', signToken(user), cookieOptions())
-    res.json({ success: true, data: { id: user._id, name: user.name, email: user.email, role: user.role } })
+    res.json({
+      success: true,
+      data: { id: user._id, name: user.name, email: user.email, role: user.role },
+    })
   } catch (error) {
     next(error)
   }
 }
 
 export const logout = (_req, res) => {
-  res.clearCookie('gwm_token', { httpOnly: true, secure: env.nodeEnv === 'production', sameSite: env.nodeEnv === 'production' ? 'none' : 'lax', path: '/' })
+  res.clearCookie('gwm_token', {
+    httpOnly: true,
+    secure: env.nodeEnv === 'production',
+    sameSite: env.nodeEnv === 'production' ? 'none' : 'lax',
+    path: '/',
+  })
   res.json({ success: true })
 }
 
 export const me = (req, res) => {
-  res.json({ success: true, data: { id: req.user._id, name: req.user.name, email: req.user.email, role: req.user.role } })
+  res.json({
+    success: true,
+    data: { id: req.user._id, name: req.user.name, email: req.user.email, role: req.user.role },
+  })
 }

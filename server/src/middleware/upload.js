@@ -13,7 +13,9 @@ const allowedMimeTypes = new Set([
 
 const fileFilter = (_req, file, callback) => {
   if (!allowedMimeTypes.has(file.mimetype)) {
-    return callback(new Error('Unsupported media type. Use JPG, PNG, WebP, AVIF, GIF, MP4, WebM or MOV.'))
+    return callback(
+      new Error('Unsupported media type. Use JPG, PNG, WebP, AVIF, GIF, MP4, WebM or MOV.'),
+    )
   }
   callback(null, true)
 }

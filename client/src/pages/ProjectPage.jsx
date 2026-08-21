@@ -9,11 +9,155 @@ import SEO from '../components/SEO.jsx'
 import { ProjectSchema } from '../components/StructuredData.jsx'
 
 export default function ProjectPage() {
-  const { slug } = useParams(), root = useRef(null)
-  const [project,setProject]=useState(null), [loading,setLoading]=useState(true), [error,setError]=useState('')
-  useEffect(()=>{getProject(slug).then(setProject).catch(e=>setError(e.response?.data?.message||'Project not found')).finally(()=>setLoading(false))},[slug])
-  useEffect(()=>{if(!root.current||!project||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return undefined;const ctx=gsap.context(()=>{gsap.fromTo('[data-project-reveal]',{y:70,opacity:0},{y:0,opacity:1,duration:1,stagger:.08,ease:'power4.out'});gsap.fromTo('[data-project-media]',{clipPath:'inset(10% 0)',scale:1.08},{clipPath:'inset(0% 0)',scale:1,duration:1.25,ease:'power4.inOut'})},root);return()=>ctx.revert()},[project])
-  if(loading)return <main className="container-gwm min-h-screen pt-40">Loading project…</main>
-  if(error||!project)return <main className="container-gwm min-h-screen pt-40"><p>{error||'Project not found'}</p><Link to="/" className="mt-6 inline-flex items-center gap-2 underline"><ArrowLeft size={16}/> Back</Link></main>
-  return <main ref={root} className="project-detail bg-[#f6f4ee] text-[#111]"><SEO title={project.title} description={project.description} image={project.coverImage?.url} path={`/work/${project.slug}`} /><ProjectSchema project={project}/><section className="container-gwm pt-32 pb-20 md:pt-40 md:pb-28"><Link to="/#work" className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[.14em]" data-project-reveal><ArrowLeft size={15}/> Back to work</Link><div className="mt-12 grid gap-12 lg:grid-cols-[1fr_.7fr] lg:items-end"><div><p className="eyebrow" data-project-reveal>{project.category.replaceAll('-',' ')} · {project.year||'—'}</p><h1 className="display mt-5" data-project-reveal>{project.title}<span className="text-[#f5d90a]">.</span></h1></div><div data-project-reveal><p className="text-sm leading-7 text-[#68675f]">{project.description}</p>{project.client&&<p className="mt-6 text-xs font-bold uppercase tracking-[.14em]">Client · {project.client}</p>}</div></div></section>{project.coverImage?.url&&<div className="container-gwm overflow-hidden" data-project-media><CloudinaryImage src={project.coverImage.url} alt={project.coverImage.alt||project.title} className="project-cover" width={1800} sizes="100vw" priority/></div>}<section className="container-gwm py-20 md:py-28">{project.services?.length>0&&<div className="mb-16 flex flex-wrap gap-2" data-project-reveal>{project.services.map(service=><span key={service} className="border border-black/15 px-4 py-2 text-xs font-bold uppercase tracking-[.12em]">{service}</span>)}</div>}<div className="grid gap-5 md:grid-cols-2">{project.gallery?.map((image,index)=><figure key={`${image.publicId}-${index}`} className={`overflow-hidden ${index===0?'md:col-span-2':''}`} data-project-media><CloudinaryImage src={image.url} alt={image.alt||`${project.title} ${index+1}`} className="project-gallery-image" width={1400} sizes="(max-width: 768px) 100vw, 50vw"/></figure>)}{project.videos?.map((video,index)=><figure key={`${video.publicId}-${index}`} className="overflow-hidden bg-black" data-project-media><CloudinaryVideo className="project-gallery-image" src={video.url} poster={video.thumbnail||undefined} controls/></figure>)}</div></section><section className="bg-[#111] py-24 text-white md:py-32"><div className="container-gwm flex flex-col justify-between gap-8 md:flex-row md:items-end"><div data-project-reveal><p className="eyebrow text-[#f5d90a]">Grow with us</p><h2 className="section-title mt-4">Ready for<br/>your next<br/><span className="text-[#777]">project?</span></h2></div><a href="mailto:growithmeayush@gmail.com" className="yellow-button" data-project-reveal>Start a project <ArrowUpRight size={17}/></a></div></section></main>
+  const { slug } = useParams(),
+    root = useRef(null)
+  const [project, setProject] = useState(null),
+    [loading, setLoading] = useState(true),
+    [error, setError] = useState('')
+  useEffect(() => {
+    getProject(slug)
+      .then(setProject)
+      .catch((e) => setError(e.response?.data?.message || 'Project not found'))
+      .finally(() => setLoading(false))
+  }, [slug])
+  useEffect(() => {
+    if (!root.current || !project || window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+      return undefined
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        '[data-project-reveal]',
+        { y: 70, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1, stagger: 0.08, ease: 'power4.out' },
+      )
+      gsap.fromTo(
+        '[data-project-media]',
+        { clipPath: 'inset(10% 0)', scale: 1.08 },
+        { clipPath: 'inset(0% 0)', scale: 1, duration: 1.25, ease: 'power4.inOut' },
+      )
+    }, root)
+    return () => ctx.revert()
+  }, [project])
+  if (loading) return <main className="container-gwm min-h-screen pt-40">Loading project…</main>
+  if (error || !project)
+    return (
+      <main className="container-gwm min-h-screen pt-40">
+        <p>{error || 'Project not found'}</p>
+        <Link to="/" className="mt-6 inline-flex items-center gap-2 underline">
+          <ArrowLeft size={16} /> Back
+        </Link>
+      </main>
+    )
+  return (
+    <main ref={root} className="project-detail bg-[#f6f4ee] text-[#111]">
+      <SEO
+        title={project.title}
+        description={project.description}
+        image={project.coverImage?.url}
+        path={`/work/${project.slug}`}
+      />
+      <ProjectSchema project={project} />
+      <section className="container-gwm pt-32 pb-20 md:pt-40 md:pb-28">
+        <Link
+          to="/#work"
+          className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[.14em]"
+          data-project-reveal
+        >
+          <ArrowLeft size={15} /> Back to work
+        </Link>
+        <div className="mt-12 grid gap-12 lg:grid-cols-[1fr_.7fr] lg:items-end">
+          <div>
+            <p className="eyebrow" data-project-reveal>
+              {project.category.replaceAll('-', ' ')} · {project.year || '—'}
+            </p>
+            <h1 className="display mt-5" data-project-reveal>
+              {project.title}
+              <span className="text-[#f5d90a]">.</span>
+            </h1>
+          </div>
+          <div data-project-reveal>
+            <p className="text-sm leading-7 text-[#68675f]">{project.description}</p>
+            {project.client && (
+              <p className="mt-6 text-xs font-bold uppercase tracking-[.14em]">
+                Client · {project.client}
+              </p>
+            )}
+          </div>
+        </div>
+      </section>
+      {project.coverImage?.url && (
+        <div className="container-gwm overflow-hidden" data-project-media>
+          <CloudinaryImage
+            src={project.coverImage.url}
+            alt={project.coverImage.alt || project.title}
+            className="project-cover"
+            width={1800}
+            sizes="100vw"
+            priority
+          />
+        </div>
+      )}
+      <section className="container-gwm py-20 md:py-28">
+        {project.services?.length > 0 && (
+          <div className="mb-16 flex flex-wrap gap-2" data-project-reveal>
+            {project.services.map((service) => (
+              <span
+                key={service}
+                className="border border-black/15 px-4 py-2 text-xs font-bold uppercase tracking-[.12em]"
+              >
+                {service}
+              </span>
+            ))}
+          </div>
+        )}
+        <div className="grid gap-5 md:grid-cols-2">
+          {project.gallery?.map((image, index) => (
+            <figure
+              key={`${image.publicId}-${index}`}
+              className={`overflow-hidden ${index === 0 ? 'md:col-span-2' : ''}`}
+              data-project-media
+            >
+              <CloudinaryImage
+                src={image.url}
+                alt={image.alt || `${project.title} ${index + 1}`}
+                className="project-gallery-image"
+                width={1400}
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            </figure>
+          ))}
+          {project.videos?.map((video, index) => (
+            <figure
+              key={`${video.publicId}-${index}`}
+              className="overflow-hidden bg-black"
+              data-project-media
+            >
+              <CloudinaryVideo
+                className="project-gallery-image"
+                src={video.url}
+                poster={video.thumbnail || undefined}
+                controls
+              />
+            </figure>
+          ))}
+        </div>
+      </section>
+      <section className="bg-[#111] py-24 text-white md:py-32">
+        <div className="container-gwm flex flex-col justify-between gap-8 md:flex-row md:items-end">
+          <div data-project-reveal>
+            <p className="eyebrow text-[#f5d90a]">Grow with us</p>
+            <h2 className="section-title mt-4">
+              Ready for
+              <br />
+              your next
+              <br />
+              <span className="text-[#777]">project?</span>
+            </h2>
+          </div>
+          <a href="mailto:growithmeayush@gmail.com" className="yellow-button" data-project-reveal>
+            Start a project <ArrowUpRight size={17} />
+          </a>
+        </div>
+      </section>
+    </main>
+  )
 }

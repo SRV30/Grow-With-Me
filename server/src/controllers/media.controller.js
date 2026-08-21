@@ -4,7 +4,12 @@ import { uploadBuffer, destroyMedia } from '../services/cloudinary.service.js'
 import { env } from '../config/env.js'
 
 const uploadSchema = z.object({
-  folder: z.string().trim().max(120).regex(/^[a-zA-Z0-9_\-/]+$/).optional(),
+  folder: z
+    .string()
+    .trim()
+    .max(120)
+    .regex(/^[a-zA-Z0-9_\-/]+$/)
+    .optional(),
   alt: z.string().trim().max(255).optional(),
   tags: z.string().trim().max(500).optional(),
 })
@@ -35,35 +40,44 @@ export const listMedia = async (req, res, next) => {
 
 export const uploadMediaFiles = async (req, res, next) => {
   try {
-    if (!req.files?.length) return res.status(400).json({ success: false, message: 'No media files supplied' })
+    if (!req.files?.length)
+      return res.status(400).json({ success: false, message: 'No media files supplied' })
 
     const { folder, alt, tags } = uploadSchema.parse(req.body)
-    const tagList = tags ? tags.split(',').map((tag) => tag.trim()).filter(Boolean).slice(0, 20) : []
+    const tagList = tags
+      ? tags
+          .split(',')
+          .map((tag) => tag.trim())
+          .filter(Boolean)
+          .slice(0, 20)
+      : []
 
-    const uploaded = await Promise.all(req.files.map(async (file) => {
-      const result = await uploadBuffer(file.buffer, {
-        folder: resolveFolder(folder),
-        resourceType: file.mimetype.startsWith('video/') ? 'video' : 'image',
-      })
+    const uploaded = await Promise.all(
+      req.files.map(async (file) => {
+        const result = await uploadBuffer(file.buffer, {
+          folder: resolveFolder(folder),
+          resourceType: file.mimetype.startsWith('video/') ? 'video' : 'image',
+        })
 
-      const media = await Media.create({
-        publicId: result.public_id,
-        url: result.url,
-        secureUrl: result.secure_url,
-        resourceType: result.resource_type,
-        format: result.format,
-        folder: result.folder || resolveFolder(folder),
-        filename: file.originalname,
-        bytes: result.bytes,
-        width: result.width,
-        height: result.height,
-        duration: result.duration,
-        alt: alt || '',
-        tags: tagList,
-      })
+        const media = await Media.create({
+          publicId: result.public_id,
+          url: result.url,
+          secureUrl: result.secure_url,
+          resourceType: result.resource_type,
+          format: result.format,
+          folder: result.folder || resolveFolder(folder),
+          filename: file.originalname,
+          bytes: result.bytes,
+          width: result.width,
+          height: result.height,
+          duration: result.duration,
+          alt: alt || '',
+          tags: tagList,
+        })
 
-      return media.toObject()
-    }))
+        return media.toObject()
+      }),
+    )
 
     res.status(201).json({ success: true, data: uploaded })
   } catch (error) {

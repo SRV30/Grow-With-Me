@@ -9,9 +9,7 @@ router.get('/', async (req, res, next) => {
     if (req.query.category) filter.category = req.query.category
     if (req.query.featured === 'true') filter.featured = true
 
-    const projects = await Project.find(filter)
-      .sort({ order: 1, createdAt: -1 })
-      .lean()
+    const projects = await Project.find(filter).sort({ order: 1, createdAt: -1 }).lean()
 
     res.json({ success: true, data: projects })
   } catch (error) {
