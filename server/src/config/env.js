@@ -1,7 +1,16 @@
-import 'dotenv/config'
+import dotenv from 'dotenv'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+const currentDir = path.dirname(fileURLToPath(import.meta.url))
+const projectRoot = path.resolve(currentDir, '../../../')
+
+// Load the repository-root .env explicitly so npm workspace commands
+// work consistently from both the repository root and server directory.
+dotenv.config({ path: path.join(projectRoot, '.env') })
 
 const required = (name) => {
-  const value = process.env[name]
+  const value = process.env[name]?.trim()
   if (!value && process.env.NODE_ENV === 'production') {
     throw new Error(`Missing required environment variable: ${name}`)
   }
