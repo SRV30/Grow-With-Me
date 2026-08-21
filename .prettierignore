@@ -1,0 +1,14 @@
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+build/
+**/build/
+.vercel/
+coverage/
+.cache/
+.vite/
+public/models/
+public/uploads/
+uploads/
+*.lock
