@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "node --watch src/server.js",
     "start": "node src/server.js",
-    "admin:create": "node src/scripts/create-admin.js"
+    "admin:create": "node src/scripts/create-admin.js",
+    "cloudinary:test-upload": "node src/scripts/test-cloudinary-upload.js"
   },
   "dependencies": {
     "bcryptjs": "3.0.2",
