@@ -100,10 +100,7 @@ function ContactForm() {
       })
     } catch (submissionError) {
       setState('error')
-      setError(
-        submissionError.response?.data?.message ||
-          'Something went wrong. Please try again.',
-      )
+      setError(submissionError.response?.data?.message || 'Something went wrong. Please try again.')
     }
   }
 
@@ -112,14 +109,8 @@ function ContactForm() {
       <div className="figma-contact-success">
         <CheckCircle2 size={34} />
         <h3>Message received.</h3>
-        <p>
-          Thanks for reaching out. We will review your enquiry and get back to you soon.
-        </p>
-        <button
-          type="button"
-          className="figma-dark-button"
-          onClick={() => setState('idle')}
-        >
+        <p>Thanks for reaching out. We will review your enquiry and get back to you soon.</p>
+        <button type="button" className="figma-dark-button" onClick={() => setState('idle')}>
           Send another enquiry <ArrowUpRight size={17} />
         </button>
       </div>
@@ -443,8 +434,8 @@ function AboutSection({ about, aboutImage }) {
                 'Grow With Me is a creative digital service company founded with the aim of helping businesses build a strong and professional online presence.'}
             </p>
             <p>
-              Since 2020, we have been working on creative content, video editing, graphic designing,
-              social media and digital promotion.
+              Since 2020, we have been working on creative content, video editing, graphic
+              designing, social media and digital promotion.
             </p>
             <p>
               From a single promotional creative to complete social media management, we provide
@@ -589,8 +580,12 @@ export default function App() {
   const [homepage, setHomepage] = useState(null)
 
   useEffect(() => {
-    getProjects({ featured: true }).then(setProjects).catch(() => {})
-    getHomepage().then(setHomepage).catch(() => {})
+    getProjects({ featured: true })
+      .then(setProjects)
+      .catch(() => {})
+    getHomepage()
+      .then(setHomepage)
+      .catch(() => {})
   }, [])
 
   const hero = homepage?.hero
@@ -609,9 +604,7 @@ export default function App() {
   )
 
   const liveProcess = homepage?.process?.length
-    ? homepage.process
-        .slice()
-        .sort((a, b) => a.order - b.order)
+    ? homepage.process.slice().sort((a, b) => a.order - b.order)
     : process.map(([number, title, text], index) => ({
         number,
         title,
@@ -630,7 +623,9 @@ export default function App() {
         <div className="row-container row-header-inner">
           <Logo />
           <nav className="figma-nav" aria-label="Primary navigation">
-            <a className="active" href="#top">Home</a>
+            <a className="active" href="#top">
+              Home
+            </a>
             <a href="#services">Services</a>
             <a href="#work">Portfolio</a>
             <a href="#about">About Us</a>
@@ -649,11 +644,21 @@ export default function App() {
         </div>
         {menuOpen ? (
           <nav className="figma-mobile-nav row-mobile-nav">
-            <a href="#top" onClick={() => setMenuOpen(false)}>Home</a>
-            <a href="#services" onClick={() => setMenuOpen(false)}>Services</a>
-            <a href="#work" onClick={() => setMenuOpen(false)}>Portfolio</a>
-            <a href="#about" onClick={() => setMenuOpen(false)}>About Us</a>
-            <a href="#contact" onClick={() => setMenuOpen(false)}>Contact</a>
+            <a href="#top" onClick={() => setMenuOpen(false)}>
+              Home
+            </a>
+            <a href="#services" onClick={() => setMenuOpen(false)}>
+              Services
+            </a>
+            <a href="#work" onClick={() => setMenuOpen(false)}>
+              Portfolio
+            </a>
+            <a href="#about" onClick={() => setMenuOpen(false)}>
+              About Us
+            </a>
+            <a href="#contact" onClick={() => setMenuOpen(false)}>
+              Contact
+            </a>
           </nav>
         ) : null}
       </header>
