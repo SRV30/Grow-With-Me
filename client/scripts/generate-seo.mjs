@@ -15,7 +15,24 @@ const dist = resolve(process.cwd(), 'dist')
 const indexPath = resolve(dist, 'index.html')
 
 const routes = ['/', '/work']
-const urls = routes.map((path) => `${siteUrl}${path}`)
+const apiUrl = process.env.VITE_API_URL?.replace(/\/$/, '')
+
+if (apiUrl) {
+  try {
+    const response = await fetch(`${apiUrl}/projects`)
+    if (response.ok) {
+      const payload = await response.json()
+      const projects = Array.isArray(payload?.data) ? payload.data : []
+      for (const project of projects) {
+        if (project?.slug) routes.push(`/work/${encodeURIComponent(project.slug)}`)
+      }
+    }
+  } catch {
+    console.warn('Project sitemap entries could not be fetched; continuing with core routes.')
+  }
+}
+
+const urls = [...new Set(routes)].map((path) => `${siteUrl}${path}`)
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls
   .map((url) => `  <url><loc>${url}</loc></url>`)
@@ -37,4 +54,4 @@ html = html.replace(
 )
 await writeFile(indexPath, html, 'utf8')
 
-console.log(`SEO files generated for ${siteUrl}`)
+console.log(`SEO files generated for ${siteUrl} (${urls.length} URLs)`)
