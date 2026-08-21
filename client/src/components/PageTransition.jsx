@@ -3,6 +3,9 @@ import { useLocation, useNavigationType } from 'react-router-dom'
 import gsap from 'gsap'
 import '../styles/opening-animation.css'
 
+const PHONE = '8434305404'
+const WHATSAPP = '918434305404'
+
 export default function PageTransition() {
   const layer = useRef(null)
   const logo = useRef(null)
@@ -28,8 +31,6 @@ export default function PageTransition() {
         return
       }
 
-      // React StrictMode runs effects twice in development. Keep the intro
-      // marked as active so the second pass cannot start a route transition.
       node.dataset.openingActive = 'true'
 
       const tl = gsap.timeline({
@@ -46,12 +47,7 @@ export default function PageTransition() {
       gsap.set(tagline.current, { y: 16, autoAlpha: 0 })
       gsap.set(line.current, { scaleX: 0, transformOrigin: 'left center' })
 
-      tl.to(logoMark.current, {
-        scale: 1,
-        rotate: 0,
-        duration: 0.65,
-        ease: 'back.out(1.7)',
-      })
+      tl.to(logoMark.current, { scale: 1, rotate: 0, duration: 0.65, ease: 'back.out(1.7)' })
         .to(logoWord.current, { y: 0, autoAlpha: 1, duration: 0.55 }, '-=0.3')
         .to(line.current, { scaleX: 1, duration: 0.65 }, '-=0.2')
         .to(tagline.current, { y: 0, autoAlpha: 1, duration: 0.45 }, '-=0.25')
@@ -66,8 +62,6 @@ export default function PageTransition() {
       return
     }
 
-    // Ignore the development-only StrictMode second effect pass while the
-    // opening sequence is still playing.
     if (node.dataset.openingActive === 'true') return
     if (reduced) return
 
@@ -87,6 +81,44 @@ export default function PageTransition() {
       },
     })
   }, [location.key, navigationType])
+
+  useEffect(() => {
+    const polishContact = () => {
+      const ctaLinks = document.querySelectorAll('.row-cta-copy .figma-actions a')
+      if (ctaLinks.length >= 2) {
+        const callLink = ctaLinks[0]
+        const whatsappLink = ctaLinks[1]
+        callLink.href = `tel:${PHONE}`
+        callLink.textContent = 'Call Us  →'
+        callLink.setAttribute('aria-label', `Call Grow With Me at ${PHONE}`)
+        whatsappLink.href = `https://wa.me/${WHATSAPP}`
+        whatsappLink.textContent = 'WhatsApp Us  ↗'
+        whatsappLink.target = '_blank'
+        whatsappLink.rel = 'noopener noreferrer'
+        whatsappLink.setAttribute('aria-label', 'Chat with Grow With Me on WhatsApp')
+      }
+
+      const form = document.querySelector('.figma-contact-form')
+      if (form) {
+        const placeholders = {
+          name: 'Enter your full name',
+          email: 'you@company.com',
+          phone: '+91 98765 43210',
+          company: 'Your company or brand name',
+          message: 'Tell us about your project, goals, budget and timeline...',
+        }
+        Object.entries(placeholders).forEach(([name, placeholder]) => {
+          const field = form.querySelector(`[name="${name}"]`)
+          if (field) field.placeholder = placeholder
+        })
+      }
+    }
+
+    polishContact()
+    const observer = new MutationObserver(polishContact)
+    observer.observe(document.body, { childList: true, subtree: true })
+    return () => observer.disconnect()
+  }, [location.key])
 
   useEffect(() => {
     const onClick = (event) => {
