@@ -22,8 +22,10 @@ import './styles/row-layout.css'
 import './styles/header-responsive.css'
 import './styles/senior-motion.css'
 import './styles/cup-animation.css'
+import './styles/work-filter.css'
 import './admin/admin.css'
 import './admin/user-management.css'
+import './scripts/work-filter.js'
 
 const Hero3D = lazy(() => import('./components/Hero3D.jsx'))
 
