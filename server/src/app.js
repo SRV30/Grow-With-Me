@@ -16,10 +16,19 @@ import sitemapRoutes from './routes/sitemap.js'
 import { notFound, errorHandler } from './middleware/errorHandler.js'
 
 const app = express()
-const allowedOrigins = new Set([env.clientUrl, env.frontendWwwUrl].filter(Boolean))
+const allowedOrigins = new Set(
+  [env.clientUrl, env.frontendWwwUrl, 'http://localhost:5173'].filter(Boolean),
+)
+
+const getTrustProxyConfig = (value) => {
+  if (value === 'true') return true
+  if (value === 'false') return false
+  if (value && !Number.isNaN(Number(value))) return Number(value)
+  return value || 1
+}
 
 app.disable('x-powered-by')
-app.set('trust proxy', 1)
+app.set('trust proxy', getTrustProxyConfig(env.trustProxy))
 app.use(helmet())
 app.use(
   cors({
