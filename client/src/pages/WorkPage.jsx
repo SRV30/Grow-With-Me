@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { ArrowRight, ArrowUpRight, Filter, Moon, Sun, X } from 'lucide-react'
+import { ArrowRight, ArrowUpRight, Filter, X } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { getProjects } from '../services/api.js'
 import SEO from '../components/SEO.jsx'
@@ -16,23 +16,6 @@ const filters = [
   'Web Design',
 ]
 const normalizeCategory = (value = '') => value.toLowerCase().replaceAll('-', ' ').trim()
-
-function ThemeToggle({ darkMode, onToggle }) {
-  return (
-    <button
-      type="button"
-      className="work-theme-toggle"
-      onClick={onToggle}
-      aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
-      title={darkMode ? 'Light mode' : 'Dark mode'}
-    >
-      <span className="work-theme-toggle-icon">
-        {darkMode ? <Sun size={17} /> : <Moon size={17} />}
-      </span>
-      <span className="work-theme-toggle-label">{darkMode ? 'Light' : 'Dark'}</span>
-    </button>
-  )
-}
 
 function ProjectCard({ project, index }) {
   const featured = index === 0
@@ -84,7 +67,6 @@ export default function WorkPage() {
   const [active, setActive] = useState('All')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
-  const [darkMode, setDarkMode] = useState(() => localStorage.getItem('gwm-theme') === 'dark')
   const [menuOpen, setMenuOpen] = useState(false)
 
   const load = async () => {
@@ -101,9 +83,9 @@ export default function WorkPage() {
   }
 
   useEffect(() => {
-    document.documentElement.style.colorScheme = darkMode ? 'dark' : 'light'
-    localStorage.setItem('gwm-theme', darkMode ? 'dark' : 'light')
-  }, [darkMode])
+    document.documentElement.style.colorScheme = 'light'
+    localStorage.removeItem('gwm-theme')
+  }, [])
 
   useEffect(() => {
     load()
@@ -115,17 +97,8 @@ export default function WorkPage() {
     return projects.filter((project) => normalizeCategory(project.category) === selected)
   }, [projects, active])
 
-  const toggleTheme = () => {
-    setDarkMode((value) => !value)
-    document.querySelector('.work-theme')?.classList.add('work-theme-transition')
-    window.setTimeout(
-      () => document.querySelector('.work-theme')?.classList.remove('work-theme-transition'),
-      650,
-    )
-  }
-
   return (
-    <main className={`work-page work-theme${darkMode ? ' theme-dark' : ''}`}>
+    <main className="work-page work-theme">
       <SEO
         title="Selected Work"
         description="Explore selected social campaigns, videos, graphic design, digital marketing and websites created through the Grow With Me studio."
@@ -153,7 +126,6 @@ export default function WorkPage() {
           </nav>
 
           <div className="work-header-actions">
-            <ThemeToggle darkMode={darkMode} onToggle={toggleTheme} />
             <button
               type="button"
               className="work-menu-button"
@@ -190,7 +162,6 @@ export default function WorkPage() {
             <Link to="/#about" onClick={() => setMenuOpen(false)}>
               About
             </Link>
-            <ThemeToggle darkMode={darkMode} onToggle={toggleTheme} />
             <Link className="work-nav-cta" to="/#contact" onClick={() => setMenuOpen(false)}>
               Start a project <ArrowRight size={14} />
             </Link>
