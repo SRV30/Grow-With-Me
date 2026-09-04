@@ -14,7 +14,9 @@
   height: 420px;
   border: 1px solid rgba(245, 196, 0, 0.14);
   border-radius: 50%;
-  box-shadow: 0 0 0 45px rgba(245, 196, 0, 0.025), 0 0 0 90px rgba(245, 196, 0, 0.018);
+  box-shadow:
+    0 0 0 45px rgba(245, 196, 0, 0.025),
+    0 0 0 90px rgba(245, 196, 0, 0.018);
   content: '';
   pointer-events: none;
 }
@@ -40,11 +42,18 @@
   border-right: 1px solid rgba(17, 17, 17, 0.18);
   color: #111;
   text-decoration: none;
-  transition: background 220ms ease, padding-left 220ms ease;
+  transition:
+    background 220ms ease,
+    padding-left 220ms ease;
 }
 
-.row-footer-contact a:last-child { border-right: 0; }
-.row-footer-contact a:hover { background: #ffd52a; padding-left: 40px; }
+.row-footer-contact a:last-child {
+  border-right: 0;
+}
+.row-footer-contact a:hover {
+  background: #ffd52a;
+  padding-left: 40px;
+}
 
 .row-footer-contact span {
   font-size: 0.68rem;
@@ -68,7 +77,9 @@
   padding: 72px 0 58px;
 }
 
-.row-footer-main > div { min-width: 0; }
+.row-footer-main > div {
+  min-width: 0;
+}
 
 .row-footer .figma-logo {
   color: #fff;
@@ -79,7 +90,9 @@
   transition: transform 220ms ease;
 }
 
-.row-footer .figma-logo:hover { transform: translateY(-3px); }
+.row-footer .figma-logo:hover {
+  transform: translateY(-3px);
+}
 
 .row-footer .figma-logo-mark {
   width: 44px;
@@ -136,7 +149,9 @@
   color: rgba(255, 255, 255, 0.7);
   font-size: 0.88rem;
   text-decoration: none;
-  transition: color 180ms ease, transform 180ms ease;
+  transition:
+    color 180ms ease,
+    transform 180ms ease;
 }
 
 .row-footer-main > div:not(:first-child) a:hover {
@@ -152,7 +167,9 @@
   color: rgba(255, 255, 255, 0.72);
 }
 
-.row-footer-contact-card:last-child { margin-bottom: 0; }
+.row-footer-contact-card:last-child {
+  margin-bottom: 0;
+}
 
 .row-footer-contact-card strong {
   display: block;
@@ -161,7 +178,10 @@
   font-weight: 650;
 }
 
-.row-footer-contact-card svg { color: #f5c400; flex: 0 0 auto; }
+.row-footer-contact-card svg {
+  color: #f5c400;
+  flex: 0 0 auto;
+}
 
 .row-footer-bottom {
   position: relative;
@@ -178,22 +198,48 @@
 }
 
 @media (max-width: 800px) {
-  .row-footer-contact { grid-template-columns: 1fr; }
-  .row-footer-contact a { min-height: 74px; border-right: 0; border-bottom: 1px solid rgba(17, 17, 17, 0.15); }
-  .row-footer-contact a:last-child { border-bottom: 0; }
-  .row-footer-main { grid-template-columns: 1fr 1fr; gap: 42px 28px; padding: 52px 24px 42px; }
-  .row-footer-main > div:first-child { grid-column: 1 / -1; }
-  .row-footer-bottom { flex-direction: column; align-items: flex-start; padding: 18px 24px; }
+  .row-footer-contact {
+    grid-template-columns: 1fr;
+  }
+  .row-footer-contact a {
+    min-height: 74px;
+    border-right: 0;
+    border-bottom: 1px solid rgba(17, 17, 17, 0.15);
+  }
+  .row-footer-contact a:last-child {
+    border-bottom: 0;
+  }
+  .row-footer-main {
+    grid-template-columns: 1fr 1fr;
+    gap: 42px 28px;
+    padding: 52px 24px 42px;
+  }
+  .row-footer-main > div:first-child {
+    grid-column: 1 / -1;
+  }
+  .row-footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 18px 24px;
+  }
 }
 
 @media (max-width: 520px) {
-  .row-footer-main { grid-template-columns: 1fr; }
-  .row-footer-main > div:first-child { grid-column: auto; }
-  .row-footer-contact a { padding-inline: 24px; }
+  .row-footer-main {
+    grid-template-columns: 1fr;
+  }
+  .row-footer-main > div:first-child {
+    grid-column: auto;
+  }
+  .row-footer-contact a {
+    padding-inline: 24px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .row-footer-contact a,
   .row-footer .figma-logo,
-  .row-footer-main > div:not(:first-child) a { transition: none; }
+  .row-footer-main > div:not(:first-child) a {
+    transition: none;
+  }
 }
