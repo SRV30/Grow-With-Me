@@ -1,9 +1,9 @@
 import express from 'express'
 import { Project } from '../models/Project.js'
+import { env } from '../config/env.js'
 
 const router = express.Router()
-const siteUrl =
-  process.env.CLIENT_URL || process.env.FRONTEND_URL || 'https://growwithmeayush.vercel.app'
+const siteUrl = (env.clientUrl || 'http://localhost:5173').replace(/\/$/, '')
 
 router.get('/sitemap.xml', async (_req, res) => {
   try {
@@ -12,7 +12,7 @@ router.get('/sitemap.xml', async (_req, res) => {
       { loc: `${siteUrl}/`, priority: '1.0' },
       { loc: `${siteUrl}/work`, priority: '0.9' },
       ...projects.map((project) => ({
-        loc: `${siteUrl}/work/${project.slug}`,
+        loc: `${siteUrl}/work/${encodeURIComponent(project.slug)}`,
         priority: '0.7',
         lastmod: project.updatedAt,
       })),
@@ -29,8 +29,9 @@ router.get('/sitemap.xml', async (_req, res) => {
 
 function escapeXml(value) {
   return String(value).replace(
-    /[<>&'"]/g,
+    /[<>&'\"]/g,
     (char) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', "'": '&apos;', '"': '&quot;' })[char],
   )
 }
+
 export default router
