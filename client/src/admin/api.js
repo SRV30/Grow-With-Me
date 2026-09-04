@@ -15,6 +15,16 @@ export const getCurrentAdmin = async () => {
   return data.data
 }
 
+export const createAdminUser = async (payload) => {
+  const { data } = await api.post('/admin/users', payload)
+  return data.data
+}
+
+export const changeAdminPassword = async (payload) => {
+  const { data } = await api.patch('/admin/users/password', payload)
+  return data
+}
+
 export const getAdminProjects = async (params = {}) => {
   const { data } = await api.get('/admin/projects', { params })
   return data.data
