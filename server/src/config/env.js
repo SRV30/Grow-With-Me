@@ -19,10 +19,15 @@ const required = (...names) => {
   return value
 }
 
+const normalizeOrigin = (value) => value?.trim().replace(/\/+$/, '')
+
 export const env = {
   nodeEnv: process.env.NODE_ENV || 'development',
   port: Number(process.env.PORT || 5000),
-  clientUrl: process.env.FRONTEND_URL || process.env.CLIENT_URL || 'http://localhost:5173',
+  clientUrl: normalizeOrigin(
+    process.env.FRONTEND_URL || process.env.CLIENT_URL || 'http://localhost:5173',
+  ),
+  frontendWwwUrl: normalizeOrigin(process.env.FRONTEND_WWW_URL),
   mongodbUri: required('MONGODB_URL', 'MONGODB_URI'),
   jwtSecret: required('JWT_SECRET'),
   jwtExpiresIn: process.env.JWT_EXPIRE || process.env.JWT_EXPIRES_IN || '7d',
