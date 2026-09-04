@@ -1,6 +1,26 @@
 import { useEffect, useState } from 'react'
 import { KeyRound, UserPlus, CheckCircle2, Trash2, Users } from 'lucide-react'
-import { changeAdminPassword, createAdminUser, deleteAdminUser, getAdminUsers } from './api.js'
+import { api } from '../services/api.js'
+
+const getAdminUsers = async () => {
+  const { data } = await api.get('/auth/users')
+  return data.data
+}
+
+const createAdminUser = async (payload) => {
+  const { data } = await api.post('/auth/users', payload)
+  return data.data
+}
+
+const deleteAdminUser = async (id) => {
+  const { data } = await api.delete(`/auth/users/${id}`)
+  return data
+}
+
+const changeAdminPassword = async (payload) => {
+  const { data } = await api.patch('/auth/password', payload)
+  return data
+}
 
 export default function UserManagement() {
   const [newUser, setNewUser] = useState({ name: '', email: '' })
