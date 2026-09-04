@@ -18,6 +18,10 @@ const changePasswordSchema = z
     path: ['confirmPassword'],
   })
 
+const deleteUserSchema = z.object({
+  userId: z.string().min(1),
+})
+
 export const createAdminUser = async (req, res, next) => {
   try {
     const { name, email } = createUserSchema.parse(req.body)
@@ -42,6 +46,38 @@ export const createAdminUser = async (req, res, next) => {
       success: true,
       data: { id: user._id, name: user.name, email: user.email, role: user.role },
     })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const listAdminUsers = async (_req, res, next) => {
+  try {
+    const users = await User.find({ role: 'admin' })
+      .select('name email role active lastLoginAt createdAt')
+      .sort({ createdAt: -1 })
+      .lean()
+
+    res.json({ success: true, data: users })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const deleteAdminUser = async (req, res, next) => {
+  try {
+    const { userId } = deleteUserSchema.parse(req.params)
+
+    if (userId === req.user._id.toString()) {
+      return res.status(400).json({ success: false, message: 'You cannot delete your own admin account' })
+    }
+
+    const user = await User.findOneAndDelete({ _id: userId, role: 'admin' })
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'Admin user not found' })
+    }
+
+    res.json({ success: true, message: 'Admin user deleted successfully' })
   } catch (error) {
     next(error)
   }
