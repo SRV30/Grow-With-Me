@@ -272,16 +272,28 @@
   content: '';
   transform: rotate(45deg);
 }
-.row-layout-site .row-mobile-nav a:nth-child(1) { animation-delay: 30ms; }
-.row-layout-site .row-mobile-nav a:nth-child(2) { animation-delay: 65ms; }
-.row-layout-site .row-mobile-nav a:nth-child(3) { animation-delay: 100ms; }
-.row-layout-site .row-mobile-nav a:nth-child(4) { animation-delay: 135ms; }
-.row-layout-site .row-mobile-nav a:nth-child(5) { animation-delay: 170ms; }
+.row-layout-site .row-mobile-nav a:nth-child(1) {
+  animation-delay: 30ms;
+}
+.row-layout-site .row-mobile-nav a:nth-child(2) {
+  animation-delay: 65ms;
+}
+.row-layout-site .row-mobile-nav a:nth-child(3) {
+  animation-delay: 100ms;
+}
+.row-layout-site .row-mobile-nav a:nth-child(4) {
+  animation-delay: 135ms;
+}
+.row-layout-site .row-mobile-nav a:nth-child(5) {
+  animation-delay: 170ms;
+}
 .row-layout-site .row-mobile-nav a:hover {
   color: #967300;
   padding-inline: 6px;
 }
-.row-layout-site .row-mobile-nav a:last-child { border-bottom: 0; }
+.row-layout-site .row-mobile-nav a:last-child {
+  border-bottom: 0;
+}
 
 @keyframes gwm-mobile-link-in {
   to {
