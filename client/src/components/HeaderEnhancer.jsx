@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import gsap from 'gsap'
+import '../styles/header-theme-fix.css'
 
 export default function HeaderEnhancer() {
   useEffect(() => {
