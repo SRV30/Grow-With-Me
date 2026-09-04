@@ -53,23 +53,107 @@
   gap: clamp(14px, 2.2vw, 32px);
 }
 
+/* Brand mark — styled to match the supplied Grow With Me logo */
 .row-layout-site .row-header .figma-logo {
+  position: relative;
+  display: inline-flex;
+  width: max-content;
+  align-items: center;
+  gap: 13px;
+  color: var(--gwm-ink);
+  text-decoration: none;
   transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
 }
+
 .row-layout-site .row-header .figma-logo:hover {
   transform: translateY(-2px);
 }
+
 .row-layout-site .row-header .figma-logo-mark {
-  background: var(--gwm-white);
-  transition:
-    background 220ms ease,
-    transform 300ms cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 220ms ease;
-}
-.row-layout-site .row-header .figma-logo:hover .figma-logo-mark {
+  position: relative;
+  display: grid;
+  width: 58px;
+  height: 58px;
+  flex: 0 0 58px;
+  place-items: center;
+  border: 1.5px solid var(--gwm-ink);
+  border-radius: 12px;
   background: var(--gwm-yellow);
-  transform: rotate(-7deg) scale(1.08);
-  box-shadow: 4px 4px 0 var(--gwm-ink);
+  color: var(--gwm-ink);
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  font-size: 25px;
+  font-weight: 950;
+  letter-spacing: -0.04em;
+  box-shadow: 3px 4px 0 rgba(17, 17, 17, 0.95);
+  transition:
+    transform 300ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 220ms ease,
+    background 220ms ease;
+}
+
+.row-layout-site .row-header .figma-logo-mark::before,
+.row-layout-site .row-header .figma-logo-mark::after {
+  position: absolute;
+  width: 13px;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--gwm-yellow);
+  content: '';
+  transform-origin: right center;
+}
+
+.row-layout-site .row-header .figma-logo-mark::before {
+  top: -10px;
+  right: 3px;
+  transform: rotate(-58deg);
+}
+
+.row-layout-site .row-header .figma-logo-mark::after {
+  top: -5px;
+  right: -1px;
+  transform: rotate(-28deg);
+}
+
+.row-layout-site .row-header .figma-logo:hover .figma-logo-mark {
+  transform: rotate(-4deg) translateY(-2px);
+  box-shadow: 5px 6px 0 var(--gwm-ink);
+}
+
+.row-layout-site .row-header .figma-logo > span:last-child {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  line-height: 1;
+}
+
+.row-layout-site .row-header .figma-logo > span:last-child::after {
+  margin-top: 7px;
+  color: #62615c;
+  content: 'CREATIVE DIGITAL SOLUTIONS';
+  font-size: 0.55rem;
+  font-weight: 650;
+  letter-spacing: 0.19em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.row-layout-site .row-header .figma-logo > span:last-child:not(.figma-logo-mark) {
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(1.05rem, 1.45vw, 1.42rem);
+  font-weight: 950;
+  letter-spacing: 0.075em;
+  white-space: nowrap;
+}
+
+.row-layout-site .row-header .figma-logo > span:last-child small {
+  display: inline;
+  margin-left: 7px;
+  color: var(--gwm-yellow);
+  font-size: 1em;
+  font-weight: 950;
+  letter-spacing: inherit;
 }
 
 .row-layout-site .row-header .figma-nav {
@@ -188,28 +272,16 @@
   content: '';
   transform: rotate(45deg);
 }
-.row-layout-site .row-mobile-nav a:nth-child(1) {
-  animation-delay: 30ms;
-}
-.row-layout-site .row-mobile-nav a:nth-child(2) {
-  animation-delay: 65ms;
-}
-.row-layout-site .row-mobile-nav a:nth-child(3) {
-  animation-delay: 100ms;
-}
-.row-layout-site .row-mobile-nav a:nth-child(4) {
-  animation-delay: 135ms;
-}
-.row-layout-site .row-mobile-nav a:nth-child(5) {
-  animation-delay: 170ms;
-}
+.row-layout-site .row-mobile-nav a:nth-child(1) { animation-delay: 30ms; }
+.row-layout-site .row-mobile-nav a:nth-child(2) { animation-delay: 65ms; }
+.row-layout-site .row-mobile-nav a:nth-child(3) { animation-delay: 100ms; }
+.row-layout-site .row-mobile-nav a:nth-child(4) { animation-delay: 135ms; }
+.row-layout-site .row-mobile-nav a:nth-child(5) { animation-delay: 170ms; }
 .row-layout-site .row-mobile-nav a:hover {
   color: #967300;
   padding-inline: 6px;
 }
-.row-layout-site .row-mobile-nav a:last-child {
-  border-bottom: 0;
-}
+.row-layout-site .row-mobile-nav a:last-child { border-bottom: 0; }
 
 @keyframes gwm-mobile-link-in {
   to {
@@ -262,6 +334,24 @@
   .row-layout-site .row-mobile-nav {
     width: min(calc(100% - 32px), 640px);
   }
+  .row-layout-site .row-header .figma-logo-mark {
+    width: 50px;
+    height: 50px;
+    flex-basis: 50px;
+    font-size: 22px;
+  }
+  .row-layout-site .row-header .figma-logo {
+    gap: 11px;
+  }
+  .row-layout-site .row-header .figma-logo > span:last-child:not(.figma-logo-mark) {
+    font-size: 1rem;
+    letter-spacing: 0.055em;
+  }
+  .row-layout-site .row-header .figma-logo > span:last-child::after {
+    margin-top: 6px;
+    font-size: 0.43rem;
+    letter-spacing: 0.14em;
+  }
 }
 
 @media (max-width: 420px) {
@@ -271,16 +361,31 @@
   .row-layout-site .row-header-inner {
     min-height: 66px;
   }
+  .row-layout-site .row-header .figma-logo-mark {
+    width: 43px;
+    height: 43px;
+    flex-basis: 43px;
+    border-radius: 10px;
+    font-size: 19px;
+  }
   .row-layout-site .row-header .figma-logo {
-    transform: scale(0.92);
-    transform-origin: left center;
+    gap: 9px;
+  }
+  .row-layout-site .row-header .figma-logo > span:last-child:not(.figma-logo-mark) {
+    font-size: 0.82rem;
+    letter-spacing: 0.045em;
+  }
+  .row-layout-site .row-header .figma-logo > span:last-child small {
+    margin-left: 5px;
+  }
+  .row-layout-site .row-header .figma-logo > span:last-child::after {
+    margin-top: 5px;
+    font-size: 0.34rem;
+    letter-spacing: 0.105em;
   }
   .row-layout-site .row-header .figma-menu-button {
     width: 40px;
     height: 40px;
-  }
-  .row-layout-site .row-mobile-nav {
-    width: calc(100% - 24px);
   }
 }
 
