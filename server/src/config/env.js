@@ -1,6 +1,15 @@
 import dotenv from 'dotenv'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 
-dotenv.config()
+// Load the backend .env first. This makes `cd server && npm run dev`
+// work reliably, while the root .env remains supported for workspace usage.
+const currentDir = path.dirname(fileURLToPath(import.meta.url))
+const serverRoot = path.resolve(currentDir, '../..')
+const projectRoot = path.resolve(serverRoot, '..')
+
+dotenv.config({ path: path.join(serverRoot, '.env') })
+dotenv.config({ path: path.join(projectRoot, '.env'), override: false })
 
 const required = (...names) => {
   const value = names.map((name) => process.env[name]?.trim()).find(Boolean)
@@ -24,4 +33,8 @@ export const env = {
     apiSecret: required('CLOUDINARY_API_SECRET'),
     folder: process.env.CLOUDINARY_FOLDER || 'Growwithme',
   },
+}
+
+if (env.nodeEnv !== 'production' && !env.mongodbUri) {
+  console.warn('[WARN] MongoDB URL is not configured. Add MONGODB_URL to server/.env')
 }
