@@ -32,6 +32,7 @@ export const env = {
   jwtSecret: required('JWT_SECRET'),
   jwtExpiresIn: process.env.JWT_EXPIRE || process.env.JWT_EXPIRES_IN || '7d',
   cookieExpire: Number(process.env.COOKIE_EXPIRE || 7),
+  defaultUserPassword: process.env.DEFAULT_USER_PASSWORD?.trim(),
   cloudinary: {
     cloudName: required('CLOUDINARY_NAME', 'CLOUDINARY_CLOUD_NAME'),
     apiKey: required('CLOUDINARY_API_KEY'),
