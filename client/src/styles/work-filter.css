@@ -1,0 +1,40 @@
+#work .row-work-grid .figma-project-card[hidden] {
+  display: none !important;
+}
+
+#work .row-filter-empty {
+  grid-column: 1 / -1;
+}
+
+#work .row-work-filters button {
+  cursor: pointer;
+}
+
+#work .row-work-filters button:focus-visible {
+  outline: 3px solid rgba(245, 196, 0, 0.55);
+  outline-offset: 3px;
+}
+
+#work .row-centered-button {
+  display: flex;
+  width: fit-content;
+  margin: 32px auto 0;
+}
+
+@media (max-width: 700px) {
+  #work .row-work-filters {
+    justify-content: flex-start;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding: 4px 2px 10px;
+    scrollbar-width: thin;
+  }
+
+  #work .row-work-filters button {
+    flex: 0 0 auto;
+  }
+
+  #work .row-centered-button {
+    width: 100%;
+  }
+}
