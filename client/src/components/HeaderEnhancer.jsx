@@ -8,14 +8,12 @@ export default function HeaderEnhancer() {
 
     let last = window.scrollY
     let ticking = false
-
     const site = document.querySelector('.figma-site')
     const storedTheme = localStorage.getItem('gwm-theme')
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
     let darkMode = storedTheme ? storedTheme === 'dark' : prefersDark
 
     const applyTheme = (animate = false) => {
-      darkMode = Boolean(darkMode)
       site?.classList.toggle('theme-dark', darkMode)
       document.documentElement.classList.toggle('gwm-dark', darkMode)
       document.documentElement.style.colorScheme = darkMode ? 'dark' : 'light'
@@ -49,10 +47,7 @@ export default function HeaderEnhancer() {
       themeToggle.dataset.themeToggle = 'true'
       themeToggle.className = 'theme-toggle'
       themeToggle.addEventListener('click', toggleTheme)
-
-      const headerCta = header.querySelector('.header-cta')
-      if (headerCta?.parentElement) headerCta.parentElement.insertBefore(themeToggle, headerCta)
-      else header.querySelector('.row-header-inner')?.appendChild(themeToggle)
+      header.querySelector('.row-header-inner')?.appendChild(themeToggle)
     }
 
     applyTheme()
