@@ -29,6 +29,7 @@ import { api, getHomepage, getProjects } from './services/api.js'
 import SEO from './components/SEO.jsx'
 import { OrganizationSchema } from './components/StructuredData.jsx'
 import './styles/figma-home.css'
+import './styles/hero-collage.css'
 
 const industryIcons = [
   Diamond,
@@ -179,10 +180,17 @@ function ProjectCard({ project }) {
   )
 }
 
-function HeroSection({ hero, heroImage }) {
+function HeroSection({ hero, projects }) {
+  const heroProjects = useMemo(() => {
+    const shuffled = [...projects].sort(() => Math.random() - 0.5)
+    return shuffled.slice(0, 5)
+  }, [projects])
+
+  const slots = Array.from({ length: 5 }, (_, index) => heroProjects[index] || null)
+
   return (
-    <section className="row-section row-hero">
-      <div className="row-container row-hero-grid">
+    <section className="row-section row-hero hero-collage-section">
+      <div className="row-container row-hero-grid hero-collage-grid">
         <div className="row-hero-copy">
           <p className="figma-eyebrow">
             {hero?.eyebrow || 'Creative digital solutions since 2020'}
@@ -210,25 +218,41 @@ function HeroSection({ hero, heroImage }) {
             </a>
           </div>
         </div>
-        <div className="row-hero-art" aria-hidden="true">
-          {heroImage ? (
-            <img src={heroImage} alt="" />
-          ) : (
-            <div className="row-art-placeholder">
-              <span>GROW</span>
-              <strong>WITH</strong>
-              <b>ME</b>
-            </div>
-          )}
-          <span className="row-art-bubble bubble-one">♥</span>
-          <span className="row-art-bubble bubble-two">●</span>
-          <span className="row-art-badge">
-            GROW
-            <br />
-            WITH
-            <br />
-            ME
-          </span>
+
+        <div className="hero-collage" aria-label="Featured Grow With Me projects">
+          <div className="hero-collage-dots" />
+          {slots.map((project, index) => (
+            <a
+              key={project?._id || `brand-${index}`}
+              className={`hero-collage-card hero-collage-card-${index + 1}`}
+              href={project ? `/work/${project.slug}` : '/work'}
+              aria-label={project ? `View ${project.title}` : 'View Grow With Me work'}
+            >
+              {project?.coverImage?.url ? (
+                <img
+                  src={project.coverImage.url}
+                  alt={project.coverImage.alt || project.title}
+                  loading={index < 2 ? 'eager' : 'lazy'}
+                />
+              ) : (
+                <div className="hero-collage-brand-card">
+                  <span>GROW</span>
+                  <strong>WITH</strong>
+                  <b>ME</b>
+                  <small>CREATIVE DIGITAL SOLUTIONS</small>
+                </div>
+              )}
+              {project ? (
+                <span className="hero-collage-label">
+                  {project.category?.replaceAll('-', ' ') || 'Featured work'}
+                </span>
+              ) : null}
+            </a>
+          ))}
+          <span className="hero-collage-float hero-collage-heart">♥</span>
+          <span className="hero-collage-float hero-collage-play">▶</span>
+          <span className="hero-collage-float hero-collage-dot">●</span>
+          <span className="hero-collage-sign">GROW<br />WITH<br /><b>ME</b></span>
         </div>
       </div>
     </section>
@@ -578,8 +602,7 @@ export default function App() {
     ? homepage.process.slice().sort((a, b) => a.order - b.order)
     : process.map(([number, title, text], index) => ({ number, title, text, order: index }))
   const featuredProjects = projects.slice(0, 6)
-  const heroImage = hero?.media?.url || featuredProjects[0]?.coverImage?.url
-  const aboutImage = about?.media?.url || featuredProjects[1]?.coverImage?.url
+  const aboutImage = hero?.media?.url || featuredProjects[1]?.coverImage?.url
   const ctaImage = cta?.media?.url || featuredProjects[2]?.coverImage?.url
   return (
     <div className="figma-site row-layout-site">
@@ -643,7 +666,7 @@ export default function App() {
         ) : null}
       </header>
       <main id="top">
-        <HeroSection hero={hero} heroImage={heroImage} />
+        <HeroSection hero={hero} projects={featuredProjects} />
         <TrustSection />
         <ServicesSection />
         <WorkSection projects={featuredProjects} />
