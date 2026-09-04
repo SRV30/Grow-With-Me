@@ -9,10 +9,15 @@ const loginSchema = z.object({
   password: z.string().min(8).max(128),
 })
 
+const isProduction =
+  env.nodeEnv === 'production' ||
+  Boolean(process.env.VERCEL) ||
+  Boolean(process.env.VERCEL_ENV === 'production')
+
 const cookieOptions = () => ({
   httpOnly: true,
-  secure: env.nodeEnv === 'production',
-  sameSite: env.nodeEnv === 'production' ? 'none' : 'lax',
+  secure: isProduction,
+  sameSite: isProduction ? 'none' : 'lax',
   maxAge: env.cookieExpire * 24 * 60 * 60 * 1000,
   path: '/',
 })
