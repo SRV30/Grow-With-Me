@@ -15,7 +15,7 @@ const dist = resolve(process.cwd(), 'dist')
 const indexPath = resolve(dist, 'index.html')
 
 const routes = ['/', '/work']
-const apiUrl = process.env.VITE_API_URL?.replace(/\/$/, '')
+const apiUrl = process.env.VITE_BACKEND_URL?.replace(/\/$/, '')
 
 if (apiUrl) {
   try {
