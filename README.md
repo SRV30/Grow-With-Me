@@ -33,16 +33,16 @@ Grow With Me is a full-stack creative-agency portfolio and CMS platform for mana
 
 ## Technology Stack
 
-| Layer | Technology |
-|---|---|
-| Frontend | React 19, Vite 8, Tailwind CSS 4 |
-| Animation | GSAP, Motion, Lenis, Three.js, React Three Fiber |
-| Backend | Node.js, Express 5 |
-| Database | MongoDB, Mongoose |
-| Authentication | JWT, HTTP-only cookies, bcryptjs |
-| Media | Cloudinary, Multer |
-| Security | Helmet, CORS, rate limiting, Zod |
-| Deployment | Vercel (separate frontend + backend projects) |
+| Layer          | Technology                                       |
+| -------------- | ------------------------------------------------ |
+| Frontend       | React 19, Vite 8, Tailwind CSS 4                 |
+| Animation      | GSAP, Motion, Lenis, Three.js, React Three Fiber |
+| Backend        | Node.js, Express 5                               |
+| Database       | MongoDB, Mongoose                                |
+| Authentication | JWT, HTTP-only cookies, bcryptjs                 |
+| Media          | Cloudinary, Multer                               |
+| Security       | Helmet, CORS, rate limiting, Zod                 |
+| Deployment     | Vercel (separate frontend + backend projects)    |
 
 ## Project Structure
 
