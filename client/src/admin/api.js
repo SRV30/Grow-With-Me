@@ -16,12 +16,12 @@ export const getCurrentAdmin = async () => {
 }
 
 export const createAdminUser = async (payload) => {
-  const { data } = await api.post('/admin/users', payload)
+  const { data } = await api.post('/auth/users', payload)
   return data.data
 }
 
 export const changeAdminPassword = async (payload) => {
-  const { data } = await api.patch('/admin/users/password', payload)
+  const { data } = await api.patch('/auth/password', payload)
   return data
 }
 
