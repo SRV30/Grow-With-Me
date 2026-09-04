@@ -1,0 +1,278 @@
+.hero-collage-section {
+  min-height: min(760px, calc(100vh - 82px));
+  padding-top: clamp(58px, 7vw, 92px);
+  padding-bottom: clamp(54px, 7vw, 88px);
+  background:
+    radial-gradient(circle at 78% 44%, rgba(245, 196, 0, 0.14), transparent 27%),
+    radial-gradient(circle at 62% 12%, rgba(245, 196, 0, 0.07), transparent 18%),
+    var(--gwm-paper);
+}
+
+.hero-collage-grid {
+  grid-template-columns: minmax(0, 0.96fr) minmax(0, 1.04fr);
+  gap: clamp(36px, 5vw, 82px);
+}
+
+.hero-collage-section .row-hero-copy {
+  max-width: 700px;
+}
+
+.hero-collage-section .row-hero-copy h1 {
+  max-width: 700px;
+  margin-top: 18px;
+  font-size: clamp(3.05rem, 4.65vw, 5rem);
+  line-height: 0.98;
+  letter-spacing: -0.065em;
+}
+
+.hero-collage-section .row-lead-services {
+  max-width: 680px;
+  margin-top: 25px;
+  font-size: clamp(0.9rem, 1.15vw, 1.08rem);
+  line-height: 1.55;
+}
+
+.hero-collage-section .row-hero-description {
+  max-width: 610px;
+  margin-top: 18px;
+  font-size: 0.96rem;
+  line-height: 1.72;
+}
+
+.hero-collage-section .figma-actions {
+  margin-top: 27px;
+}
+
+.hero-collage-section .figma-yellow-button,
+.hero-collage-section .figma-outline-button {
+  min-height: 48px;
+  padding-inline: 22px;
+  border-radius: 9px;
+  font-size: 0.82rem;
+}
+
+.hero-collage {
+  position: relative;
+  min-height: 570px;
+  isolation: isolate;
+}
+
+.hero-collage::before {
+  position: absolute;
+  inset: 8% 3% 7% 7%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(245, 196, 0, 0.13), transparent 63%);
+  content: '';
+  z-index: -2;
+}
+
+.hero-collage-dots {
+  position: absolute;
+  top: 4%;
+  right: 10%;
+  width: 190px;
+  height: 150px;
+  background-image: radial-gradient(#e7bd17 1.4px, transparent 1.4px);
+  background-size: 13px 13px;
+  opacity: 0.42;
+}
+
+.hero-collage-card {
+  position: absolute;
+  display: block;
+  overflow: hidden;
+  border: 1px solid rgba(17, 17, 17, 0.14);
+  border-radius: 22px;
+  background: #ece9df;
+  box-shadow: 0 22px 44px rgba(17, 17, 17, 0.15);
+  color: var(--gwm-ink);
+  text-decoration: none;
+  transition: transform 320ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 320ms ease;
+}
+
+.hero-collage-card:hover {
+  z-index: 8;
+  box-shadow: 0 30px 58px rgba(17, 17, 17, 0.2);
+}
+
+.hero-collage-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-collage-card::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 55%, rgba(0, 0, 0, 0.28));
+  content: '';
+  pointer-events: none;
+}
+
+.hero-collage-card-1 {
+  top: 8%;
+  left: 8%;
+  width: 35%;
+  aspect-ratio: 0.76;
+  transform: rotate(-7deg);
+  z-index: 3;
+}
+
+.hero-collage-card-2 {
+  top: 1%;
+  right: 5%;
+  width: 36%;
+  aspect-ratio: 0.82;
+  transform: rotate(7deg);
+  z-index: 2;
+}
+
+.hero-collage-card-3 {
+  top: 31%;
+  left: 32%;
+  width: 38%;
+  aspect-ratio: 0.82;
+  transform: rotate(2deg);
+  z-index: 6;
+}
+
+.hero-collage-card-4 {
+  bottom: 3%;
+  left: 7%;
+  width: 34%;
+  aspect-ratio: 0.82;
+  transform: rotate(-6deg);
+  z-index: 4;
+}
+
+.hero-collage-card-5 {
+  right: 4%;
+  bottom: 4%;
+  width: 32%;
+  aspect-ratio: 0.76;
+  transform: rotate(6deg);
+  z-index: 5;
+}
+
+.hero-collage-card-1:hover { transform: rotate(-4deg) translateY(-8px) scale(1.025); }
+.hero-collage-card-2:hover { transform: rotate(4deg) translateY(-8px) scale(1.025); }
+.hero-collage-card-3:hover { transform: rotate(0deg) translateY(-8px) scale(1.035); }
+.hero-collage-card-4:hover { transform: rotate(-3deg) translateY(-8px) scale(1.025); }
+.hero-collage-card-5:hover { transform: rotate(3deg) translateY(-8px) scale(1.025); }
+
+.hero-collage-label {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  z-index: 2;
+  border-radius: 999px;
+  background: rgba(17, 17, 17, 0.82);
+  padding: 6px 9px;
+  color: #fff;
+  font-size: 0.56rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.hero-collage-brand-card {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-content: center;
+  padding: 18px;
+  background: linear-gradient(145deg, #fffdf4, #f5c400);
+  text-align: center;
+  line-height: 0.82;
+}
+
+.hero-collage-brand-card span,
+.hero-collage-brand-card strong {
+  font-size: clamp(1.4rem, 3vw, 2.8rem);
+  font-weight: 950;
+  letter-spacing: -0.08em;
+}
+
+.hero-collage-brand-card strong { color: #fff; -webkit-text-stroke: 1px var(--gwm-ink); }
+.hero-collage-brand-card b { margin-top: 6px; font-size: clamp(1rem, 2vw, 1.7rem); letter-spacing: 0.12em; }
+.hero-collage-brand-card small { margin-top: 15px; font-size: 0.46rem; font-weight: 800; letter-spacing: 0.14em; line-height: 1.2; }
+
+.hero-collage-float {
+  position: absolute;
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border: 1px solid var(--gwm-ink);
+  border-radius: 14px;
+  background: var(--gwm-yellow);
+  box-shadow: 5px 7px 0 rgba(17, 17, 17, 0.12);
+  font-weight: 950;
+  animation: hero-float 4s ease-in-out infinite;
+  z-index: 9;
+}
+
+.hero-collage-heart { top: 17%; left: 0; border-radius: 12px; color: #fff; background: #ee6570; transform: rotate(-8deg); }
+.hero-collage-play { top: 32%; right: -1%; border-radius: 50%; color: #fff; background: #efb900; animation-delay: -1.2s; }
+.hero-collage-dot { bottom: 20%; left: 43%; width: 35px; height: 35px; border-radius: 50%; font-size: 0.55rem; animation-delay: -2.2s; }
+
+.hero-collage-sign {
+  position: absolute;
+  right: -1%;
+  bottom: 0;
+  z-index: 9;
+  padding: 8px 4px;
+  color: var(--gwm-ink);
+  font-size: 0.82rem;
+  font-weight: 950;
+  letter-spacing: 0.03em;
+  line-height: 0.92;
+  text-align: center;
+  transform: rotate(5deg);
+}
+
+.hero-collage-sign b { color: #e1a900; }
+
+@keyframes hero-float {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -8px; }
+}
+
+@media (max-width: 1100px) {
+  .hero-collage-grid { gap: 30px; }
+  .hero-collage { min-height: 500px; }
+  .hero-collage-section .row-hero-copy h1 { font-size: clamp(2.8rem, 5vw, 4.2rem); }
+}
+
+@media (max-width: 800px) {
+  .hero-collage-section { min-height: auto; padding-top: 58px; }
+  .hero-collage-grid { grid-template-columns: 1fr; }
+  .hero-collage-section .row-hero-copy { max-width: 680px; }
+  .hero-collage-section .row-hero-copy h1 { font-size: clamp(3rem, 10vw, 4.6rem); }
+  .hero-collage { min-height: 510px; margin-top: 8px; }
+  .hero-collage-card-1 { left: 8%; width: 34%; }
+  .hero-collage-card-2 { right: 8%; width: 34%; }
+  .hero-collage-card-3 { left: 31%; width: 38%; }
+  .hero-collage-card-4 { left: 8%; width: 34%; }
+  .hero-collage-card-5 { right: 8%; width: 32%; }
+}
+
+@media (max-width: 520px) {
+  .hero-collage-section .row-lead-services { font-size: 0.84rem; }
+  .hero-collage-section .row-hero-description { font-size: 0.88rem; }
+  .hero-collage-section .figma-actions { gap: 8px; }
+  .hero-collage-section .figma-yellow-button,
+  .hero-collage-section .figma-outline-button { min-height: 44px; padding-inline: 16px; font-size: 0.72rem; }
+  .hero-collage { min-height: 390px; }
+  .hero-collage-card { border-radius: 14px; }
+  .hero-collage-float { width: 34px; height: 34px; font-size: 0.75rem; }
+  .hero-collage-dot { width: 26px; height: 26px; }
+  .hero-collage-sign { font-size: 0.62rem; }
+  .hero-collage-dots { width: 100px; height: 80px; background-size: 9px 9px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-collage-float { animation: none; }
+  .hero-collage-card { transition: none; }
+}
