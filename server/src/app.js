@@ -16,9 +16,7 @@ import sitemapRoutes from './routes/sitemap.js'
 import { notFound, errorHandler } from './middleware/errorHandler.js'
 
 const app = express()
-const allowedOrigins = new Set(
-  [env.clientUrl, env.frontendWwwUrl].filter(Boolean),
-)
+const allowedOrigins = new Set([env.clientUrl, env.frontendWwwUrl].filter(Boolean))
 
 app.disable('x-powered-by')
 app.set('trust proxy', 1)
