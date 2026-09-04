@@ -24,7 +24,9 @@ export default function HeaderEnhancer() {
         toggle.setAttribute('aria-pressed', String(darkMode))
         toggle.setAttribute('aria-label', darkMode ? 'Switch to light mode' : 'Switch to dark mode')
         toggle.setAttribute('title', darkMode ? 'Light mode' : 'Dark mode')
-        toggle.innerHTML = darkMode ? '<span aria-hidden="true">☀</span>' : '<span aria-hidden="true">☾</span>'
+        toggle.innerHTML = darkMode
+          ? '<span aria-hidden="true">☀</span>'
+          : '<span aria-hidden="true">☾</span>'
       }
 
       if (animate && site) {

@@ -7,7 +7,14 @@ import CloudinaryImage from '../components/CloudinaryImage.jsx'
 import { EmptyState, LoadingState, ErrorState } from '../components/StatusState.jsx'
 import '../styles/work-page.css'
 
-const filters = ['All', 'Social Media', 'Video', 'Graphic Design', 'Digital Marketing', 'Web Design']
+const filters = [
+  'All',
+  'Social Media',
+  'Video',
+  'Graphic Design',
+  'Digital Marketing',
+  'Web Design',
+]
 const normalizeCategory = (value = '') => value.toLowerCase().replaceAll('-', ' ').trim()
 
 function ThemeToggle({ darkMode, onToggle }) {
@@ -60,9 +67,13 @@ function ProjectCard({ project, index }) {
         <ArrowUpRight size={20} />
       </span>
       <div className="work-project-content">
-        <p>{category} {project.year ? `· ${project.year}` : ''}</p>
+        <p>
+          {category} {project.year ? `· ${project.year}` : ''}
+        </p>
         <h2>{project.title}</h2>
-        <span className="work-project-view">View case <ArrowRight size={14} /></span>
+        <span className="work-project-view">
+          View case <ArrowRight size={14} />
+        </span>
       </div>
     </Link>
   )
@@ -125,14 +136,20 @@ export default function WorkPage() {
         <div className="work-container work-header-inner">
           <Link className="work-logo" to="/" aria-label="Grow With Me home">
             <span className="work-logo-mark">G</span>
-            <strong>GROW WITH <em>ME</em></strong>
+            <strong>
+              GROW WITH <em>ME</em>
+            </strong>
           </Link>
 
           <nav className="work-nav" aria-label="Portfolio navigation">
             <Link to="/#services">Services</Link>
-            <Link className="is-active" to="/work">Work</Link>
+            <Link className="is-active" to="/work">
+              Work
+            </Link>
             <Link to="/#about">About</Link>
-            <Link className="work-nav-cta" to="/#contact">Start a project <ArrowRight size={14} /></Link>
+            <Link className="work-nav-cta" to="/#contact">
+              Start a project <ArrowRight size={14} />
+            </Link>
           </nav>
 
           <div className="work-header-actions">
@@ -145,18 +162,38 @@ export default function WorkPage() {
               aria-label={menuOpen ? 'Close menu' : 'Open menu'}
               onClick={() => setMenuOpen((open) => !open)}
             >
-              {menuOpen ? <X size={21} /> : <span><i /><i /><i /></span>}
+              {menuOpen ? (
+                <X size={21} />
+              ) : (
+                <span>
+                  <i />
+                  <i />
+                  <i />
+                </span>
+              )}
             </button>
           </div>
         </div>
 
         {menuOpen ? (
-          <nav id="work-mobile-navigation" className="work-mobile-nav" aria-label="Mobile portfolio navigation">
-            <Link to="/#services" onClick={() => setMenuOpen(false)}>Services</Link>
-            <Link to="/work" onClick={() => setMenuOpen(false)}>Work</Link>
-            <Link to="/#about" onClick={() => setMenuOpen(false)}>About</Link>
+          <nav
+            id="work-mobile-navigation"
+            className="work-mobile-nav"
+            aria-label="Mobile portfolio navigation"
+          >
+            <Link to="/#services" onClick={() => setMenuOpen(false)}>
+              Services
+            </Link>
+            <Link to="/work" onClick={() => setMenuOpen(false)}>
+              Work
+            </Link>
+            <Link to="/#about" onClick={() => setMenuOpen(false)}>
+              About
+            </Link>
             <ThemeToggle darkMode={darkMode} onToggle={toggleTheme} />
-            <Link className="work-nav-cta" to="/#contact" onClick={() => setMenuOpen(false)}>Start a project <ArrowRight size={14} /></Link>
+            <Link className="work-nav-cta" to="/#contact" onClick={() => setMenuOpen(false)}>
+              Start a project <ArrowRight size={14} />
+            </Link>
           </nav>
         ) : null}
       </header>
@@ -174,45 +211,78 @@ export default function WorkPage() {
               <br />
               <span>get noticed.</span>
             </h1>
-            <div className="work-hero-scroll">Scroll to explore <ArrowDownMark /></div>
+            <div className="work-hero-scroll">
+              Scroll to explore <ArrowDownMark />
+            </div>
           </div>
           <div className="work-hero-side">
             <div className="work-hero-number">01</div>
-            <p>A curated selection of creative campaigns, digital experiences and brand work built to make businesses look sharper and communicate better.</p>
+            <p>
+              A curated selection of creative campaigns, digital experiences and brand work built to
+              make businesses look sharper and communicate better.
+            </p>
             <div className="work-hero-meta">
-              <span><strong>{projects.length}</strong> projects</span>
-              <span><strong>2020—26</strong> studio</span>
+              <span>
+                <strong>{projects.length}</strong> projects
+              </span>
+              <span>
+                <strong>2020—26</strong> studio
+              </span>
             </div>
           </div>
         </div>
         <div className="work-hero-marquee" aria-hidden="true">
-          <div>CREATIVE WORK <b>✦</b> SOCIAL <b>✦</b> VIDEO <b>✦</b> DESIGN <b>✦</b> DIGITAL <b>✦</b> CREATIVE WORK <b>✦</b> SOCIAL <b>✦</b></div>
+          <div>
+            CREATIVE WORK <b>✦</b> SOCIAL <b>✦</b> VIDEO <b>✦</b> DESIGN <b>✦</b> DIGITAL <b>✦</b>{' '}
+            CREATIVE WORK <b>✦</b> SOCIAL <b>✦</b>
+          </div>
         </div>
       </section>
 
       <section className="work-filter-section" aria-label="Project filters">
         <div className="work-container work-filter-bar">
-          <span className="work-filter-label"><Filter size={14} /> Filter projects</span>
+          <span className="work-filter-label">
+            <Filter size={14} /> Filter projects
+          </span>
           <div className="work-filters" role="group" aria-label="Filter projects">
             {filters.map((filter) => (
-              <button type="button" key={filter} aria-pressed={active === filter} className={active === filter ? 'is-active' : ''} onClick={() => setActive(filter)}>
+              <button
+                type="button"
+                key={filter}
+                aria-pressed={active === filter}
+                className={active === filter ? 'is-active' : ''}
+                onClick={() => setActive(filter)}
+              >
                 {filter}
               </button>
             ))}
           </div>
-          <span className="work-result-count">{visible.length.toString().padStart(2, '0')} results</span>
+          <span className="work-result-count">
+            {visible.length.toString().padStart(2, '0')} results
+          </span>
         </div>
       </section>
 
       {loading ? (
-        <section className="work-container work-state"><LoadingState label="Loading selected work…" /></section>
+        <section className="work-container work-state">
+          <LoadingState label="Loading selected work…" />
+        </section>
       ) : error ? (
-        <section className="work-container work-state"><ErrorState message={error} onRetry={load} /></section>
+        <section className="work-container work-state">
+          <ErrorState message={error} onRetry={load} />
+        </section>
       ) : (
         <section className="work-container work-project-grid" aria-live="polite">
-          {visible.map((project, index) => <ProjectCard key={project._id || project.slug} project={project} index={index} />)}
+          {visible.map((project, index) => (
+            <ProjectCard key={project._id || project.slug} project={project} index={index} />
+          ))}
           {!visible.length && (
-            <div className="work-empty"><EmptyState title="No projects yet" description="Publish a project from the admin dashboard and it will appear here." /></div>
+            <div className="work-empty">
+              <EmptyState
+                title="No projects yet"
+                description="Publish a project from the admin dashboard and it will appear here."
+              />
+            </div>
           )}
         </section>
       )}
@@ -222,8 +292,14 @@ export default function WorkPage() {
           <div className="work-cta-ring" aria-hidden="true" />
           <div className="work-container">
             <p className="work-eyebrow">02 / Let's build something</p>
-            <h2>Have a project<br /><span>in mind?</span></h2>
-            <Link className="work-yellow-button" to="/#contact">Start a conversation <ArrowUpRight size={17} /></Link>
+            <h2>
+              Have a project
+              <br />
+              <span>in mind?</span>
+            </h2>
+            <Link className="work-yellow-button" to="/#contact">
+              Start a conversation <ArrowUpRight size={17} />
+            </Link>
           </div>
         </section>
       ) : null}
