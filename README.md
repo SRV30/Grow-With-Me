@@ -2,232 +2,201 @@
 
 > **Grow Your Business. Build Your Brand. Get Noticed.**
 
-A premium full-stack creative-agency portfolio and content management platform for **Grow With Me**, a digital creative service company helping businesses build a professional online presence since 2020.
-
-The application combines an animated React portfolio with a secure CMS so the business owner can manage portfolio projects, images, videos, services, homepage content and enquiries without changing source code.
-
-## Goals
-
-- Premium creative-agency portfolio experience.
-- Showcase posters, reels, advertisements, social media creatives and websites.
-- Advanced CSS, GSAP and selective 3D interactions.
-- Secure admin CMS for non-technical content management.
-- Cloud-based image/video management through Cloudinary.
-- MongoDB-backed content and media metadata.
-- Responsive, accessible, SEO-friendly and performance-conscious implementation.
-- Deploy the complete application from this repository on Vercel.
+Grow With Me is a full-stack creative-agency portfolio and CMS platform for managing portfolio projects, media, services, homepage content and enquiries.
 
 ## Features
 
 ### Public Website
 
-- Premium responsive landing page
-- Interactive hero visuals
-- Services showcase
-- Featured portfolio
+- Responsive creative-agency website
+- Services and featured portfolio
 - Portfolio categories and filtering
 - Project/case-study pages
-- Industries section
-- Animated process section
-- About section
+- Industries and process sections
 - Contact/enquiry form
 - WhatsApp and email CTAs
-- Advanced scroll animation
-- Magnetic interactions and micro-interactions
-- Custom cursor interactions
-- Selective 3D experiences
-- Smooth scrolling
+- GSAP, Motion, Lenis and selective Three.js experiences
 - Reduced-motion support
+- SEO and sitemap generation
 
 ### Admin CMS
 
-- Secure admin authentication
-- Dashboard
+- Admin authentication
 - Portfolio CRUD
-- Draft/preview/publish workflow
-- Featured-project control
-- Project ordering
-- Image uploads
-- Video uploads
-- Media library
+- Draft/publish workflow
+- Featured and ordering controls
+- Image/video uploads
+- Cloudinary media library
 - Service management
-- Industry management
 - Homepage content management
-- Contact/enquiry management
-- Site settings
+- Enquiry management
 
 ## Technology Stack
 
-### Frontend
+| Layer | Technology |
+|---|---|
+| Frontend | React 19, Vite 8, Tailwind CSS 4 |
+| Animation | GSAP, Motion, Lenis, Three.js, React Three Fiber |
+| Backend | Node.js, Express 5 |
+| Database | MongoDB, Mongoose |
+| Authentication | JWT, HTTP-only cookies, bcryptjs |
+| Media | Cloudinary, Multer |
+| Security | Helmet, CORS, rate limiting, Zod |
+| Deployment | Vercel (separate frontend + backend projects) |
 
-- React
-- Vite
-- Tailwind CSS
-- GSAP + ScrollTrigger + Flip
-- `@gsap/react`
-- Motion
-- Lenis
-- Three.js
-- React Three Fiber
-- Drei
-- React Router
-- Lucide React
-- Axios
-- React Hook Form
-- Zod
-
-### Backend
-
-- Node.js
-- Express 5
-- MongoDB
-- Mongoose
-- JWT
-- bcryptjs
-- Cloudinary
-- Multer
-- Helmet
-- CORS
-- Express Rate Limit
-- Cookie Parser
-- Zod
-
-## Vercel Architecture
-
-The repository is intentionally structured as an **npm workspace monorepo** so Vercel can build the frontend and serve the Express API from the same deployment.
-
-```text
-                         VERCEL
-                           │
-             ┌─────────────┴─────────────┐
-             │                           │
-        React/Vite                    API Function
-       client/dist                    /api/*
-             │                           │
-             │                    server/src/app.js
-             │                           │
-             └─────────────┬─────────────┘
-                           │
-                     MongoDB Atlas
-                           │
-                       Cloudinary
-```
-
-### Repository structure
+## Project Structure
 
 ```text
 Grow-With-Me/
-│
-├── api/
-│   └── index.js                 # Vercel serverless entry point
-│
-├── client/
+├── client/                  # React/Vite frontend
 │   ├── public/
-│   │   ├── fonts/
-│   │   ├── images/
-│   │   ├── videos/
-│   │   └── models/
-│   │
-│   └── src/
-│       ├── admin/               # Admin dashboard and CMS UI
-│       ├── animations/          # GSAP/motion orchestration
-│       ├── assets/
-│       ├── components/
-│       ├── data/
-│       ├── hooks/
-│       ├── lib/
-│       ├── pages/
-│       ├── services/            # API clients
-│       ├── styles/
-│       ├── App.jsx
-│       └── main.jsx
+│   ├── scripts/
+│   ├── src/
+│   │   ├── admin/
+│   │   ├── animations/
+│   │   ├── components/
+│   │   ├── hooks/
+│   │   ├── pages/
+│   │   ├── services/
+│   │   └── styles/
+│   ├── package.json
+│   └── .env.example
 │
-├── server/
-│   └── src/
-│       ├── config/
-│       ├── controllers/
-│       ├── middleware/
-│       ├── models/
-│       ├── routes/
-│       ├── services/
-│       ├── utils/
-│       ├── app.js               # Express application
-│       └── server.js            # Local development server
+├── server/                  # Express backend
+│   ├── src/
+│   │   ├── config/
+│   │   ├── controllers/
+│   │   ├── middleware/
+│   │   ├── models/
+│   │   └── routes/
+│   ├── index.js             # Vercel backend entry point
+│   ├── vercel.json          # Vercel backend configuration
+│   ├── package.json
+│   └── .env.example
 │
-├── .env.example
-├── .gitignore
-├── package.json                 # npm workspace root
-└── vercel.json                  # Vercel build/routing configuration
+├── package.json             # Local workspace commands
+├── package-lock.json
+└── .env.example
 ```
 
 ## Vercel Deployment
 
-The project is configured so the **repository root** can be imported directly into Vercel.
+Grow With Me uses the same deployment pattern as `samridhi-enterprises`: **two Vercel projects from the same GitHub repository**.
 
-### Vercel project settings
+### 1. Backend
 
-Use:
+Create a Vercel project from this repository.
 
 ```text
-Framework Preset: Vite
-Root Directory: ./
-Build Command: npm run build
-Output Directory: client/dist
-Install Command: npm install
+Root Directory: server
+Framework Preset: Other
 ```
 
-`vercel.json` already contains the build/output configuration and SPA fallback.
+The `server/vercel.json` file configures `server/index.js` as the Node function.
 
-The `/api/*` endpoints are handled by `api/index.js`, which exports the Express application from `server/src/app.js`.
+Set these backend environment variables:
 
-### Environment variables
-
-Configure these in the Vercel project settings:
-
-```text
-VITE_API_URL=/api
+```env
 NODE_ENV=production
-CLIENT_URL=https://your-domain.com
-MONGODB_URI=...
-JWT_SECRET=...
-JWT_EXPIRES_IN=7d
-CLOUDINARY_CLOUD_NAME=...
-CLOUDINARY_API_KEY=...
-CLOUDINARY_API_SECRET=...
+FRONTEND_URL=https://your-frontend.vercel.app
+MONGODB_URL=mongodb+srv://...
+JWT_SECRET=your-long-random-secret
+JWT_EXPIRE=7d
+COOKIE_EXPIRE=7
+CLOUDINARY_NAME=your-cloud-name
+CLOUDINARY_API_KEY=your-api-key
+CLOUDINARY_API_SECRET=your-api-secret
+CLOUDINARY_FOLDER=Growwithme
 ```
 
-Do **not** commit production secrets.
+After deployment, verify:
+
+```text
+GET https://your-backend.vercel.app/
+GET https://your-backend.vercel.app/api/health
+```
+
+### 2. Frontend
+
+Create a second Vercel project using the same repository.
+
+```text
+Root Directory: client
+Framework Preset: Vite
+Build Command: npm run build
+Output Directory: dist
+```
+
+Set:
+
+```env
+VITE_SITE_URL=https://your-frontend.vercel.app
+VITE_BACKEND_URL=https://your-backend.vercel.app/api
+```
+
+Deploy the frontend.
+
+### 3. CORS
+
+After the frontend URL is known, make sure the backend has:
+
+```env
+FRONTEND_URL=https://your-frontend.vercel.app
+```
+
+Then redeploy the backend.
+
+The request flow is:
+
+```text
+Browser
+   │
+   ▼
+Vercel Frontend
+   │
+   │ HTTPS /api/*
+   ▼
+Vercel Backend
+   │
+   ├── MongoDB Atlas
+   └── Cloudinary
+```
+
+## Environment Variables
+
+### Frontend: `client/.env`
+
+```env
+VITE_SITE_URL=https://your-frontend.vercel.app
+VITE_BACKEND_URL=https://your-backend.vercel.app/api
+```
+
+### Backend: `server/.env`
+
+```env
+PORT=5000
+NODE_ENV=development
+FRONTEND_URL=http://localhost:5173
+MONGODB_URL=
+JWT_SECRET=
+JWT_EXPIRE=7d
+COOKIE_EXPIRE=7
+CLOUDINARY_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+CLOUDINARY_FOLDER=Growwithme
+```
+
+Never commit real `.env` files or production secrets.
 
 ## Local Development
 
-### Requirements
-
-- Node.js 22+
-- npm
-- MongoDB / MongoDB Atlas
-- Cloudinary account
-
-### Install everything
+Requirements: Node.js 22+, npm, MongoDB/Atlas and Cloudinary.
 
 From the repository root:
 
 ```bash
 npm install
-```
-
-The root package uses npm workspaces for `client` and `server`, so one install handles all dependencies.
-
-### Environment
-
-```bash
-cp .env.example .env
-```
-
-Fill in the MongoDB, JWT and Cloudinary values.
-
-### Start both applications
-
-```bash
 npm run dev
 ```
 
@@ -235,156 +204,70 @@ This starts:
 
 ```text
 Frontend → http://localhost:5173
-API      → http://localhost:5000
+Backend  → http://localhost:5000
 ```
 
-The Vite development server proxies `/api/*` requests to the local Express server.
+The Vite development server proxies `/api/*` to the local backend.
 
-### Build frontend
+You can also run each application separately:
 
 ```bash
-npm run build
+cd server
+npm install
+npm run dev
 ```
 
-Output:
-
-```text
-client/dist/
-```
-
-### Local production API
+and:
 
 ```bash
-npm run start
+cd client
+npm install
+npm run dev
 ```
 
 ## API
 
-The first health endpoint is:
-
 ```text
-GET /api/health
+GET  /api/health
+POST /api/auth/login
+POST /api/auth/logout
+GET  /api/auth/me
+GET  /api/projects
+GET  /api/projects/:slug
+GET  /api/services
+GET  /api/homepage
+POST /api/enquiries
 ```
 
-Expected response:
+Admin endpoints are under `/api/admin/*` and require authentication.
 
-```json
-{
-  "status": "ok",
-  "service": "grow-with-me-api"
-}
-```
+## Media
 
-Future CMS endpoints will live under `/api/*`.
+Uploaded images and videos are stored in Cloudinary. MongoDB stores their metadata and delivery URLs. The Vercel filesystem is not used for persistent uploads.
 
-## CMS Content Model
+## SEO
 
-Planned managed entities:
+The frontend build runs `client/scripts/generate-seo.mjs` after Vite finishes. It generates `sitemap.xml` and `robots.txt`, and adds published project routes when the backend URL is available.
 
-- Admin users
-- Portfolio projects
-- Media assets
-- Services
-- Industries
-- Homepage content
-- Testimonials
-- Contact messages
-- Site settings
-
-A portfolio project can contain title, slug, description, client, category, year, cover image, multiple images, videos, services, featured status, publication status and display order.
-
-## Media Management
-
-Images and videos should be stored in **Cloudinary**, not in Git or the Vercel filesystem. MongoDB stores the media metadata and delivery URLs.
-
-This allows the owner to:
-
-1. Upload new media.
-2. Attach media to projects.
-3. Replace media.
-4. Organize the portfolio.
-5. Publish content without editing source code.
-
-## Animation Strategy
-
-Animation is treated as part of the design system.
-
-- **GSAP + ScrollTrigger** — major scroll-driven sequences.
-- **GSAP Flip** — portfolio filtering/layout transitions.
-- **Motion** — lightweight React UI interactions.
-- **CSS 3D transforms** — performant depth and tilt effects.
-- **Three.js / React Three Fiber** — selected true 3D experiences.
-- **Lenis** — smooth scrolling.
-
-Three.js will be lazy-loaded and used selectively to protect mobile performance.
-
-## Performance
-
-The project prioritizes:
-
-- Lazy-loaded 3D
-- Responsive image delivery
-- AVIF/WebP where appropriate
-- Optimized video delivery
-- Code splitting
-- Reduced-motion support
-- Minimal unnecessary JavaScript
-- Good Core Web Vitals
-- Mobile performance
+The HTML uses an absolute placeholder canonical URL so Vite does not interpret `/` as a local directory during the production build.
 
 ## Security
 
-The backend will include:
-
-- Protected admin routes
 - JWT authentication
-- Secure password hashing
-- HTTP-only cookies where appropriate
-- Input validation
-- File type/size validation
-- CORS restrictions
+- HTTP-only authentication cookie
+- Secure/SameSite cookie configuration in production
+- Password hashing
+- Zod validation
 - Helmet security headers
-- Rate limiting
+- Restricted CORS
+- Request rate limiting
+- Upload type/size validation
 - Centralized error handling
 - Environment-based secrets
 
-## Brand
+## Status
 
-**Grow With Me**
-
-Creative digital solutions since 2020.
-
-### Services
-
-- Social Media Management
-- Reels & Video Editing
-- Graphic Designing
-- Social Media Advertising
-- Business Promotion
-- Website Design
-
-### Contact
-
-- Phone: `8434305404`
-- Email: `growithmeayush@gmail.com`
-
-## Project Status
-
-**Foundation configured for Vercel full-stack deployment.**
-
-Next development stages:
-
-1. Backend database configuration
-2. Authentication
-3. CMS APIs
-4. Media upload system
-5. Admin dashboard
-6. Public website implementation
-7. Advanced animation
-8. 3D experiences
-9. Security hardening
-10. Performance/SEO optimization
-11. Production deployment
+The repository is structured for separate Vercel frontend/backend deployment while retaining the full Grow With Me application features.
 
 ## License
 
