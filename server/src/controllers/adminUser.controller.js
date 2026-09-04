@@ -27,11 +27,15 @@ export const createAdminUser = async (req, res, next) => {
     const { name, email } = createUserSchema.parse(req.body)
     const existing = await User.findOne({ email })
     if (existing) {
-      return res.status(409).json({ success: false, message: 'A user with this email already exists' })
+      return res
+        .status(409)
+        .json({ success: false, message: 'A user with this email already exists' })
     }
 
     if (!env.defaultUserPassword) {
-      return res.status(500).json({ success: false, message: 'Default user password is not configured' })
+      return res
+        .status(500)
+        .json({ success: false, message: 'Default user password is not configured' })
     }
 
     const user = await User.create({
@@ -69,7 +73,9 @@ export const deleteAdminUser = async (req, res, next) => {
     const { userId } = deleteUserSchema.parse(req.params)
 
     if (userId === req.user._id.toString()) {
-      return res.status(400).json({ success: false, message: 'You cannot delete your own admin account' })
+      return res
+        .status(400)
+        .json({ success: false, message: 'You cannot delete your own admin account' })
     }
 
     const user = await User.findOneAndDelete({ _id: userId, role: 'admin' })

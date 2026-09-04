@@ -1,6 +1,11 @@
 import { Router } from 'express'
 import { login, logout, me } from '../controllers/auth.controller.js'
-import { changeAdminPassword, createAdminUser, deleteAdminUser, listAdminUsers } from '../controllers/adminUser.controller.js'
+import {
+  changeAdminPassword,
+  createAdminUser,
+  deleteAdminUser,
+  listAdminUsers,
+} from '../controllers/adminUser.controller.js'
 import { requireAuth } from '../middleware/auth.js'
 import { loginRateLimit } from '../middleware/rateLimits.js'
 

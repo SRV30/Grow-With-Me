@@ -45,7 +45,11 @@ function DeferredHero3D() {
   }, [])
 
   if (!ready) return null
-  return <Suspense fallback={null}><Hero3D /></Suspense>
+  return (
+    <Suspense fallback={null}>
+      <Hero3D />
+    </Suspense>
+  )
 }
 
 function PublicShell() {
@@ -67,11 +71,26 @@ function PublicShell() {
 }
 
 function PublicApp() {
-  return <BrowserRouter><PublicShell /></BrowserRouter>
+  return (
+    <BrowserRouter>
+      <PublicShell />
+    </BrowserRouter>
+  )
 }
 
 function Root() {
-  return <ErrorBoundary>{isAdminRoute ? <AdminApp /> : <><PublicApp /><ScrollChoreography /></>}</ErrorBoundary>
+  return (
+    <ErrorBoundary>
+      {isAdminRoute ? (
+        <AdminApp />
+      ) : (
+        <>
+          <PublicApp />
+          <ScrollChoreography />
+        </>
+      )}
+    </ErrorBoundary>
+  )
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(<Root />)
