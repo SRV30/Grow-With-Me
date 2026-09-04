@@ -252,7 +252,13 @@ function HeroSection({ hero, projects }) {
           <span className="hero-collage-float hero-collage-heart">♥</span>
           <span className="hero-collage-float hero-collage-play">▶</span>
           <span className="hero-collage-float hero-collage-dot">●</span>
-          <span className="hero-collage-sign">GROW<br />WITH<br /><b>ME</b></span>
+          <span className="hero-collage-sign">
+            GROW
+            <br />
+            WITH
+            <br />
+            <b>ME</b>
+          </span>
         </div>
       </div>
     </section>
