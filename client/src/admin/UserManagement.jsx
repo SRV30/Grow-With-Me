@@ -1,14 +1,33 @@
-import { useState } from 'react'
-import { KeyRound, UserPlus, CheckCircle2 } from 'lucide-react'
-import { changeAdminPassword, createAdminUser } from './api.js'
+import { useEffect, useState } from 'react'
+import { KeyRound, UserPlus, CheckCircle2, Trash2, Users } from 'lucide-react'
+import { changeAdminPassword, createAdminUser, deleteAdminUser, getAdminUsers } from './api.js'
 
 export default function UserManagement() {
   const [newUser, setNewUser] = useState({ name: '', email: '' })
   const [passwords, setPasswords] = useState({ currentPassword: '', newPassword: '', confirmPassword: '' })
+  const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(false)
   const [passwordLoading, setPasswordLoading] = useState(false)
+  const [usersLoading, setUsersLoading] = useState(true)
+  const [deletingId, setDeletingId] = useState('')
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
+
+  const loadUsers = async () => {
+    try {
+      setUsersLoading(true)
+      const data = await getAdminUsers()
+      setUsers(data)
+    } catch (e) {
+      setError(e.response?.data?.message || 'Unable to load admin users')
+    } finally {
+      setUsersLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    loadUsers()
+  }, [])
 
   const createUser = async (event) => {
     event.preventDefault()
@@ -19,10 +38,28 @@ export default function UserManagement() {
       const user = await createAdminUser(newUser)
       setNewUser({ name: '', email: '' })
       setMessage(`User ${user.name} created successfully. They can sign in with the configured default password.`)
+      await loadUsers()
     } catch (e) {
       setError(e.response?.data?.message || 'Unable to create user')
     } finally {
       setLoading(false)
+    }
+  }
+
+  const removeUser = async (user) => {
+    if (!window.confirm(`Delete admin account for ${user.name}? This action cannot be undone.`)) return
+
+    setDeletingId(user._id)
+    setMessage('')
+    setError('')
+    try {
+      await deleteAdminUser(user._id)
+      setUsers((current) => current.filter((item) => item._id !== user._id))
+      setMessage(`Admin account for ${user.name} was deleted.`)
+    } catch (e) {
+      setError(e.response?.data?.message || 'Unable to delete admin user')
+    } finally {
+      setDeletingId('')
     }
   }
 
@@ -65,25 +102,11 @@ export default function UserManagement() {
           <form className="admin-form" onSubmit={createUser}>
             <label>
               Full name
-              <input
-                type="text"
-                value={newUser.name}
-                onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
-                placeholder="User name"
-                autoComplete="name"
-                required
-              />
+              <input type="text" value={newUser.name} onChange={(e) => setNewUser({ ...newUser, name: e.target.value })} placeholder="User name" autoComplete="name" required />
             </label>
             <label>
               Email
-              <input
-                type="email"
-                value={newUser.email}
-                onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
-                placeholder="user@example.com"
-                autoComplete="email"
-                required
-              />
+              <input type="email" value={newUser.email} onChange={(e) => setNewUser({ ...newUser, email: e.target.value })} placeholder="user@example.com" autoComplete="email" required />
             </label>
             <button type="submit" className="admin-primary" disabled={loading}>
               <UserPlus size={16} /> {loading ? 'Creating…' : 'Create user'}
@@ -101,35 +124,15 @@ export default function UserManagement() {
           <form className="admin-form" onSubmit={updatePassword}>
             <label>
               Current password
-              <input
-                type="password"
-                value={passwords.currentPassword}
-                onChange={(e) => setPasswords({ ...passwords, currentPassword: e.target.value })}
-                autoComplete="current-password"
-                required
-              />
+              <input type="password" value={passwords.currentPassword} onChange={(e) => setPasswords({ ...passwords, currentPassword: e.target.value })} autoComplete="current-password" required />
             </label>
             <label>
               New password
-              <input
-                type="password"
-                value={passwords.newPassword}
-                onChange={(e) => setPasswords({ ...passwords, newPassword: e.target.value })}
-                autoComplete="new-password"
-                minLength={8}
-                required
-              />
+              <input type="password" value={passwords.newPassword} onChange={(e) => setPasswords({ ...passwords, newPassword: e.target.value })} autoComplete="new-password" minLength={8} required />
             </label>
             <label>
               Confirm new password
-              <input
-                type="password"
-                value={passwords.confirmPassword}
-                onChange={(e) => setPasswords({ ...passwords, confirmPassword: e.target.value })}
-                autoComplete="new-password"
-                minLength={8}
-                required
-              />
+              <input type="password" value={passwords.confirmPassword} onChange={(e) => setPasswords({ ...passwords, confirmPassword: e.target.value })} autoComplete="new-password" minLength={8} required />
             </label>
             <button type="submit" className="admin-primary" disabled={passwordLoading}>
               <KeyRound size={16} /> {passwordLoading ? 'Changing…' : 'Change password'}
@@ -137,6 +140,43 @@ export default function UserManagement() {
           </form>
         </section>
       </div>
+
+      <section className="admin-panel admin-user-panel admin-user-list-panel">
+        <div className="admin-panel-title">
+          <div>
+            <h2><Users size={19} /> Admin accounts</h2>
+            <p>Manage the admin accounts that can access this dashboard.</p>
+          </div>
+        </div>
+        {usersLoading ? (
+          <p>Loading users…</p>
+        ) : users.length === 0 ? (
+          <p>No admin accounts found.</p>
+        ) : (
+          <div className="admin-user-list">
+            {users.map((user) => (
+              <div className="admin-user-row" key={user._id}>
+                <div>
+                  <strong>{user.name}</strong>
+                  <span>{user.email}</span>
+                </div>
+                <div className="admin-user-row-actions">
+                  <span className="admin-user-status">{user.active ? 'Active' : 'Inactive'}</span>
+                  <button
+                    type="button"
+                    className="admin-danger"
+                    onClick={() => removeUser(user)}
+                    disabled={deletingId === user._id}
+                    title="Delete admin"
+                  >
+                    <Trash2 size={15} /> {deletingId === user._id ? 'Deleting…' : 'Delete'}
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
     </div>
   )
 }
