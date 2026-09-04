@@ -3,36 +3,14 @@
   pointer-events: none !important;
 }
 
-/* Featured Work: horizontal portfolio showcase */
-.featured-showcase-section {
-  position: relative;
-  overflow: hidden;
-}
-
-.featured-showcase-section::before {
-  position: absolute;
-  top: 14%;
-  right: -120px;
-  width: 360px;
-  height: 360px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(245, 196, 0, 0.16), transparent 68%);
-  content: '';
-  pointer-events: none;
-}
-
-.featured-showcase-section .row-heading {
-  position: relative;
-  z-index: 1;
-}
-
-.featured-showcase-track {
+/* Featured Work — horizontal, scrollable portfolio showcase */
+.row-featured-grid {
   position: relative;
   display: flex;
-  gap: 22px;
+  gap: 24px;
   width: 100%;
   margin-top: 44px;
-  padding: 10px 4px 24px;
+  padding: 10px 5px 26px;
   overflow-x: auto;
   overscroll-behavior-x: contain;
   scroll-behavior: smooth;
@@ -41,195 +19,96 @@
   scrollbar-color: var(--gwm-yellow) transparent;
 }
 
-.featured-showcase-track::-webkit-scrollbar {
+.row-featured-grid::-webkit-scrollbar {
   height: 6px;
 }
 
-.featured-showcase-track::-webkit-scrollbar-track {
+.row-featured-grid::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.featured-showcase-track::-webkit-scrollbar-thumb {
+.row-featured-grid::-webkit-scrollbar-thumb {
   border-radius: 999px;
   background: var(--gwm-yellow);
 }
 
-.featured-showcase-item {
-  position: relative;
+.row-featured-grid > .figma-project-card {
   flex: 0 0 min(390px, 42vw);
+  min-height: 430px;
   scroll-snap-align: start;
-}
-
-.featured-showcase-item .figma-project-card {
-  min-height: 420px;
   border-radius: 20px;
   box-shadow: 0 18px 42px rgba(17, 17, 17, 0.12);
-  transform: translateY(0) rotate(0deg);
+  transform: rotate(-1deg);
   transition: transform 260ms ease, box-shadow 260ms ease;
 }
 
-.featured-showcase-item:nth-child(odd) .figma-project-card {
-  transform: translateY(5px) rotate(-1.2deg);
+.row-featured-grid > .figma-project-card:nth-child(even) {
+  transform: rotate(1deg) translateY(-5px);
 }
 
-.featured-showcase-item:nth-child(even) .figma-project-card {
-  transform: translateY(-5px) rotate(1.2deg);
-}
-
-.featured-showcase-item:hover .figma-project-card {
+.row-featured-grid > .figma-project-card:hover {
   z-index: 2;
-  box-shadow: 0 28px 58px rgba(17, 17, 17, 0.18);
+  box-shadow: 0 28px 58px rgba(17, 17, 17, 0.19);
   transform: translateY(-9px) rotate(0deg) scale(1.015);
 }
 
-.featured-showcase-item .figma-project-card img {
+.row-featured-grid > .figma-project-card img {
   transition: transform 600ms cubic-bezier(0.2, 0.8, 0.2, 1), filter 400ms ease;
 }
 
-.featured-showcase-item:hover .figma-project-card img {
+.row-featured-grid > .figma-project-card:hover img {
   filter: saturate(1.08) contrast(1.03);
   transform: scale(1.055);
 }
 
-.featured-showcase-item .figma-project-overlay {
-  padding: 100px 22px 22px;
+.row-featured-grid > .figma-project-card .figma-project-overlay {
+  padding: 105px 22px 22px;
 }
 
-.featured-showcase-item .figma-project-overlay span {
+.row-featured-grid > .figma-project-card .figma-project-overlay span {
   font-size: 0.68rem;
   letter-spacing: 0.1em;
 }
 
-.featured-showcase-item .figma-project-overlay strong {
+.row-featured-grid > .figma-project-card .figma-project-overlay strong {
   font-size: clamp(1.1rem, 1.8vw, 1.45rem);
 }
 
-.featured-showcase-index {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  z-index: 4;
-  display: grid;
-  width: 42px;
-  height: 42px;
-  place-items: center;
-  border: 1px solid rgba(17, 17, 17, 0.22);
-  border-radius: 50%;
-  background: var(--gwm-yellow);
-  color: var(--gwm-ink);
-  font-size: 0.7rem;
-  font-weight: 900;
-  box-shadow: 4px 5px 0 rgba(17, 17, 17, 0.12);
-}
-
-.featured-showcase-controls {
+/* Make the existing portfolio CTA centered and use the requested wording. */
+.row-featured-grid + .row-centered-button {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 28px;
-  color: var(--gwm-muted);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
-.featured-showcase-controls > div {
-  display: flex;
-  gap: 8px;
-}
-
-.featured-showcase-controls button {
-  display: grid;
-  width: 42px;
-  height: 42px;
-  place-items: center;
-  border: 1px solid var(--gwm-line);
-  border-radius: 50%;
-  background: #fff;
-  color: var(--gwm-ink);
-  cursor: pointer;
-  transition: transform 180ms ease, background 180ms ease, box-shadow 180ms ease;
-}
-
-.featured-showcase-controls button:hover {
-  background: var(--gwm-yellow);
-  box-shadow: 3px 3px 0 var(--gwm-ink);
-  transform: translateY(-2px);
-}
-
-.featured-arrow-left {
-  transform: rotate(180deg);
-}
-
-.featured-showcase-footer {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  margin-top: 26px;
-  text-align: center;
-}
-
-.featured-showcase-footer p {
-  margin: 0;
-  color: var(--gwm-muted);
-  font-size: 0.82rem;
-}
-
-.featured-showcase-footer p strong {
-  color: var(--gwm-ink);
-  font-size: 1rem;
-}
-
-/* Keep the existing button/icon but make the visible label match the CTA requested. */
-.featured-showcase-footer .figma-yellow-button {
+  width: max-content;
   min-width: 205px;
   justify-content: center;
-  margin: 0 auto;
-}
-
-.featured-showcase-footer .figma-yellow-button {
+  margin: 30px auto 0;
   font-size: 0;
 }
 
-.featured-showcase-footer .figma-yellow-button::before {
+.row-featured-grid + .row-centered-button::before {
   content: 'View Full Portfolio';
   font-size: 0.82rem;
 }
 
 @media (max-width: 800px) {
-  .featured-showcase-track {
+  .row-featured-grid {
     gap: 14px;
     margin-top: 30px;
-    padding-right: 18vw;
-    padding-bottom: 20px;
+    padding-right: 16vw;
   }
 
-  .featured-showcase-item {
+  .row-featured-grid > .figma-project-card {
     flex-basis: min(78vw, 360px);
-  }
-
-  .featured-showcase-item .figma-project-card {
     min-height: min(108vw, 470px);
-  }
-
-  .featured-showcase-controls {
-    margin-top: 22px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .featured-showcase-track {
+  .row-featured-grid {
     scroll-behavior: auto;
   }
 
-  .featured-showcase-item .figma-project-card,
-  .featured-showcase-item .figma-project-card img,
-  .featured-showcase-controls button {
+  .row-featured-grid > .figma-project-card,
+  .row-featured-grid > .figma-project-card img {
     transition: none;
   }
 }
