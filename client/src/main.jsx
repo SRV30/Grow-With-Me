@@ -23,6 +23,7 @@ import './styles/header-responsive.css'
 import './styles/senior-motion.css'
 import './styles/cup-animation.css'
 import './admin/admin.css'
+import './admin/user-management.css'
 
 const Hero3D = lazy(() => import('./components/Hero3D.jsx'))
 
@@ -34,29 +35,22 @@ function DeferredHero3D() {
 
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined
-
     const start = () => setReady(true)
     if ('requestIdleCallback' in window) {
       const id = window.requestIdleCallback(start, { timeout: 1800 })
       return () => window.cancelIdleCallback(id)
     }
-
     const id = window.setTimeout(start, 1200)
     return () => window.clearTimeout(id)
   }, [])
 
   if (!ready) return null
-  return (
-    <Suspense fallback={null}>
-      <Hero3D />
-    </Suspense>
-  )
+  return <Suspense fallback={null}><Hero3D /></Suspense>
 }
 
 function PublicShell() {
   const location = useLocation()
   const isWorkRoute = location.pathname === '/work'
-
   return (
     <>
       {!isWorkRoute && <PageTransition />}
@@ -73,26 +67,11 @@ function PublicShell() {
 }
 
 function PublicApp() {
-  return (
-    <BrowserRouter>
-      <PublicShell />
-    </BrowserRouter>
-  )
+  return <BrowserRouter><PublicShell /></BrowserRouter>
 }
 
 function Root() {
-  return (
-    <ErrorBoundary>
-      {isAdminRoute ? (
-        <AdminApp />
-      ) : (
-        <>
-          <PublicApp />
-          <ScrollChoreography />
-        </>
-      )}
-    </ErrorBoundary>
-  )
+  return <ErrorBoundary>{isAdminRoute ? <AdminApp /> : <><PublicApp /><ScrollChoreography /></>}</ErrorBoundary>
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(<Root />)
