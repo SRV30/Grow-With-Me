@@ -11,9 +11,13 @@ const projectRoot = path.resolve(serverRoot, '..')
 dotenv.config({ path: path.join(serverRoot, '.env') })
 dotenv.config({ path: path.join(projectRoot, '.env'), override: false })
 
+const isVercel = Boolean(process.env.VERCEL)
+const nodeEnv = process.env.NODE_ENV || 'development'
+const isProduction = nodeEnv === 'production' || isVercel || process.env.VERCEL_ENV === 'production'
+
 const required = (...names) => {
   const value = names.map((name) => process.env[name]?.trim()).find(Boolean)
-  if (!value && process.env.NODE_ENV === 'production') {
+  if (!value && isProduction) {
     throw new Error(`Missing required environment variable: ${names.join(' or ')}`)
   }
   return value
@@ -22,8 +26,12 @@ const required = (...names) => {
 const normalizeOrigin = (value) => value?.trim().replace(/\/+$/, '')
 
 export const env = {
-  nodeEnv: process.env.NODE_ENV || 'development',
+  nodeEnv,
+  isProduction,
+  isVercel,
+  vercelEnv: process.env.VERCEL_ENV || null,
   port: Number(process.env.PORT || 5000),
+  trustProxy: process.env.TRUST_PROXY || null,
   clientUrl: normalizeOrigin(
     process.env.FRONTEND_URL || process.env.CLIENT_URL || 'http://localhost:5173',
   ),
@@ -41,6 +49,6 @@ export const env = {
   },
 }
 
-if (env.nodeEnv !== 'production' && !env.mongodbUri) {
+if (!env.isProduction && !env.mongodbUri) {
   console.warn('[WARN] MongoDB URL is not configured. Add MONGODB_URL to server/.env')
 }
