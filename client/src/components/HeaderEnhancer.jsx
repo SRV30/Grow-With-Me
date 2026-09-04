@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 import gsap from 'gsap'
-import '../styles/header-theme-fix.css'
 
 export default function HeaderEnhancer() {
   useEffect(() => {
@@ -9,51 +8,6 @@ export default function HeaderEnhancer() {
 
     let last = window.scrollY
     let ticking = false
-    const site = document.querySelector('.figma-site')
-    const storedTheme = localStorage.getItem('gwm-theme')
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-    let darkMode = storedTheme ? storedTheme === 'dark' : prefersDark
-
-    const applyTheme = (animate = false) => {
-      site?.classList.toggle('theme-dark', darkMode)
-      document.documentElement.classList.toggle('gwm-dark', darkMode)
-      document.documentElement.style.colorScheme = darkMode ? 'dark' : 'light'
-      localStorage.setItem('gwm-theme', darkMode ? 'dark' : 'light')
-
-      const toggle = header.querySelector('[data-theme-toggle]')
-      if (toggle) {
-        toggle.setAttribute('aria-pressed', String(darkMode))
-        toggle.setAttribute('aria-label', darkMode ? 'Switch to light mode' : 'Switch to dark mode')
-        toggle.setAttribute('title', darkMode ? 'Light mode' : 'Dark mode')
-        toggle.innerHTML = darkMode
-          ? '<span aria-hidden="true">☀</span>'
-          : '<span aria-hidden="true">☾</span>'
-      }
-
-      if (animate && site) {
-        site.classList.remove('dark-mode-transition')
-        void site.offsetWidth
-        site.classList.add('dark-mode-transition')
-        window.setTimeout(() => site.classList.remove('dark-mode-transition'), 560)
-      }
-    }
-
-    const toggleTheme = () => {
-      darkMode = !darkMode
-      applyTheme(true)
-    }
-
-    let themeToggle = header.querySelector('[data-theme-toggle]')
-    if (!themeToggle) {
-      themeToggle = document.createElement('button')
-      themeToggle.type = 'button'
-      themeToggle.dataset.themeToggle = 'true'
-      themeToggle.className = 'theme-toggle'
-      themeToggle.addEventListener('click', toggleTheme)
-      header.querySelector('.row-header-inner')?.appendChild(themeToggle)
-    }
-
-    applyTheme()
 
     const update = () => {
       const y = window.scrollY
@@ -98,7 +52,6 @@ export default function HeaderEnhancer() {
       window.removeEventListener('scroll', onScroll)
       header.removeEventListener('pointermove', onMouse)
       header.removeEventListener('pointerleave', reset, true)
-      themeToggle?.removeEventListener('click', toggleTheme)
     }
   }, [])
 
