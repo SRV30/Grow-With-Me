@@ -54,7 +54,7 @@ function DeferredHero3D() {
 
 function PublicShell() {
   const location = useLocation()
-  const isWorkRoute = location.pathname === '/work'
+  const isWorkRoute = location.pathname === '/work' || location.pathname.startsWith('/work/')
   return (
     <>
       {!isWorkRoute && <PageTransition />}
