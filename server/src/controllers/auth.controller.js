@@ -5,7 +5,7 @@ import { connectDatabase } from '../config/db.js'
 import { env } from '../config/env.js'
 
 const loginSchema = z.object({
-  email: z.string().email().max(160),
+  email: z.string().trim().toLowerCase().email().max(160),
   password: z.string().min(8).max(128),
 })
 
@@ -13,7 +13,7 @@ const cookieOptions = () => ({
   httpOnly: true,
   secure: env.nodeEnv === 'production',
   sameSite: env.nodeEnv === 'production' ? 'none' : 'lax',
-  maxAge: 7 * 24 * 60 * 60 * 1000,
+  maxAge: env.cookieExpire * 24 * 60 * 60 * 1000,
   path: '/',
 })
 
@@ -46,12 +46,7 @@ export const login = async (req, res, next) => {
 }
 
 export const logout = (_req, res) => {
-  res.clearCookie('gwm_token', {
-    httpOnly: true,
-    secure: env.nodeEnv === 'production',
-    sameSite: env.nodeEnv === 'production' ? 'none' : 'lax',
-    path: '/',
-  })
+  res.clearCookie('gwm_token', cookieOptions())
   res.json({ success: true })
 }
 
