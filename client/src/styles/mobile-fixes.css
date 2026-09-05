@@ -1,4 +1,4 @@
-/* Mobile-first fixes for the public homepage */
+/* Mobile layout: compact, intentional and readable. */
 @media (max-width: 767px) {
   .row-layout-site,
   .row-layout-site .row-section {
@@ -6,141 +6,291 @@
     max-width: 100%;
     overflow-x: clip;
   }
+
   .row-layout-site .row-container {
-    width: calc(100% - 28px);
-    max-width: 640px;
+    width: calc(100% - 32px);
+    max-width: 680px;
   }
 
+  /* Hero: turn the desktop two-column composition into a deliberate mobile flow.
+     The copy becomes transparent to the grid so we can place the collage between
+     the headline and supporting text. */
   .hero-collage-section {
-    padding-top: 42px;
-    padding-bottom: 44px;
+    min-height: 0;
+    padding: 34px 0 42px;
   }
-  .hero-collage-section .row-hero-copy h1 {
-    max-width: 100%;
-    font-size: clamp(2.8rem, 13.2vw, 4rem);
-    line-height: 0.91;
-    letter-spacing: -0.07em;
-  }
-  .hero-collage-section .row-lead-services {
-    margin-top: 20px;
-    font-size: 0.86rem;
-    line-height: 1.55;
-  }
-  .hero-collage-section .row-hero-description {
-    margin-top: 14px;
-    font-size: 0.9rem;
-    line-height: 1.65;
-  }
-  .hero-collage-section .figma-actions {
+
+  .hero-collage-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 10px;
-    margin-top: 22px;
+    gap: 0;
+    align-items: start;
   }
-  .hero-collage-section .figma-yellow-button,
-  .hero-collage-section .figma-outline-button {
+
+  .hero-collage-section .row-hero-copy {
+    display: contents;
+    max-width: none;
+  }
+
+  .hero-collage-section .row-hero-copy .figma-eyebrow {
+    order: 1;
+    margin: 0 0 12px;
+    font-size: 0.65rem;
+    line-height: 1.3;
+  }
+
+  .hero-collage-section .row-hero-copy h1 {
+    order: 2;
     width: 100%;
-    min-height: 48px;
-    justify-content: center;
-    padding-inline: 16px;
-    font-size: 0.8rem;
+    max-width: none;
+    margin: 0;
+    font-size: clamp(2.75rem, 8vw, 4rem);
+    line-height: 0.93;
+    letter-spacing: -0.075em;
   }
+
+  .hero-collage-section .row-hero-copy h1 em {
+    white-space: nowrap;
+  }
+
   .hero-collage {
+    order: 3;
     width: 100%;
-    min-height: 350px;
+    min-height: 285px;
+    margin: 18px 0 4px;
+  }
+
+  .hero-collage::before {
+    inset: 5% 8% 5% 8%;
+  }
+
+  .hero-collage-dots {
+    top: 4%;
+    right: 12%;
+    width: 120px;
+    height: 92px;
+    background-size: 9px 9px;
+  }
+
+  .hero-collage-card {
+    border-radius: 13px;
+    box-shadow: 0 12px 24px rgba(17, 17, 17, 0.13);
+  }
+
+  .hero-collage-card-1 {
+    top: 12%;
+    left: 10%;
+    width: 27%;
+  }
+
+  .hero-collage-card-2 {
+    top: 4%;
+    right: 10%;
+    width: 28%;
+  }
+
+  .hero-collage-card-3 {
+    top: 28%;
+    left: 36%;
+    width: 30%;
+  }
+
+  .hero-collage-card-4 {
+    bottom: 5%;
+    left: 14%;
+    width: 27%;
+  }
+
+  .hero-collage-card-5 {
+    right: 13%;
+    bottom: 6%;
+    width: 26%;
+  }
+
+  .hero-collage-float {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    box-shadow: 3px 5px 0 rgba(17, 17, 17, 0.12);
+  }
+
+  .hero-collage-heart {
+    top: 25%;
+    left: 6%;
+  }
+
+  .hero-collage-play {
+    top: 36%;
+    right: 5%;
+  }
+
+  .hero-collage-dot {
+    bottom: 16%;
+    left: 47%;
+    width: 26px;
+    height: 26px;
+  }
+
+  .hero-collage-sign {
+    right: 3%;
+    bottom: 1%;
+    font-size: 0.58rem;
+  }
+
+  .hero-collage-brand-card {
+    padding: 9px;
+  }
+
+  .hero-collage-brand-card span,
+  .hero-collage-brand-card strong {
+    font-size: clamp(0.85rem, 4vw, 1.5rem);
+  }
+
+  .hero-collage-brand-card b {
+    margin-top: 3px;
+    font-size: 0.7rem;
+  }
+
+  .hero-collage-brand-card small {
+    margin-top: 6px;
+    font-size: 0.32rem;
+  }
+
+  .hero-collage-section .row-lead-services {
+    order: 4;
+    max-width: none;
+    margin: 10px 0 0;
+    font-size: 0.88rem;
+    line-height: 1.55;
+  }
+
+  .hero-collage-section .row-hero-description {
+    order: 5;
+    max-width: none;
+    margin: 12px 0 0;
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .hero-collage-section .figma-actions {
+    order: 6;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 9px;
     margin-top: 18px;
   }
 
-  /* Four trust columns were overflowing the phone. */
+  .hero-collage-section .figma-yellow-button,
+  .hero-collage-section .figma-outline-button {
+    width: 100%;
+    min-height: 46px;
+    justify-content: center;
+    padding-inline: 14px;
+    font-size: 0.76rem;
+  }
+
+  /* Trust */
   .row-trust-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
   .row-trust article,
   .row-trust article:first-child {
     min-width: 0;
-    min-height: 118px;
-    gap: 12px;
-    padding: 20px 14px;
+    min-height: 106px;
+    gap: 10px;
+    padding: 17px 13px;
     border-right: 1px solid rgba(255, 255, 255, 0.2);
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   }
+
   .row-trust article:nth-child(2n) {
     border-right: 0;
   }
+
   .row-trust article:nth-last-child(-n + 2) {
     border-bottom: 0;
   }
+
   .row-trust article > svg {
-    width: 27px;
-    height: 27px;
-    flex: 0 0 auto;
+    width: 25px;
+    height: 25px;
   }
+
   .row-trust article > div {
     min-width: 0;
   }
+
   .row-trust article strong {
     display: block;
-    color: var(--gwm-yellow);
-    font-size: 0.78rem;
+    font-size: 0.74rem;
     line-height: 1.2;
   }
+
   .row-trust article p {
-    margin: 5px 0 0;
-    color: rgba(255, 255, 255, 0.74);
-    font-size: 0.74rem;
-    line-height: 1.45;
+    margin: 4px 0 0;
+    font-size: 0.68rem;
+    line-height: 1.4;
   }
 
+  /* All content sections */
   .row-light,
   .row-soft,
   .row-white,
   .row-about,
   .row-cta {
-    padding: 58px 0;
+    padding: 54px 0;
   }
+
   .row-heading {
     max-width: 100%;
   }
+
   .row-heading h2 {
-    font-size: clamp(2.35rem, 11.5vw, 3.5rem);
-    line-height: 0.94;
-  }
-  .row-heading-description {
-    margin-top: 14px;
-    font-size: 0.9rem;
-    line-height: 1.6;
+    font-size: clamp(2.25rem, 10vw, 3.4rem);
+    line-height: 0.95;
   }
 
-  /* Stack cards instead of squeezing desktop grids into a phone. */
+  .row-heading-description {
+    margin-top: 13px;
+    font-size: 0.88rem;
+    line-height: 1.55;
+  }
+
   .row-service-grid,
   .row-work-grid,
   .row-featured-grid {
     grid-template-columns: 1fr;
   }
+
   .row-service-grid {
-    gap: 14px;
-    margin-top: 30px;
+    gap: 13px;
+    margin-top: 28px;
   }
+
   .row-service-card {
-    min-height: 238px;
-    padding: 22px;
+    min-height: 220px;
+    padding: 21px;
   }
+
   .row-service-card h3 {
-    margin-top: 20px;
-    max-width: calc(100% - 24px);
-    font-size: 1.3rem;
+    margin-top: 18px;
+    font-size: 1.25rem;
   }
+
   .row-service-card p {
-    max-width: calc(100% - 12px);
-    font-size: 0.9rem;
-    line-height: 1.6;
+    font-size: 0.88rem;
+    line-height: 1.55;
   }
+
   .row-featured-grid {
-    margin-top: 30px;
+    margin-top: 28px;
   }
+
   .row-layout-site .figma-project-card,
   .row-featured-grid .figma-project-card {
-    min-height: 300px;
+    min-height: 285px;
   }
 
   .row-work-filters {
@@ -148,71 +298,82 @@
     flex-wrap: nowrap;
     overflow-x: auto;
     gap: 7px;
-    margin: 24px 0 18px;
-    padding-bottom: 5px;
+    margin: 22px 0 17px;
+    padding-bottom: 4px;
     scrollbar-width: none;
   }
+
   .row-work-filters::-webkit-scrollbar {
     display: none;
   }
+
   .row-work-filters button {
     flex: 0 0 auto;
-    min-height: 40px;
-    padding-inline: 14px;
-    font-size: 0.78rem;
+    min-height: 38px;
+    padding-inline: 13px;
+    font-size: 0.74rem;
   }
 
-  /* Process becomes a readable vertical timeline. */
+  /* Process */
   .row-process-grid {
     grid-template-columns: 1fr;
-    gap: 28px;
-    margin-top: 34px;
+    gap: 26px;
+    margin-top: 32px;
   }
+
   .row-process-grid::before {
-    top: 28px;
+    top: 26px;
     right: auto;
-    bottom: 28px;
+    bottom: 26px;
     left: 27px;
     width: 1px;
     height: auto;
   }
+
   .row-process-grid article {
     display: grid;
-    grid-template-columns: 56px 1fr;
+    grid-template-columns: 54px 1fr;
     grid-template-rows: auto auto auto;
-    column-gap: 16px;
+    column-gap: 14px;
     padding: 0;
     text-align: left;
   }
+
   .row-process-icon {
     grid-row: 1 / span 3;
     margin: 0;
   }
+
   .row-process-grid h3 {
     margin: 4px 0;
   }
+
   .row-process-grid p {
     max-width: none;
     margin: 0;
   }
 
+  /* Industries + about */
   .row-industries-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    margin-top: 30px;
+    margin-top: 28px;
   }
+
   .row-industries-grid article {
-    min-height: 105px;
-    padding: 14px 8px;
-    text-align: center;
+    min-height: 100px;
+    padding: 13px 7px;
   }
+
   .row-industries-grid article b {
-    font-size: 0.82rem;
+    font-size: 0.78rem;
     line-height: 1.25;
   }
+
   .row-about-grid {
     grid-template-columns: 1fr;
-    gap: 28px;
+    gap: 26px;
   }
+
   .row-layout-site input,
   .row-layout-site select,
   .row-layout-site textarea {
@@ -224,24 +385,34 @@
   .row-layout-site .row-container {
     width: calc(100% - 24px);
   }
+
+  .hero-collage-section {
+    padding-top: 28px;
+  }
+
   .hero-collage-section .row-hero-copy h1 {
-    font-size: clamp(2.65rem, 13.5vw, 3.5rem);
+    font-size: clamp(2.55rem, 13vw, 3.25rem);
   }
+
   .hero-collage {
-    min-height: 320px;
+    min-height: 245px;
+    margin-top: 14px;
   }
+
   .row-trust-grid {
     grid-template-columns: 1fr;
   }
+
   .row-trust article,
   .row-trust article:first-child,
   .row-trust article:nth-child(2n),
   .row-trust article:nth-last-child(-n + 2) {
-    min-height: 92px;
-    padding: 17px 12px;
+    min-height: 82px;
+    padding: 14px 12px;
     border-right: 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   }
+
   .row-trust article:last-child {
     border-bottom: 0;
   }
