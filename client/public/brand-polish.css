@@ -22,7 +22,9 @@
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.55);
   box-shadow: 0 4px 16px rgba(17, 17, 17, 0.04);
-  transition: transform 180ms ease, box-shadow 180ms ease;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
 }
 
 .figma-header .figma-logo:hover {
@@ -50,7 +52,9 @@
   padding: 9px 13px;
   border-radius: 999px;
   font-size: 11px;
-  transition: background 160ms ease, color 160ms ease;
+  transition:
+    background 160ms ease,
+    color 160ms ease;
 }
 
 .figma-header .figma-nav a.active,
@@ -180,7 +184,9 @@
   color: rgba(255, 255, 255, 0.76);
   font-size: 11px;
   text-decoration: none;
-  transition: color 160ms ease, transform 160ms ease;
+  transition:
+    color 160ms ease,
+    transform 160ms ease;
 }
 
 .figma-footer .row-footer-main > div:not(:first-child) a:hover {
