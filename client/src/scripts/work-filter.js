@@ -1,3 +1,5 @@
+import logoUrl from '../assets/logo.PNG'
+
 const API_BASE = (import.meta.env.VITE_BACKEND_URL || '/api').replace(/\/$/, '')
 
 const normalize = (value = '') =>
@@ -26,6 +28,37 @@ const shuffle = (items) => {
     ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
   }
   return shuffled
+}
+
+const applyHeaderLogo = () => {
+  document.querySelectorAll('.figma-logo').forEach((logo) => {
+    let image = logo.querySelector('.figma-header-logo-image')
+    if (!image) {
+      image = document.createElement('img')
+      image.className = 'figma-header-logo-image'
+      image.src = logoUrl
+      image.alt = 'Grow With Me'
+      image.loading = 'eager'
+      image.decoding = 'async'
+      logo.prepend(image)
+    }
+
+    logo.querySelectorAll(':scope > span').forEach((span) => {
+      span.style.display = 'none'
+    })
+
+    logo.style.display = 'inline-flex'
+    logo.style.alignItems = 'center'
+    logo.style.width = 'max-content'
+    logo.style.height = '48px'
+    logo.style.gap = '0'
+
+    image.style.display = 'block'
+    image.style.width = 'auto'
+    image.style.height = '48px'
+    image.style.maxWidth = '180px'
+    image.style.objectFit = 'contain'
+  })
 }
 
 const applyWorkFilter = (button) => {
@@ -140,6 +173,8 @@ const syncProjectCategorySelect = async () => {
 }
 
 const initializeWorkFilters = () => {
+  applyHeaderLogo()
+
   const buttons = document.querySelectorAll('#work .row-work-filters button')
   buttons.forEach((button) => {
     button.type = 'button'
