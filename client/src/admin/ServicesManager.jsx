@@ -135,7 +135,12 @@ export default function ServicesManager() {
               {editing && <p>Update the service details used across the website.</p>}
             </div>
             {editing && (
-              <button className="admin-icon" type="button" onClick={resetForm} aria-label="Cancel editing">
+              <button
+                className="admin-icon"
+                type="button"
+                onClick={resetForm}
+                aria-label="Cancel editing"
+              >
                 <X size={16} />
               </button>
             )}
