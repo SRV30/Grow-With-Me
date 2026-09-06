@@ -113,9 +113,7 @@ export default function ProjectEditor({ project, onBack, onSaved }) {
         order: Number.isFinite(numericOrder) && numericOrder >= 0 ? numericOrder : 0,
         coverImage: form.coverImage ? imagePayload(form.coverImage) : null,
         gallery: Array.isArray(form.gallery)
-          ? form.gallery
-              .filter((item) => item?.secureUrl || item?.url)
-              .map(imagePayload)
+          ? form.gallery.filter((item) => item?.secureUrl || item?.url).map(imagePayload)
           : [],
         videos: Array.isArray(form.videos)
           ? form.videos.filter((item) => item?.secureUrl || item?.url).map(videoPayload)
@@ -140,14 +138,16 @@ export default function ProjectEditor({ project, onBack, onSaved }) {
   const removeGallery = (item) =>
     update({
       gallery: form.gallery.filter(
-        (current) => current !== item && current.publicId !== item.publicId && current.url !== item.url,
+        (current) =>
+          current !== item && current.publicId !== item.publicId && current.url !== item.url,
       ),
     })
 
   const removeVideo = (item) =>
     update({
       videos: form.videos.filter(
-        (current) => current !== item && current.publicId !== item.publicId && current.url !== item.url,
+        (current) =>
+          current !== item && current.publicId !== item.publicId && current.url !== item.url,
       ),
     })
 
