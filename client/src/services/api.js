@@ -34,9 +34,16 @@ api.interceptors.response.use(
   },
 )
 
+const unwrapList = (value) => {
+  if (Array.isArray(value)) return value
+  if (Array.isArray(value?.projects)) return value.projects
+  if (Array.isArray(value?.data)) return value.data
+  return []
+}
+
 export const getProjects = async (params = {}) => {
   const { data } = await api.get('/projects', { params })
-  return data.data
+  return unwrapList(data.data)
 }
 export const getProject = async (slug) => {
   const { data } = await api.get(`/projects/${slug}`)
