@@ -25,15 +25,24 @@ const responses = {
   },
   website: {
     text: 'We create modern, responsive and professional websites for businesses and brands. Tell us what you need and we can discuss the project.',
-    actions: [['Start a Project', 'contact'], ['View Portfolio', 'portfolio-link']],
+    actions: [
+      ['Start a Project', 'contact'],
+      ['View Portfolio', 'portfolio-link'],
+    ],
   },
   social: {
     text: 'Our social media service covers content planning, posting, captions, audience engagement and a consistent brand presence.',
-    actions: [['See Social Work', 'social-link'], ['Start a Project', 'contact']],
+    actions: [
+      ['See Social Work', 'social-link'],
+      ['Start a Project', 'contact'],
+    ],
   },
   reels: {
     text: 'We create short-form reels and videos with clean editing, transitions, subtitles and attention-grabbing presentation.',
-    actions: [['See Reels Work', 'reels-link'], ['Start a Project', 'contact']],
+    actions: [
+      ['See Reels Work', 'reels-link'],
+      ['Start a Project', 'contact'],
+    ],
   },
   contact: {
     text: 'Great! You can use the Contact section on this website to share your requirements. We can discuss your business, goals, budget and timeline from there.',
@@ -60,14 +69,17 @@ function getResponse(input) {
 function BotMessage({ text, actions, onAction }) {
   return (
     <div className="gwm-chat-message gwm-chat-bot-message">
-      <div className="gwm-chat-avatar"><Bot size={15} /></div>
+      <div className="gwm-chat-avatar">
+        <Bot size={15} />
+      </div>
       <div className="gwm-chat-bubble">
         <p>{text}</p>
         {actions?.length ? (
           <div className="gwm-chat-actions">
             {actions.map(([label, key]) => (
               <button type="button" key={key} onClick={() => onAction(key)}>
-                {label}<ChevronRight size={14} />
+                {label}
+                <ChevronRight size={14} />
               </button>
             ))}
           </div>
@@ -110,43 +122,58 @@ export default function ManualChatbot() {
 
   const addBotResponse = (key) => {
     if (key === 'greeting') {
-      setMessages((current) => [...current, {
-        id: Date.now() + 1,
-        type: 'bot',
-        text: 'Hello! What would you like to know about Grow With Me?',
-        actions: quickReplies.slice(0, 5).map(({ label, key: actionKey }) => [label, actionKey]),
-      }])
+      setMessages((current) => [
+        ...current,
+        {
+          id: Date.now() + 1,
+          type: 'bot',
+          text: 'Hello! What would you like to know about Grow With Me?',
+          actions: quickReplies.slice(0, 5).map(({ label, key: actionKey }) => [label, actionKey]),
+        },
+      ])
       return
     }
 
     if (key === 'pricing') {
-      setMessages((current) => [...current, {
-        id: Date.now() + 1,
-        type: 'bot',
-        text: 'Pricing depends on the service, scope and requirements. Share your project details through the Contact section and we can discuss the right option for you.',
-        actions: [['Go to Contact', 'contact-link'], ['Our Services', 'services']],
-      }])
+      setMessages((current) => [
+        ...current,
+        {
+          id: Date.now() + 1,
+          type: 'bot',
+          text: 'Pricing depends on the service, scope and requirements. Share your project details through the Contact section and we can discuss the right option for you.',
+          actions: [
+            ['Go to Contact', 'contact-link'],
+            ['Our Services', 'services'],
+          ],
+        },
+      ])
       return
     }
 
     if (key === 'fallback') {
-      setMessages((current) => [...current, {
-        id: Date.now() + 1,
-        type: 'bot',
-        text: 'I can help with our services, portfolio, website design, social media, reels/video editing, pricing and starting a project. Try one of these options:',
-        actions: availableQuickReplies.map(({ label, key: actionKey }) => [label, actionKey]),
-      }])
+      setMessages((current) => [
+        ...current,
+        {
+          id: Date.now() + 1,
+          type: 'bot',
+          text: 'I can help with our services, portfolio, website design, social media, reels/video editing, pricing and starting a project. Try one of these options:',
+          actions: availableQuickReplies.map(({ label, key: actionKey }) => [label, actionKey]),
+        },
+      ])
       return
     }
 
     const response = responses[key]
     if (response) {
-      setMessages((current) => [...current, {
-        id: Date.now() + 1,
-        type: 'bot',
-        text: response.text,
-        actions: response.actions,
-      }])
+      setMessages((current) => [
+        ...current,
+        {
+          id: Date.now() + 1,
+          type: 'bot',
+          text: response.text,
+          actions: response.actions,
+        },
+      ])
     }
   }
 
@@ -175,27 +202,41 @@ export default function ManualChatbot() {
         <section className="gwm-chat-window" aria-label="Grow With Me chatbot">
           <header className="gwm-chat-header">
             <div className="gwm-chat-brand">
-              <div className="gwm-chat-brand-icon"><Bot size={19} /></div>
+              <div className="gwm-chat-brand-icon">
+                <Bot size={19} />
+              </div>
               <div>
                 <strong>Grow With Me</strong>
                 <span>Manual assistant</span>
               </div>
             </div>
-            <button type="button" className="gwm-chat-close" onClick={() => setOpen(false)} aria-label="Close chat">
+            <button
+              type="button"
+              className="gwm-chat-close"
+              onClick={() => setOpen(false)}
+              aria-label="Close chat"
+            >
               <X size={19} />
             </button>
           </header>
 
           <div className="gwm-chat-messages" ref={messagesRef}>
-            {messages.map((message) => (
+            {messages.map((message) =>
               message.type === 'bot' ? (
-                <BotMessage key={message.id} text={message.text} actions={message.actions} onAction={handleAction} />
+                <BotMessage
+                  key={message.id}
+                  text={message.text}
+                  actions={message.actions}
+                  onAction={handleAction}
+                />
               ) : (
                 <div className="gwm-chat-message gwm-chat-user-message" key={message.id}>
-                  <div className="gwm-chat-bubble"><p>{message.text}</p></div>
+                  <div className="gwm-chat-bubble">
+                    <p>{message.text}</p>
+                  </div>
                 </div>
-              )
-            ))}
+              ),
+            )}
           </div>
 
           <form className="gwm-chat-input" onSubmit={handleSubmit}>
@@ -206,7 +247,9 @@ export default function ManualChatbot() {
               aria-label="Type your question"
               maxLength={300}
             />
-            <button type="submit" aria-label="Send message"><Send size={17} /></button>
+            <button type="submit" aria-label="Send message">
+              <Send size={17} />
+            </button>
           </form>
           <div className="gwm-chat-footer">Manual replies • No AI/API</div>
         </section>
