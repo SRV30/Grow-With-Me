@@ -6,6 +6,7 @@ import WorkPage from './pages/WorkPage.jsx'
 import ProjectPage from './pages/ProjectPage.jsx'
 import AdminApp from './admin/AdminApp.jsx'
 import ErrorBoundary from './components/ErrorBoundary.jsx'
+import Notifications from './components/Notifications.jsx'
 import ScrollChoreography from './components/ScrollChoreography.jsx'
 import PageTransition from './components/PageTransition.jsx'
 import PageMotion from './components/PageMotion.jsx'
@@ -27,6 +28,7 @@ import './styles/work-filter.css'
 import './styles/industries-showcase.css'
 import './styles/footer-professional.css'
 import './styles/professional-spacing.css'
+import './styles/notifications.css'
 import './admin/admin.css'
 import './admin/user-management.css'
 import './scripts/work-filter.js'
@@ -95,6 +97,7 @@ function Root() {
           <ScrollChoreography />
         </>
       )}
+      <Notifications />
     </ErrorBoundary>
   )
 }
