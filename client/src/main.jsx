@@ -38,6 +38,7 @@ import './styles/manual-chatbot.css'
 import './styles/notifications.css'
 import './styles/header-footer-final.css'
 import './styles/footer-professional.css'
+import './styles/header-mobile-position.css'
 import './admin/admin.css'
 import './admin/user-management.css'
 import './scripts/mobile-hero-enhancer.js'
@@ -86,19 +87,16 @@ function PublicShell() {
   )
 }
 
-function AppShell() {
+function AppRoot() {
   return (
     <BrowserRouter>
-      <ErrorBoundary>
-        <Notifications />
-        <ScrollChoreography />
-        <PageMotion />
-        {!isAdminRoute ? <HeaderEnhancer /> : null}
-        {!isAdminRoute ? <ManualChatbot /> : null}
-        {isAdminRoute ? <AdminApp /> : <PublicShell />}
-      </ErrorBoundary>
+      {isAdminRoute ? <AdminApp /> : <PublicShell />}
     </BrowserRouter>
   )
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(<AppShell />)
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <ErrorBoundary>
+    <AppRoot />
+  </ErrorBoundary>,
+)
