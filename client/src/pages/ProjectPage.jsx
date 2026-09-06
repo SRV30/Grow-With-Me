@@ -4,7 +4,6 @@ import { Link, useParams } from 'react-router-dom'
 import gsap from 'gsap'
 import { getProject } from '../services/api.js'
 import CloudinaryImage from '../components/CloudinaryImage.jsx'
-import CloudinaryVideo from '../components/CloudinaryVideo.jsx'
 import SEO from '../components/SEO.jsx'
 import { ProjectSchema } from '../components/StructuredData.jsx'
 import logoUrl from '../assets/logo.PNG'
@@ -69,8 +68,6 @@ export default function ProjectPage() {
   }
 
   const category = formatCategory(project.category) || 'Creative project'
-  const gallery = project.gallery || []
-  const videos = project.videos || []
   const services = project.services || []
 
   return (
@@ -91,9 +88,7 @@ export default function ProjectPage() {
           <Link to="/">Home</Link>
           <Link to="/about">About</Link>
           <Link to="/services">Services</Link>
-          <Link to="/work" className="active">
-            Work
-          </Link>
+          <Link to="/work" className="active">Work</Link>
           <Link to="/contact">Contact</Link>
         </nav>
         <Link to="/contact" className="project-detail-start">
@@ -112,8 +107,7 @@ export default function ProjectPage() {
               {category}
             </div>
             <h1 className="project-detail-title" data-project-reveal>
-              {project.title}
-              <em>.</em>
+              {project.title}<em>.</em>
             </h1>
             <p className="project-detail-tagline" data-project-reveal>
               More than a project, it&apos;s an experience.
@@ -175,45 +169,6 @@ export default function ProjectPage() {
           ))}
         </section>
       ) : null}
-
-      <section className="project-detail-container project-detail-gallery-section">
-        <div className="project-detail-section-heading" data-project-reveal>
-          <h2>Project Gallery</h2>
-          <p>Some glimpses of the project</p>
-        </div>
-
-        {gallery.length || videos.length ? (
-          <div className="project-detail-gallery">
-            {gallery.map((image, index) => (
-              <figure
-                key={`${image.publicId || image.url}-${index}`}
-                className={`project-detail-media ${index === 0 ? 'featured' : ''}`}
-                data-project-media
-              >
-                <CloudinaryImage
-                  src={image.url}
-                  alt={image.alt || `${project.title} ${index + 1}`}
-                  width={1400}
-                  sizes="(max-width: 800px) 100vw, 70vw"
-                />
-              </figure>
-            ))}
-            {videos.map((video, index) => (
-              <figure
-                key={`${video.publicId || video.url}-${index}`}
-                className="project-detail-media"
-                data-project-media
-              >
-                <CloudinaryVideo src={video.url} poster={video.thumbnail || undefined} controls />
-              </figure>
-            ))}
-          </div>
-        ) : (
-          <div className="project-detail-empty-gallery">
-            More project visuals will be added here.
-          </div>
-        )}
-      </section>
 
       <section className="project-detail-cta">
         <div className="project-detail-container project-detail-cta-grid">
