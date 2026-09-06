@@ -67,6 +67,11 @@ export default function QuoteCalculator() {
     return { low: total * 0.9, high: total * 1.15 }
   }, [form])
 
+  const selectedService = options.service.find(([key]) => key === form.service)?.[1] || ''
+  const estimateLow = money(estimate.low)
+  const estimateHigh = money(estimate.high)
+  const contactHash = `#contact?service=${encodeURIComponent(selectedService)}&low=${encodeURIComponent(estimateLow)}&high=${encodeURIComponent(estimateHigh)}`
+
   const reset = () => {
     setForm({
       service: 'social',
@@ -169,13 +174,13 @@ export default function QuoteCalculator() {
           <aside className="quote-result-panel">
             <p>Estimated range</p>
             <strong>
-              {money(estimate.low)} — {money(estimate.high)}
+              {estimateLow} — {estimateHigh}
             </strong>
             <small>
               Based on your selections. This is a starting range, not a final quotation.
             </small>
             <Link
-              to={`/#contact?service=${form.service}`}
+              to={`/${contactHash}`}
               className="quote-cta"
               onClick={() => setSubmitted(true)}
             >
