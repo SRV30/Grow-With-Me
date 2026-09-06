@@ -87,16 +87,19 @@ function PublicShell() {
   )
 }
 
-function AppRoot() {
+function AppShell() {
   return (
     <BrowserRouter>
-      {isAdminRoute ? <AdminApp /> : <PublicShell />}
+      <ErrorBoundary>
+        <Notifications />
+        <ScrollChoreography />
+        <PageMotion />
+        {!isAdminRoute ? <HeaderEnhancer /> : null}
+        {!isAdminRoute ? <ManualChatbot /> : null}
+        {isAdminRoute ? <AdminApp /> : <PublicShell />}
+      </ErrorBoundary>
     </BrowserRouter>
   )
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <ErrorBoundary>
-    <AppRoot />
-  </ErrorBoundary>,
-)
+ReactDOM.createRoot(document.getElementById('root')).render(<AppShell />)
