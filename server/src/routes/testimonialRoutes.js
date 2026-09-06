@@ -6,14 +6,14 @@ import {
   updateTestimonial,
   deleteTestimonial,
 } from '../controllers/testimonialController.js'
-import { protect } from '../middleware/auth.js'
+import { requireAuth } from '../middleware/auth.js'
 
 const router = express.Router()
 
 router.get('/', listTestimonials)
-router.get('/:id', protect, getTestimonial)
-router.post('/', protect, createTestimonial)
-router.put('/:id', protect, updateTestimonial)
-router.delete('/:id', protect, deleteTestimonial)
+router.get('/:id', requireAuth, getTestimonial)
+router.post('/', requireAuth, createTestimonial)
+router.put('/:id', requireAuth, updateTestimonial)
+router.delete('/:id', requireAuth, deleteTestimonial)
 
 export default router
