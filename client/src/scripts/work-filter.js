@@ -1,4 +1,4 @@
-import logoUrl from '../assets/logo.PNG'
+import logoUrl from '../assets/img.png'
 
 const API_BASE = (import.meta.env.VITE_BACKEND_URL || '/api').replace(/\/$/, '')
 
