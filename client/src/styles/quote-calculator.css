@@ -89,17 +89,19 @@
   font-size: 0.72rem;
   font-weight: 650;
   cursor: pointer;
-  transition: 0.2s;
+  transition: transform 0.18s, border-color 0.18s, background 0.18s, box-shadow 0.18s;
 }
 .quote-options button:hover,
 .quote-addons button:hover {
   border-color: #aaa;
+  transform: translateY(-1px);
 }
 .quote-options button.selected,
 .quote-addons button.selected {
   border-color: #111;
   background: #111;
   color: #fff;
+  box-shadow: 0 5px 16px rgba(17, 17, 17, 0.12);
 }
 .quote-addons {
   display: grid;
@@ -118,6 +120,7 @@
   place-items: center;
   border: 1px solid #ccc;
   border-radius: 4px;
+  flex: 0 0 auto;
 }
 .quote-addons button.selected span {
   border-color: #ffd21c;
@@ -135,6 +138,18 @@
   color: #fff;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+}
+.quote-result-panel::before {
+  content: '';
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  right: -90px;
+  top: -90px;
+  border-radius: 50%;
+  background: rgba(255, 210, 28, 0.12);
+  pointer-events: none;
 }
 .quote-result-panel > p {
   margin: 0;
@@ -169,6 +184,11 @@
   text-decoration: none;
   font-size: 0.72rem;
   font-weight: 900;
+  transition: transform 0.18s, box-shadow 0.18s;
+}
+.quote-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(255, 210, 28, 0.2);
 }
 .quote-reset {
   display: flex;
@@ -209,27 +229,109 @@
 }
 @media (max-width: 620px) {
   .quote-calculator {
-    padding: 70px 0;
+    padding: 56px 0;
   }
   .quote-calculator-container {
-    width: calc(100% - 28px);
+    width: calc(100% - 24px);
   }
   .quote-calculator-heading {
     align-items: flex-start;
     flex-direction: column;
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+  .quote-calculator-heading h2 {
+    font-size: clamp(2rem, 10vw, 2.7rem);
+    line-height: 0.96;
+  }
+  .quote-calculator-heading > div > p:last-child {
+    margin-top: 12px;
+    font-size: 0.78rem;
+    line-height: 1.55;
+  }
+  .quote-badge {
+    font-size: 0.56rem;
+    padding: 7px 10px;
+  }
+  .quote-calculator-grid {
+    gap: 12px;
+  }
+  .quote-form-panel {
+    padding: 16px;
+    border-radius: 16px;
+  }
+  .quote-field {
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+  }
+  .quote-field h3 {
+    margin-bottom: 10px;
+    font-size: 0.7rem;
+  }
+  .quote-options,
+  .quote-options.three,
+  .quote-addons {
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
+  }
+  .quote-options button,
+  .quote-addons button {
+    min-height: 44px;
+    padding: 9px 10px;
+    border-radius: 8px;
+    font-size: 0.66rem;
+  }
+  .quote-addons button:last-child {
+    grid-column: 1 / -1;
+  }
+  .quote-result-panel {
+    min-height: 0;
+    padding: 22px 18px 18px;
+    border-radius: 16px;
+  }
+  .quote-result-panel > p {
+    font-size: 0.6rem;
+  }
+  .quote-result-panel > strong {
+    margin: 11px 0 9px;
+    font-size: clamp(1.65rem, 9vw, 2.25rem);
+    line-height: 1.05;
+  }
+  .quote-result-panel > small {
+    font-size: 0.68rem;
+    line-height: 1.5;
+  }
+  .quote-cta {
+    margin-top: 18px;
+    min-height: 48px;
+    padding: 13px;
+    font-size: 0.7rem;
+  }
+  .quote-reset {
+    margin-top: 5px;
+    padding: 9px;
+  }
+  .quote-saved {
+    margin-top: 10px;
+    font-size: 0.64rem;
+  }
+}
+@media (max-width: 380px) {
+  .quote-calculator-container {
+    width: calc(100% - 18px);
+  }
+  .quote-form-panel {
+    padding: 13px;
   }
   .quote-options,
   .quote-options.three,
   .quote-addons {
     grid-template-columns: 1fr;
   }
-  .quote-form-panel {
-    padding: 20px;
-  }
-  .quote-result-panel {
-    padding: 25px;
+  .quote-addons button:last-child {
+    grid-column: auto;
   }
   .quote-result-panel > strong {
-    font-size: 2.1rem;
+    font-size: 1.55rem;
   }
 }
