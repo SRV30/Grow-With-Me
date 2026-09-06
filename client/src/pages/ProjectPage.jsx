@@ -54,11 +54,7 @@ export default function ProjectPage() {
   }, [project])
 
   if (loading) {
-    return (
-      <main className="project-detail-page project-detail-loading">
-        Loading project…
-      </main>
-    )
+    return <main className="project-detail-page project-detail-loading">Loading project…</main>
   }
 
   if (error || !project) {
@@ -95,7 +91,9 @@ export default function ProjectPage() {
           <Link to="/">Home</Link>
           <Link to="/about">About</Link>
           <Link to="/services">Services</Link>
-          <Link to="/work" className="active">Work</Link>
+          <Link to="/work" className="active">
+            Work
+          </Link>
           <Link to="/contact">Contact</Link>
         </nav>
         <Link to="/contact" className="project-detail-start">
@@ -110,19 +108,33 @@ export default function ProjectPage() {
 
         <div className="project-detail-hero-grid">
           <div className="project-detail-hero-copy">
-            <div className="project-detail-kicker" data-project-reveal>{category}</div>
+            <div className="project-detail-kicker" data-project-reveal>
+              {category}
+            </div>
             <h1 className="project-detail-title" data-project-reveal>
-              {project.title}<em>.</em>
+              {project.title}
+              <em>.</em>
             </h1>
             <p className="project-detail-tagline" data-project-reveal>
               More than a project, it&apos;s an experience.
             </p>
-            <p className="project-detail-summary" data-project-reveal>{project.description}</p>
+            <p className="project-detail-summary" data-project-reveal>
+              {project.description}
+            </p>
 
             <div className="project-detail-meta" data-project-reveal>
-              <div><strong>{project.year || '—'}</strong><span>Year</span></div>
-              <div><strong>{project.client || 'Personal Project'}</strong><span>Client</span></div>
-              <div><strong>{category}</strong><span>Category</span></div>
+              <div>
+                <strong>{project.year || '—'}</strong>
+                <span>Year</span>
+              </div>
+              <div>
+                <strong>{project.client || 'Personal Project'}</strong>
+                <span>Client</span>
+              </div>
+              <div>
+                <strong>{category}</strong>
+                <span>Category</span>
+              </div>
             </div>
           </div>
 
@@ -152,7 +164,9 @@ export default function ProjectPage() {
         <section className="project-detail-container project-detail-focus" data-project-reveal>
           {services.map((service) => (
             <div className="project-detail-focus-item" key={service}>
-              <span className="project-detail-focus-icon"><Check size={18} /></span>
+              <span className="project-detail-focus-icon">
+                <Check size={18} />
+              </span>
               <div>
                 <strong>{service}</strong>
                 <span>Thoughtful design focused on the project experience.</span>
@@ -195,7 +209,9 @@ export default function ProjectPage() {
             ))}
           </div>
         ) : (
-          <div className="project-detail-empty-gallery">More project visuals will be added here.</div>
+          <div className="project-detail-empty-gallery">
+            More project visuals will be added here.
+          </div>
         )}
       </section>
 
