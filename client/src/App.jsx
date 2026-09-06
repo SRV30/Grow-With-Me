@@ -25,6 +25,7 @@ import {
   X,
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import logoImage from './assets/logo.PNG'
 import { services, industries, process } from './data/site.js'
 import { api, getHomepage, getProjects, getServices } from './services/api.js'
 import SEO from './components/SEO.jsx'
@@ -50,10 +51,11 @@ const processIcons = [Users, CalendarDays, PenTool, ImageIcon, Rocket, ArrowRigh
 function Logo() {
   return (
     <a className="figma-logo" href="#top" aria-label="Grow With Me home">
-      <span className="figma-logo-mark">G</span>
-      <span>
-        GROW WITH<small>ME</small>
-      </span>
+      <img
+        src={logoImage}
+        alt="Grow With Me"
+        style={{ width: '300px', maxWidth: '100%', height: 'auto', display: 'block' }}
+      />
     </a>
   )
 }
@@ -313,7 +315,7 @@ function ServicesSection({ servicesList }) {
               <Link
                 className="row-service-card"
                 key={service._id || service.title}
-                to={`/work?service=${service.slug}`}
+                to={`/services/${(service.title || '').trim().toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`}
                 aria-label={`View ${service.title} portfolio`}
               >
                 <Icon className="row-service-icon" size={42} />
