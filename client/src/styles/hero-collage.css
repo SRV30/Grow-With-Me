@@ -393,26 +393,25 @@
 
   .hero-collage {
     width: 100%;
-    min-height: 330px;
+    min-height: 390px;
     margin-top: 4px;
   }
 
-  /* Mobile: show exactly one random project, large enough to read its artwork. */
   .hero-collage-card {
     display: none;
   }
 
   .hero-collage-card.hero-collage-mobile-selected {
     display: block;
-    top: 2%;
+    top: 1%;
     left: 50%;
     right: auto;
     bottom: auto;
-    width: min(68%, 255px);
+    width: min(78%, 295px);
     aspect-ratio: 0.76;
     transform: translateX(-50%) rotate(-3deg);
-    border-radius: 20px;
-    box-shadow: 0 24px 48px rgba(17, 17, 17, 0.2);
+    border-radius: 22px;
+    box-shadow: 0 26px 52px rgba(17, 17, 17, 0.22);
     z-index: 6;
   }
 
@@ -426,14 +425,14 @@
 
   .hero-collage-dots {
     top: 4%;
-    right: 7%;
+    right: 5%;
     width: 92px;
     height: 74px;
     background-size: 9px 9px;
   }
 
   .hero-collage::before {
-    inset: 4% 8% 0;
+    inset: 2% 5% 0;
     background: radial-gradient(circle, rgba(245, 196, 0, 0.2), transparent 66%);
   }
 
@@ -446,16 +445,16 @@
 
   .hero-collage-heart {
     top: 28%;
-    left: 6%;
+    left: 3%;
   }
 
   .hero-collage-play {
-    top: 50%;
-    right: 5%;
+    top: 48%;
+    right: 3%;
   }
 
   .hero-collage-dot {
-    bottom: 6%;
+    bottom: 4%;
     left: 50%;
     width: 27px;
     height: 27px;
