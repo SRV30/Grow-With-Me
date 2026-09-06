@@ -343,27 +343,6 @@ function WorkSection({ projects }) {
     </section>
   )
 }
-function FeaturedSection({ projects }) {
-  return (
-    <section className="row-section row-white">
-      <div className="row-container">
-        <SectionHeading
-          eyebrow="Our work"
-          title="Featured Work"
-          description="A glimpse of our creative projects that deliver results and build strong brand presence."
-        />
-        <div className="row-featured-grid">
-          {projects.map((project) => (
-            <ProjectCard key={project._id} project={project} />
-          ))}
-        </div>
-        <a className="figma-yellow-button row-centered-button" href="/work">
-          View All Projects <ArrowRight size={17} />
-        </a>
-      </div>
-    </section>
-  )
-}
 function ProcessSection({ processItems }) {
   return (
     <section className="row-section row-light">
@@ -675,7 +654,6 @@ export default function App() {
         <TrustSection />
         <ServicesSection />
         <WorkSection projects={featuredProjects} />
-        <FeaturedSection projects={featuredProjects} />
         <ProcessSection processItems={liveProcess} />
         <IndustriesSection industriesList={liveIndustries} />
         <AboutSection about={about} aboutImage={aboutImage} />
