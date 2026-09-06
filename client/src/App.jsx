@@ -24,6 +24,7 @@ import {
   Utensils,
   X,
 } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { services, industries, process } from './data/site.js'
 import { api, getHomepage, getProjects } from './services/api.js'
 import SEO from './components/SEO.jsx'
@@ -296,12 +297,17 @@ function ServicesSection() {
           {services.map((service, index) => {
             const Icon = serviceIcons[index] || PenTool
             return (
-              <article className="row-service-card" key={service.title}>
+              <Link
+                className="row-service-card"
+                key={service.title}
+                to={`/work?service=${encodeURIComponent(service.title)}`}
+                aria-label={`View ${service.title} portfolio`}
+              >
                 <Icon className="row-service-icon" size={42} />
                 <h3>{service.title}</h3>
                 <p>{service.text}</p>
                 <ArrowRight className="row-service-arrow" size={22} />
-              </article>
+              </Link>
             )
           })}
         </div>
