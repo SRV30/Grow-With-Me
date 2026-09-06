@@ -4,13 +4,17 @@ import MediaPicker from './MediaPicker.jsx'
 import { createAdminProject, updateAdminProject } from './api.js'
 
 const categories = [
-  'social-media',
-  'posters',
-  'reels',
-  'advertisements',
-  'branding',
-  'websites',
-  'other',
+  { value: 'social-media', label: 'Social Media Management' },
+  { value: 'reels', label: 'Reels & Video Editing' },
+  { value: 'graphic-design', label: 'Graphic Designing' },
+  { value: 'social-media-advertising', label: 'Social Media Advertising' },
+  { value: 'business-promotion', label: 'Business Promotion' },
+  { value: 'website-design', label: 'Website Design' },
+  { value: 'posters', label: 'Posters' },
+  { value: 'advertisements', label: 'Advertisements' },
+  { value: 'branding', label: 'Branding' },
+  { value: 'websites', label: 'Websites' },
+  { value: 'other', label: 'Other' },
 ]
 const emptyProject = {
   title: '',
@@ -151,8 +155,8 @@ export default function ProjectEditor({ project, onBack, onSaved }) {
                   onChange={(e) => update({ category: e.target.value })}
                 >
                   {categories.map((category) => (
-                    <option key={category} value={category}>
-                      {category.replace('-', ' ')}
+                    <option key={category.value} value={category.value}>
+                      {category.label}
                     </option>
                   ))}
                 </select>
