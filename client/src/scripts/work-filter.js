@@ -12,19 +12,19 @@ const getWorkItems = () => Array.from(document.querySelectorAll('#work .figma-pr
 
 const getCategoryForService = (serviceTitle) => {
   const requested = new Set(normalize(serviceTitle).split(' ').filter(Boolean))
-  const categories = [...new Set(
-    getWorkItems()
-      .map((item) => item.querySelector('.figma-project-overlay span')?.textContent)
-      .filter(Boolean)
-      .map(normalize),
-  )]
+  const categories = [
+    ...new Set(
+      getWorkItems()
+        .map((item) => item.querySelector('.figma-project-overlay span')?.textContent)
+        .filter(Boolean)
+        .map(normalize),
+    ),
+  ]
 
   let bestCategory = ''
   let bestScore = 0
   categories.forEach((category) => {
-    const score = category
-      .split(' ')
-      .filter((token) => requested.has(token)).length
+    const score = category.split(' ').filter((token) => requested.has(token)).length
     if (score > bestScore) {
       bestScore = score
       bestCategory = category
