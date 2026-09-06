@@ -84,7 +84,12 @@ export default function MediaPicker({
               {multiple ? 's' : ''}
             </h2>
           </div>
-          <button type="button" className="admin-close" onClick={onClose} aria-label="Close media picker">
+          <button
+            type="button"
+            className="admin-close"
+            onClick={onClose}
+            aria-label="Close media picker"
+          >
             <X />
           </button>
         </header>
@@ -95,10 +100,16 @@ export default function MediaPicker({
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        {error && <p className="admin-error" role="alert">{error}</p>}
+        {error && (
+          <p className="admin-error" role="alert">
+            {error}
+          </p>
+        )}
         <div className="admin-picker-grid">
           {loading ? (
-            <div className="admin-empty" role="status">Loading media…</div>
+            <div className="admin-empty" role="status">
+              Loading media…
+            </div>
           ) : filtered.length === 0 ? (
             <div className="admin-empty">No matching media found.</div>
           ) : (
