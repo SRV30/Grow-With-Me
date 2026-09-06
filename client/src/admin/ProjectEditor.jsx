@@ -1,27 +1,15 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ArrowLeft, ImagePlus, Save, Trash2, Video } from 'lucide-react'
 import MediaPicker from './MediaPicker.jsx'
 import { createAdminProject, updateAdminProject } from './api.js'
-
-const categories = [
-  { value: 'social-media', label: 'Social Media Management' },
-  { value: 'reels', label: 'Reels & Video Editing' },
-  { value: 'graphic-design', label: 'Graphic Designing' },
-  { value: 'social-media-advertising', label: 'Social Media Advertising' },
-  { value: 'business-promotion', label: 'Business Promotion' },
-  { value: 'posters', label: 'Posters' },
-  { value: 'advertisements', label: 'Advertisements' },
-  { value: 'branding', label: 'Branding' },
-  { value: 'websites', label: 'Websites' },
-  { value: 'other', label: 'Other' },
-]
+import { getServices } from '../services/api.js'
 
 const emptyProject = {
   title: '',
   slug: '',
   description: '',
   client: '',
-  category: 'social-media',
+  category: '',
   year: new Date().getFullYear(),
   liveUrl: '',
   services: [],
@@ -66,9 +54,24 @@ const mediaKey = (item, index) => item.publicId || item.url || `${index}`
 
 export default function ProjectEditor({ project, onBack, onSaved }) {
   const [form, setForm] = useState(normalize(project))
+  const [availableServices, setAvailableServices] = useState([])
   const [picker, setPicker] = useState(null)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
+
+  useEffect(() => {
+    let active = true
+    getServices()
+      .then((result) => {
+        if (active) setAvailableServices(Array.isArray(result) ? result : [])
+      })
+      .catch(() => {
+        if (active) setAvailableServices([])
+      })
+    return () => {
+      active = false
+    }
+  }, [])
 
   const update = (patch) => setForm((current) => ({ ...current, ...patch }))
 
@@ -87,10 +90,12 @@ export default function ProjectEditor({ project, onBack, onSaved }) {
     const slug = slugify(form.slug)
     const category = form.category.trim().toLowerCase()
     const liveUrl = form.liveUrl.trim()
+    const serviceSlugs = new Set(availableServices.map((service) => service.slug).filter(Boolean))
 
     if (!title) return setError('Project title is required.')
     if (!slug) return setError('Project slug is required.')
-    if (!category) return setError('Project category is required.')
+    if (!category) return setError('Please select a service.')
+    if (!serviceSlugs.has(category)) return setError('Please select an existing service.')
     if (form.coverImage && !(form.coverImage.secureUrl || form.coverImage.url)) {
       return setError('The selected cover image is missing its URL. Please choose it again.')
     }
@@ -119,9 +124,6 @@ export default function ProjectEditor({ project, onBack, onSaved }) {
         category,
         ...(Number.isFinite(numericYear) && numericYear > 0 ? { year: numericYear } : {}),
         liveUrl: category === 'websites' ? liveUrl : '',
-        services: Array.isArray(form.services)
-          ? form.services.map((service) => service.trim()).filter(Boolean)
-          : [],
         featured: form.featured === true,
         published: form.published === true,
         order: Number.isFinite(numericOrder) && numericOrder >= 0 ? numericOrder : 0,
@@ -243,28 +245,17 @@ export default function ProjectEditor({ project, onBack, onSaved }) {
                   value={form.category}
                   onChange={(e) => update({ category: e.target.value })}
                   required
+                  disabled={!availableServices.length}
                 >
-                  {categories.map((category) => (
-                    <option key={category.value} value={category.value}>
-                      {category.label}
+                  <option value="" disabled>
+                    {availableServices.length ? 'Select a service' : 'Loading services…'}
+                  </option>
+                  {availableServices.map((service) => (
+                    <option key={service._id || service.slug} value={service.slug}>
+                      {service.title}
                     </option>
                   ))}
                 </select>
-              </label>
-              <label>
-                Services
-                <input
-                  value={form.services.join(', ')}
-                  placeholder="Social Media, Design"
-                  onChange={(e) =>
-                    update({
-                      services: e.target.value
-                        .split(',')
-                        .map((v) => v.trim())
-                        .filter(Boolean),
-                    })
-                  }
-                />
               </label>
               {form.category === 'websites' ? (
                 <label className="full">
