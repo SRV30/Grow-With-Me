@@ -23,7 +23,9 @@ api.interceptors.response.use(
     if (mutationMethods.has(method)) {
       const message =
         error.response?.data?.message ||
-        (error.response?.status === 401 ? 'Your session has expired. Please sign in again.' : 'Something went wrong. Please try again.')
+        (error.response?.status === 401
+          ? 'Your session has expired. Please sign in again.'
+          : 'Something went wrong. Please try again.')
       notify(message, 'error', 5000)
     }
     return Promise.reject(error)
