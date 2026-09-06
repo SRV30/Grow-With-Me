@@ -1,0 +1,263 @@
+/* Mobile typography and spacing polish. Keeps the existing desktop design unchanged. */
+@media (max-width: 767px) {
+  .figma-site {
+    min-width: 0;
+  }
+
+  .figma-header-inner {
+    min-height: 64px;
+    padding: 0 18px;
+  }
+
+  .figma-logo {
+    gap: 7px;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+  }
+
+  .figma-logo-mark {
+    width: 26px;
+    height: 26px;
+    font-size: 12px;
+  }
+
+  .figma-nav {
+    gap: 16px;
+  }
+
+  .figma-nav a {
+    font-size: 10px;
+  }
+
+  .figma-hero-section {
+    display: flex;
+    min-height: auto;
+    flex-direction: column;
+    gap: 24px;
+    padding: 36px 18px 30px;
+  }
+
+  .figma-hero-copy {
+    align-self: stretch;
+  }
+
+  .figma-eyebrow {
+    margin-bottom: 10px;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+  }
+
+  .figma-hero-copy h1 {
+    max-width: 100%;
+    font-size: clamp(38px, 11vw, 52px);
+    letter-spacing: -0.055em;
+    line-height: 0.98;
+  }
+
+  .figma-hero-services {
+    max-width: 100%;
+    margin-top: 16px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .figma-hero-description {
+    max-width: 100%;
+    margin-top: 12px;
+    font-size: 12px;
+    line-height: 1.7;
+  }
+
+  .figma-actions {
+    gap: 8px;
+    margin-top: 18px;
+  }
+
+  .figma-yellow-button,
+  .figma-outline-button,
+  .figma-dark-button {
+    min-height: 42px;
+    padding: 0 14px;
+    font-size: 11px;
+  }
+
+  .figma-hero-art {
+    min-height: 300px;
+    width: 100%;
+  }
+
+  .figma-hero-art > img {
+    width: 78%;
+    height: 280px;
+  }
+
+  .figma-trust-strip {
+    grid-template-columns: repeat(2, 1fr);
+    min-height: auto;
+    gap: 0;
+    padding: 8px 14px;
+  }
+
+  .figma-trust-strip > div {
+    min-height: 76px;
+    gap: 9px;
+    padding: 12px 10px;
+  }
+
+  .figma-trust-strip > div:nth-child(2) {
+    border-right: 0;
+  }
+
+  .figma-trust-strip > div:nth-child(-n + 2) {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.24);
+  }
+
+  .figma-trust-strip b {
+    font-size: 10px;
+  }
+
+  .figma-trust-strip span {
+    margin-top: 3px;
+    font-size: 9px;
+    line-height: 1.45;
+  }
+
+  .figma-section {
+    padding: 40px 18px;
+  }
+
+  .figma-section-heading h2 {
+    font-size: clamp(30px, 9vw, 42px);
+    letter-spacing: -0.055em;
+    line-height: 1;
+  }
+
+  .figma-section-heading p:not(.figma-eyebrow) {
+    max-width: 100%;
+    margin-top: 12px;
+    font-size: 12px;
+    line-height: 1.65;
+  }
+
+  .figma-service-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .figma-service-card {
+    min-height: 170px;
+    padding: 18px;
+  }
+
+  .figma-service-number {
+    top: 17px;
+    right: 17px;
+    font-size: 9px;
+  }
+
+  .figma-service-card h3 {
+    max-width: calc(100% - 30px);
+    margin: 16px 0 8px;
+    font-size: 20px;
+    line-height: 1.12;
+  }
+
+  .figma-service-card p {
+    max-width: 100%;
+    font-size: 11px;
+    line-height: 1.6;
+  }
+
+  .figma-card-arrow {
+    right: 17px;
+    bottom: 16px;
+  }
+
+  .figma-work-section {
+    padding-top: 40px;
+  }
+
+  .figma-work-filters {
+    justify-content: flex-start;
+    gap: 7px;
+    margin: 18px 0 16px;
+    overflow-x: auto;
+    padding-bottom: 3px;
+    scrollbar-width: none;
+  }
+
+  .figma-work-filters::-webkit-scrollbar {
+    display: none;
+  }
+
+  .figma-work-filters button {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    font-size: 10px;
+  }
+
+  .figma-work-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .figma-work-grid .figma-project-card,
+  .figma-project-card {
+    min-height: 150px;
+  }
+
+  .figma-project-overlay {
+    padding: 34px 10px 10px;
+  }
+
+  .figma-project-overlay span {
+    font-size: 8px;
+  }
+
+  .figma-project-overlay strong {
+    margin-top: 3px;
+    font-size: 12px;
+    line-height: 1.2;
+  }
+
+  .figma-empty-work {
+    padding: 28px 18px;
+    font-size: 11px;
+    line-height: 1.6;
+  }
+
+  .figma-featured-section,
+  .figma-process-section,
+  .figma-industries-section,
+  .figma-about-section {
+    padding: 40px 18px 30px;
+  }
+
+  .figma-featured-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 22px;
+  }
+
+  .figma-featured-grid .figma-project-card {
+    min-height: 190px;
+  }
+
+  .figma-process-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+    margin-top: 22px;
+  }
+
+  .figma-process-grid article {
+    min-height: auto;
+    border-right: 0;
+    border-bottom: 1px solid var(--figma-line);
+    padding: 20px 8px;
+  }
+
+  .figma-process-grid article:last-child {
+    border-bottom: 0;
+  }
+}
