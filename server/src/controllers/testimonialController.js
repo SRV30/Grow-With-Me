@@ -1,4 +1,3 @@
-import mongoose from 'mongoose'
 import { Testimonial } from '../models/Testimonial.js'
 
 export const listTestimonials = async (req, res, next) => {
