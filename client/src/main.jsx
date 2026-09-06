@@ -11,6 +11,7 @@ import ScrollChoreography from './components/ScrollChoreography.jsx'
 import PageTransition from './components/PageTransition.jsx'
 import PageMotion from './components/PageMotion.jsx'
 import HeaderEnhancer from './components/HeaderEnhancer.jsx'
+import ManualChatbot from './components/ManualChatbot.jsx'
 import './styles/index.css'
 import './styles/accessibility.css'
 import './styles/responsive.css'
@@ -32,6 +33,7 @@ import './styles/mobile-balanced.css'
 import './styles/mobile-hero-three.css'
 import './styles/mobile-hero-design.css'
 import './styles/mobile-trust.css'
+import './styles/manual-chatbot.css'
 import './styles/notifications.css'
 import './admin/admin.css'
 import './admin/user-management.css'
@@ -79,6 +81,7 @@ function PublicShell() {
       <PageMotion />
       <DeferredHero3D />
       <HeaderEnhancer />
+      <ManualChatbot />
     </>
   )
 }
