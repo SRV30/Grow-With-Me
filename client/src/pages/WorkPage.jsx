@@ -7,19 +7,25 @@ import CloudinaryImage from '../components/CloudinaryImage.jsx'
 import { EmptyState, LoadingState, ErrorState } from '../components/StatusState.jsx'
 import '../styles/work-page.css'
 
-const filters = [
-  'All',
-  'Social Media',
-  'Video',
-  'Graphic Design',
-  'Digital Marketing',
-  'Web Design',
-]
-const normalizeCategory = (value = '') => value.toLowerCase().replaceAll('-', ' ').trim()
+const normalizeCategory = (value = '') =>
+  value
+    .toLowerCase()
+    .replaceAll('-', ' ')
+    .replaceAll('&', ' and ')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+
+const formatCategory = (value = '') =>
+  value
+    .replaceAll('-', ' ')
+    .replaceAll('_', ' ')
+    .trim()
+    .replace(/\b\w/g, (letter) => letter.toUpperCase())
 
 function ProjectCard({ project, index }) {
   const featured = index === 0
-  const category = project.category?.replaceAll('-', ' ') || 'Creative project'
+  const category = formatCategory(project.category) || 'Creative project'
 
   return (
     <Link
@@ -91,11 +97,41 @@ export default function WorkPage() {
     load()
   }, [])
 
+  const categories = useMemo(() => {
+    const unique = []
+    projects.forEach((project) => {
+      if (!project.category) return
+      if (!unique.some((category) => normalizeCategory(category) === normalizeCategory(project.category))) {
+        unique.push(project.category)
+      }
+    })
+    return unique
+  }, [projects])
+
+  useEffect(() => {
+    const requestedFilter = new URLSearchParams(window.location.search).get('service')
+    if (!requestedFilter) return
+
+    const selected = categories.find(
+      (category) => normalizeCategory(category) === normalizeCategory(requestedFilter),
+    )
+    if (selected) setActive(selected)
+  }, [categories])
+
   const visible = useMemo(() => {
     if (active === 'All') return projects
     const selected = normalizeCategory(active)
     return projects.filter((project) => normalizeCategory(project.category) === selected)
   }, [projects, active])
+
+  const selectCategory = (category) => {
+    setActive(category)
+    const params = new URLSearchParams(window.location.search)
+    if (category === 'All') params.delete('service')
+    else params.set('service', category)
+    const query = params.toString()
+    window.history.replaceState({}, '', `${window.location.pathname}${query ? `?${query}` : ''}`)
+  }
 
   return (
     <main className="work-page work-theme">
@@ -216,15 +252,15 @@ export default function WorkPage() {
             <Filter size={14} /> Filter projects
           </span>
           <div className="work-filters" role="group" aria-label="Filter projects">
-            {filters.map((filter) => (
+            {['All', ...categories].map((filter) => (
               <button
                 type="button"
                 key={filter}
                 aria-pressed={active === filter}
                 className={active === filter ? 'is-active' : ''}
-                onClick={() => setActive(filter)}
+                onClick={() => selectCategory(filter)}
               >
-                {filter}
+                {filter === 'All' ? 'All' : formatCategory(filter)}
               </button>
             ))}
           </div>
