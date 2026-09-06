@@ -54,7 +54,11 @@ const initializeWorkFilters = () => {
   })
 
   const requestedFilter = new URLSearchParams(window.location.search).get('service')
-  if (requestedFilter && buttons.length && !document.documentElement.dataset.gwmRequestedServiceApplied) {
+  if (
+    requestedFilter &&
+    buttons.length &&
+    !document.documentElement.dataset.gwmRequestedServiceApplied
+  ) {
     const selected = normalize(requestedFilter)
     const button = Array.from(buttons).find((item) => normalize(item.dataset.filter) === selected)
     if (button) {
