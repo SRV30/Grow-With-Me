@@ -30,6 +30,16 @@ import Enquiries from './Enquiries.jsx'
 import UserManagement from './UserManagement.jsx'
 import TestimonialsManager from '../pages/admin/TestimonialsManager.jsx'
 
+const unwrapProjects = (value) => {
+  if (Array.isArray(value)) return value
+  if (Array.isArray(value?.projects)) return value.projects
+  if (Array.isArray(value?.data)) return value.data
+  return []
+}
+
+const getErrorMessage = (error, fallback) =>
+  error?.response?.data?.message || error?.message || fallback
+
 function Login({ onLogin }) {
   const [email, setEmail] = useState(''),
     [password, setPassword] = useState(''),
@@ -106,42 +116,59 @@ function Dashboard({ admin, onLogout }) {
     [projects, setProjects] = useState([]),
     [loading, setLoading] = useState(true),
     [error, setError] = useState(''),
-    [editor, setEditor] = useState(null)
+    [editor, setEditor] = useState(null),
+    [actionId, setActionId] = useState(null)
+
   const load = async () => {
     setLoading(true)
     setError('')
     try {
-      setProjects(await getAdminProjects())
+      const result = await getAdminProjects()
+      setProjects(unwrapProjects(result))
     } catch (e) {
-      setError(e.response?.data?.message || 'Unable to load projects')
+      setProjects([])
+      setError(getErrorMessage(e, 'Unable to load projects'))
     } finally {
       setLoading(false)
     }
   }
+
   useEffect(() => {
     load()
   }, [])
+
   const toggle = async (id, field, value) => {
+    setActionId(id)
+    setError('')
     try {
       await updateProjectFlags(id, { [field]: value })
       await load()
     } catch (e) {
-      setError(e.response?.data?.message || 'Unable to update project')
+      setError(getErrorMessage(e, 'Unable to update project'))
+    } finally {
+      setActionId(null)
     }
   }
+
   const remove = async (id) => {
     if (!window.confirm('Delete this project permanently?')) return
+    setActionId(id)
+    setError('')
     try {
       await deleteAdminProject(id)
       await load()
     } catch (e) {
-      setError(e.response?.data?.message || 'Unable to delete project')
+      setError(getErrorMessage(e, 'Unable to delete project'))
+    } finally {
+      setActionId(null)
     }
   }
+
   const saved = async () => {
     setEditor(null)
     await load()
   }
+
   const nav = (next) => {
     setView(next)
     if (next === 'projects') load()
@@ -231,6 +258,7 @@ function Dashboard({ admin, onLogout }) {
                   onClick={load}
                   title="Refresh"
                   aria-label="Refresh projects"
+                  disabled={loading}
                 >
                   <RefreshCw size={17} />
                 </button>
@@ -238,6 +266,7 @@ function Dashboard({ admin, onLogout }) {
                   type="button"
                   className="admin-primary admin-add"
                   onClick={() => setEditor('new')}
+                  disabled={loading}
                 >
                   <Plus size={17} aria-hidden="true" /> New project
                 </button>
@@ -255,11 +284,11 @@ function Dashboard({ admin, onLogout }) {
               </div>
               <div>
                 <span>Published</span>
-                <strong>{projects.filter((p) => p.published).length}</strong>
+                <strong>{projects.filter((p) => p?.published).length}</strong>
               </div>
               <div>
                 <span>Featured</span>
-                <strong>{projects.filter((p) => p.featured).length}</strong>
+                <strong>{projects.filter((p) => p?.featured).length}</strong>
               </div>
             </section>
             <section className="admin-table-wrap" aria-label="Projects">
@@ -276,53 +305,62 @@ function Dashboard({ admin, onLogout }) {
               ) : projects.length === 0 ? (
                 <div className="admin-empty">No projects yet. Create your first project.</div>
               ) : (
-                projects.map((project) => (
-                  <article className="admin-project-row" key={project._id}>
-                    <button
-                      type="button"
-                      className="admin-project-link"
-                      onClick={() => setEditor(project)}
-                    >
-                      <strong>{project.title}</strong>
-                      <small>
-                        {project.client || 'No client'} · {project.year || '—'}
-                      </small>
-                    </button>
-                    <span className="admin-category">{project.category.replace('-', ' ')}</span>
-                    <div className="admin-statuses">
+                projects.map((project) => {
+                  const id = project?._id || project?.id
+                  const category = project?.category || 'other'
+                  const busy = actionId === id
+                  return (
+                    <article className="admin-project-row" key={id || project?.slug || project?.title}>
                       <button
                         type="button"
-                        className={project.published ? 'status on' : 'status'}
-                        onClick={() => toggle(project._id, 'published', !project.published)}
-                        aria-label={`${project.published ? 'Unpublish' : 'Publish'} ${project.title}`}
+                        className="admin-project-link"
+                        onClick={() => setEditor(project)}
+                        disabled={busy}
                       >
-                        {project.published ? 'Published' : 'Draft'}
+                        <strong>{project?.title || 'Untitled project'}</strong>
+                        <small>
+                          {project?.client || 'No client'} · {project?.year || '—'}
+                        </small>
                       </button>
+                      <span className="admin-category">{String(category).replace(/-/g, ' ')}</span>
+                      <div className="admin-statuses">
+                        <button
+                          type="button"
+                          className={project?.published ? 'status on' : 'status'}
+                          onClick={() => toggle(id, 'published', !project?.published)}
+                          disabled={!id || busy}
+                          aria-label={`${project?.published ? 'Unpublish' : 'Publish'} ${project?.title || 'project'}`}
+                        >
+                          {project?.published ? 'Published' : 'Draft'}
+                        </button>
+                        <button
+                          type="button"
+                          className={project?.featured ? 'status star on' : 'status star'}
+                          title="Toggle featured"
+                          aria-label={`Toggle featured for ${project?.title || 'project'}`}
+                          onClick={() => toggle(id, 'featured', !project?.featured)}
+                          disabled={!id || busy}
+                        >
+                          <Star
+                            size={14}
+                            aria-hidden="true"
+                            fill={project?.featured ? 'currentColor' : 'none'}
+                          />
+                        </button>
+                      </div>
                       <button
                         type="button"
-                        className={project.featured ? 'status star on' : 'status star'}
-                        title="Toggle featured"
-                        aria-label={`Toggle featured for ${project.title}`}
-                        onClick={() => toggle(project._id, 'featured', !project.featured)}
+                        className="admin-danger"
+                        onClick={() => remove(id)}
+                        title="Delete"
+                        aria-label={`Delete ${project?.title || 'project'}`}
+                        disabled={!id || busy}
                       >
-                        <Star
-                          size={14}
-                          aria-hidden="true"
-                          fill={project.featured ? 'currentColor' : 'none'}
-                        />
+                        <Trash2 size={16} aria-hidden="true" />
                       </button>
-                    </div>
-                    <button
-                      type="button"
-                      className="admin-danger"
-                      onClick={() => remove(project._id)}
-                      title="Delete"
-                      aria-label={`Delete ${project.title}`}
-                    >
-                      <Trash2 size={16} aria-hidden="true" />
-                    </button>
-                  </article>
-                ))
+                    </article>
+                  )
+                })
               )}
             </section>
           </>
