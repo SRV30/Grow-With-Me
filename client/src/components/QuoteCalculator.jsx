@@ -179,11 +179,7 @@ export default function QuoteCalculator() {
             <small>
               Based on your selections. This is a starting range, not a final quotation.
             </small>
-            <Link
-              to={`/${contactHash}`}
-              className="quote-cta"
-              onClick={() => setSubmitted(true)}
-            >
+            <Link to={`/${contactHash}`} className="quote-cta" onClick={() => setSubmitted(true)}>
               Get this estimate <ArrowRight size={17} />
             </Link>
             <button className="quote-reset" type="button" onClick={reset}>
