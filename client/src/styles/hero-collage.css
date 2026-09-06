@@ -393,47 +393,57 @@
 
   .hero-collage {
     width: 100%;
-    min-height: 330px;
-    margin-top: 4px;
+    min-height: 700px;
+    margin-top: 8px;
   }
 
-  /* Mobile: show exactly one random project, large enough to read its artwork. */
+  /* Mobile: show two project images in a clean vertical stack. */
   .hero-collage-card {
     display: none;
   }
 
-  .hero-collage-card.hero-collage-mobile-selected {
+  .hero-collage-card-1,
+  .hero-collage-card-2 {
     display: block;
-    top: 2%;
     left: 50%;
     right: auto;
-    bottom: auto;
-    width: min(68%, 255px);
+    width: min(72%, 270px);
     aspect-ratio: 0.76;
-    transform: translateX(-50%) rotate(-3deg);
     border-radius: 20px;
     box-shadow: 0 24px 48px rgba(17, 17, 17, 0.2);
     z-index: 6;
   }
 
-  .hero-collage-card.hero-collage-mobile-selected:hover {
-    transform: translateX(-50%) rotate(-1deg) translateY(-5px) scale(1.01);
+  .hero-collage-card-1 {
+    top: 1%;
+    transform: translateX(-50%) rotate(-3deg);
   }
 
-  .hero-collage-card.hero-collage-mobile-selected img {
+  .hero-collage-card-2 {
+    top: 50%;
+    transform: translateX(-50%) rotate(3deg);
+  }
+
+  .hero-collage-card-1:hover,
+  .hero-collage-card-2:hover {
+    transform: translateX(-50%) rotate(0deg) translateY(-5px) scale(1.01);
+  }
+
+  .hero-collage-card-1 img,
+  .hero-collage-card-2 img {
     object-position: center;
   }
 
   .hero-collage-dots {
-    top: 4%;
-    right: 7%;
+    top: 3%;
+    right: 5%;
     width: 92px;
     height: 74px;
     background-size: 9px 9px;
   }
 
   .hero-collage::before {
-    inset: 4% 8% 0;
+    inset: 1% 5% 0;
     background: radial-gradient(circle, rgba(245, 196, 0, 0.2), transparent 66%);
   }
 
@@ -445,17 +455,17 @@
   }
 
   .hero-collage-heart {
-    top: 28%;
-    left: 6%;
+    top: 22%;
+    left: 3%;
   }
 
   .hero-collage-play {
-    top: 50%;
-    right: 5%;
+    top: 69%;
+    right: 3%;
   }
 
   .hero-collage-dot {
-    bottom: 6%;
+    bottom: 1%;
     left: 50%;
     width: 27px;
     height: 27px;

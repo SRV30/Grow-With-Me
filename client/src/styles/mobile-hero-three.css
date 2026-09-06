@@ -1,0 +1,74 @@
+@media (max-width: 520px) {
+  .hero-collage {
+    min-height: 1030px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+  }
+
+  .hero-collage-card,
+  .hero-collage-card.hero-collage-mobile-selected {
+    display: none !important;
+  }
+
+  .hero-collage-card-1,
+  .hero-collage-card-2,
+  .hero-collage-card-3 {
+    display: block !important;
+    position: relative;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    left: auto;
+    flex: 0 0 auto;
+    width: min(76%, 290px);
+    aspect-ratio: 0.76;
+    border-radius: 20px;
+    box-shadow: 0 22px 46px rgba(17, 17, 17, 0.2);
+    z-index: 6;
+  }
+
+  .hero-collage-card-1 {
+    transform: rotate(-3deg);
+  }
+
+  .hero-collage-card-2 {
+    transform: rotate(2deg);
+  }
+
+  .hero-collage-card-3 {
+    transform: rotate(-2deg);
+  }
+
+  .hero-collage-card-1:hover,
+  .hero-collage-card-2:hover,
+  .hero-collage-card-3:hover {
+    transform: translateY(-4px) rotate(0deg) scale(1.01);
+  }
+
+  .hero-collage-card-1 img,
+  .hero-collage-card-2 img,
+  .hero-collage-card-3 img {
+    object-position: center;
+  }
+
+  .hero-collage-dots {
+    top: 0;
+    right: 4%;
+  }
+
+  .hero-collage-heart {
+    top: 29%;
+    left: 2%;
+  }
+
+  .hero-collage-play {
+    top: 66%;
+    right: 2%;
+  }
+
+  .hero-collage-dot {
+    bottom: 1%;
+  }
+}
