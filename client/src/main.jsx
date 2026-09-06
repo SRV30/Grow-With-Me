@@ -38,7 +38,6 @@ import './styles/manual-chatbot.css'
 import './styles/notifications.css'
 import './admin/admin.css'
 import './admin/user-management.css'
-import './scripts/work-filter.js'
 import './scripts/mobile-hero-enhancer.js'
 import './scripts/quote-contact-bridge.js'
 
