@@ -67,6 +67,7 @@ const estimatePricing = {
 }
 const normalize = (value = '') =>
   value
+    .toString()
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, ' ')
     .trim()
@@ -160,6 +161,24 @@ function serviceDescription(title = '') {
 function money(value) {
   return `₹${Math.round(value).toLocaleString('en-IN')}`
 }
+function getEstimateBasePrice(service) {
+  const title = normalize(service?.title || service || '')
+  const key = slugify(service?.slug || service?.title || service || '')
+
+  if (estimatePricing[key]) return estimatePricing[key]
+  if (estimatePricing[slugify(service?.title || '')]) return estimatePricing[slugify(service.title)]
+  if (title.includes('website') || title.includes('web design') || title.includes('web development'))
+    return estimatePricing['website-design']
+  if (title.includes('reel') || title.includes('video')) return estimatePricing['reels-video-editing']
+  if (title.includes('graphic') || title.includes('design')) return estimatePricing['graphic-designing']
+  if (title.includes('advertis') || title.includes('ads'))
+    return estimatePricing['social-media-advertising']
+  if (title.includes('social media') || title.includes('social'))
+    return estimatePricing['social-media-management']
+  if (title.includes('promotion')) return estimatePricing['business-promotion']
+
+  return 2500
+}
 
 function BotMessage({ text, actions, onAction }) {
   return (
@@ -201,9 +220,8 @@ function QuickEstimate({ services, onClose, onContact }) {
         : [...current.addons, key],
     }))
   const selectedService = services.find((item) => item.title === form.service)
-  const serviceKey = selectedService?.slug || slugify(form.service)
   const estimate = useMemo(() => {
-    const base = estimatePricing[serviceKey] || 2500
+    const base = getEstimateBasePrice(selectedService || form.service)
     const size = estimateSizes.find(([key]) => key === form.size)?.[2] || 1
     const complexity = estimateComplexity.find(([key]) => key === form.complexity)?.[2] || 1
     const timeline = estimateTimeline.find(([key]) => key === form.timeline)?.[2] || 1
@@ -212,7 +230,7 @@ function QuickEstimate({ services, onClose, onContact }) {
       .reduce((sum, [, , price]) => sum + price, 0)
     const total = base * size * complexity * timeline + extras
     return { low: total * 0.9, high: total * 1.1 }
-  }, [form, serviceKey])
+  }, [form, selectedService])
   return (
     <div className="gwm-chat-estimate">
       <div className="gwm-chat-estimate-head">
