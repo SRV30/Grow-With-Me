@@ -22,10 +22,22 @@ export const createEnquiry = async (req, res, next) => {
         .json({ success: false, message: 'Name, email and message are required.' })
     }
     if (!EMAIL_RE.test(email)) {
-      return res.status(400).json({ success: false, message: 'Please provide a valid email address.' })
+      return res
+        .status(400)
+        .json({ success: false, message: 'Please provide a valid email address.' })
     }
-    if (name.length > 120 || email.length > 160 || phone.length > 30 || company.length > 160 || service.length > 120 || budget.length > 80 || message.length > 3000) {
-      return res.status(400).json({ success: false, message: 'One or more fields exceed the allowed length.' })
+    if (
+      name.length > 120 ||
+      email.length > 160 ||
+      phone.length > 30 ||
+      company.length > 160 ||
+      service.length > 120 ||
+      budget.length > 80 ||
+      message.length > 3000
+    ) {
+      return res
+        .status(400)
+        .json({ success: false, message: 'One or more fields exceed the allowed length.' })
     }
 
     const enquiry = await Enquiry.create({ name, email, phone, company, service, budget, message })
@@ -67,7 +79,9 @@ export const updateEnquiry = async (req, res, next) => {
     if (Object.prototype.hasOwnProperty.call(req.body, 'notes')) {
       const notes = clean(req.body.notes)
       if (notes.length > 3000) {
-        return res.status(400).json({ success: false, message: 'Notes cannot exceed 3000 characters.' })
+        return res
+          .status(400)
+          .json({ success: false, message: 'Notes cannot exceed 3000 characters.' })
       }
       updates.notes = notes
     }
