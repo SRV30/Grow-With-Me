@@ -310,7 +310,10 @@ function Dashboard({ admin, onLogout }) {
                   const category = project?.category || 'other'
                   const busy = actionId === id
                   return (
-                    <article className="admin-project-row" key={id || project?.slug || project?.title}>
+                    <article
+                      className="admin-project-row"
+                      key={id || project?.slug || project?.title}
+                    >
                       <button
                         type="button"
                         className="admin-project-link"
