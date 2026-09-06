@@ -67,7 +67,9 @@ export default function MediaLibrary() {
 
   const chooseFiles = (event) => {
     const selected = Array.from(event.target.files || [])
-    const invalid = selected.filter((file) => !allowedTypes.has(file.type) || file.size > MAX_FILE_SIZE)
+    const invalid = selected.filter(
+      (file) => !allowedTypes.has(file.type) || file.size > MAX_FILE_SIZE,
+    )
     if (invalid.length) {
       setError(
         `${invalid.length} file${invalid.length === 1 ? '' : 's'} rejected. Use supported image/video formats up to 50 MB each.`,
@@ -120,9 +122,18 @@ export default function MediaLibrary() {
         <div>
           <p className="admin-eyebrow">Cloudinary media</p>
           <h2>Media Library</h2>
-          <p className="admin-muted">Upload images and videos into your Growwithme Cloudinary folders.</p>
+          <p className="admin-muted">
+            Upload images and videos into your Growwithme Cloudinary folders.
+          </p>
         </div>
-        <button type="button" className="admin-icon" onClick={load} title="Refresh" aria-label="Refresh media" disabled={loading || uploading}>
+        <button
+          type="button"
+          className="admin-icon"
+          onClick={load}
+          title="Refresh"
+          aria-label="Refresh media"
+          disabled={loading || uploading}
+        >
           <RefreshCw size={17} />
         </button>
       </div>
@@ -145,24 +156,43 @@ export default function MediaLibrary() {
         <div className="admin-upload-controls">
           <select value={folder} onChange={(e) => setFolder(e.target.value)} disabled={uploading}>
             {folders.map((value) => (
-              <option key={value} value={value}>Growwithme/{value}</option>
+              <option key={value} value={value}>
+                Growwithme/{value}
+              </option>
             ))}
           </select>
-          <button type="submit" className="admin-primary" disabled={!files.length || uploading} aria-busy={uploading}>
+          <button
+            type="submit"
+            className="admin-primary"
+            disabled={!files.length || uploading}
+            aria-busy={uploading}
+          >
             {uploading ? 'Uploading…' : `Upload ${files.length || ''}`}
           </button>
         </div>
         {files.length > 0 && (
           <div className="admin-file-list">
-            {files.map((file) => <span key={`${file.name}-${file.size}-${file.lastModified}`}>{file.name}</span>)}
+            {files.map((file) => (
+              <span key={`${file.name}-${file.size}-${file.lastModified}`}>{file.name}</span>
+            ))}
           </div>
         )}
-        {message && <p className="admin-success" role="status">{message}</p>}
-        {error && <p className="admin-error" role="alert">{error}</p>}
+        {message && (
+          <p className="admin-success" role="status">
+            {message}
+          </p>
+        )}
+        {error && (
+          <p className="admin-error" role="alert">
+            {error}
+          </p>
+        )}
       </form>
       <div className="admin-media-grid">
         {loading ? (
-          <div className="admin-empty" role="status">Loading media…</div>
+          <div className="admin-empty" role="status">
+            Loading media…
+          </div>
         ) : items.length === 0 ? (
           <div className="admin-empty">No media uploaded yet.</div>
         ) : (
@@ -174,12 +204,20 @@ export default function MediaLibrary() {
                   {item.resourceType === 'video' ? (
                     <>
                       <video src={url} muted preload="metadata" controls />
-                      <span className="admin-media-type"><Video size={13} /> Video</span>
+                      <span className="admin-media-type">
+                        <Video size={13} /> Video
+                      </span>
                     </>
                   ) : (
                     <>
-                      <img src={url} alt={item.alt || item.filename || 'Grow With Me media'} loading="lazy" />
-                      <span className="admin-media-type"><ImagePlus size={13} /> Image</span>
+                      <img
+                        src={url}
+                        alt={item.alt || item.filename || 'Grow With Me media'}
+                        loading="lazy"
+                      />
+                      <span className="admin-media-type">
+                        <ImagePlus size={13} /> Image
+                      </span>
                     </>
                   )}
                 </div>
@@ -187,7 +225,9 @@ export default function MediaLibrary() {
                   <strong title={item.filename || item.publicId || ''}>
                     {item.filename || item.publicId?.split('/').pop() || 'Untitled media'}
                   </strong>
-                  <small>{item.folder || 'Growwithme'} · {Math.round((item.bytes || 0) / 1024)} KB</small>
+                  <small>
+                    {item.folder || 'Growwithme'} · {Math.round((item.bytes || 0) / 1024)} KB
+                  </small>
                   <button
                     type="button"
                     className="admin-danger"
