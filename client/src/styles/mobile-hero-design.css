@@ -4,8 +4,7 @@
     padding: 30px 0 44px;
     background:
       radial-gradient(circle at 88% 44%, rgba(245, 196, 0, 0.18), transparent 34%),
-      radial-gradient(circle at 8% 76%, rgba(245, 196, 0, 0.1), transparent 30%),
-      var(--gwm-paper);
+      radial-gradient(circle at 8% 76%, rgba(245, 196, 0, 0.1), transparent 30%), var(--gwm-paper);
   }
 
   .hero-collage-grid {
