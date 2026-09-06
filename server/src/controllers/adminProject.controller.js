@@ -13,31 +13,38 @@ const videoSchema = z.object({
   thumbnail: z.string().url().optional().or(z.literal('')).default(''),
 })
 
-const projectSchema = z.object({
-  title: z.string().min(2).max(160),
-  slug: z
-    .string()
-    .min(2)
-    .max(180)
-    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
-  description: z.string().max(5000).optional().default(''),
-  client: z.string().max(160).optional().default(''),
-  category: z
-    .enum(['social-media', 'posters', 'reels', 'advertisements', 'branding', 'websites', 'other'])
-    .default('social-media'),
-  year: z.coerce.number().int().min(2000).max(2100).optional(),
-  coverImage: imageSchema.nullable().optional().default(null),
-  gallery: z.array(imageSchema).max(50).optional().default([]),
-  videos: z.array(videoSchema).max(20).optional().default([]),
-  services: z.array(z.string().trim().min(1).max(100)).max(20).optional().default([]),
-  featured: z.boolean().optional().default(false),
-  published: z.boolean().optional().default(false),
-  order: z.coerce.number().int().min(0).optional().default(0),
-  seo: z
-    .object({ title: z.string().max(160).optional(), description: z.string().max(320).optional() })
-    .optional()
-    .default({}),
-})
+const projectSchema = z
+  .object({
+    title: z.string().min(2).max(160),
+    slug: z
+      .string()
+      .min(2)
+      .max(180)
+      .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+    description: z.string().max(5000).optional().default(''),
+    client: z.string().max(160).optional().default(''),
+    category: z
+      .enum(['social-media', 'posters', 'reels', 'advertisements', 'branding', 'websites', 'other'])
+      .default('social-media'),
+    year: z.coerce.number().int().min(2000).max(2100).optional(),
+    liveUrl: z.string().url().max(500).optional().or(z.literal('')).default(''),
+    coverImage: imageSchema.nullable().optional().default(null),
+    gallery: z.array(imageSchema).max(50).optional().default([]),
+    videos: z.array(videoSchema).max(20).optional().default([]),
+    services: z.array(z.string().trim().min(1).max(100)).max(20).optional().default([]),
+    featured: z.boolean().optional().default(false),
+    published: z.boolean().optional().default(false),
+    order: z.coerce.number().int().min(0).optional().default(0),
+    seo: z
+      .object({ title: z.string().max(160).optional(), description: z.string().max(320).optional() })
+      .optional()
+      .default({}),
+  })
+  .superRefine((value, ctx) => {
+    if (value.category !== 'websites' && value.liveUrl) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['liveUrl'], message: 'Live website URL is only allowed for Websites projects.' })
+    }
+  })
 
 export const listAdminProjects = async (req, res, next) => {
   try {
