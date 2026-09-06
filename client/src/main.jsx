@@ -40,6 +40,7 @@ import './admin/admin.css'
 import './admin/user-management.css'
 import './scripts/work-filter.js'
 import './scripts/mobile-hero-enhancer.js'
+import './scripts/quote-contact-bridge.js'
 
 const Hero3D = lazy(() => import('./components/Hero3D.jsx'))
 
