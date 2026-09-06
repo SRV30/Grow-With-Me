@@ -276,7 +276,9 @@ export default function ProjectEditor({ project, onBack, onSaved }) {
                     maxLength="500"
                     onChange={(e) => update({ liveUrl: e.target.value })}
                   />
-                  <small>Shown only for Websites projects so visitors can open the live site.</small>
+                  <small>
+                    Shown only for Websites projects so visitors can open the live site.
+                  </small>
                 </label>
               ) : null}
               <label className="full">
