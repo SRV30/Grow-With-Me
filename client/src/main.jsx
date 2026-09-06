@@ -84,7 +84,7 @@ function PublicShell() {
       <PageMotion />
       <DeferredHero3D />
       <HeaderEnhancer />
-      <ManualChatbot />
+      <ManualChatbot key={`${location.pathname}${location.search}`} />
     </>
   )
 }
