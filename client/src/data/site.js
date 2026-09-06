@@ -26,7 +26,7 @@ export const services = [
   },
   {
     number: '06',
-    title: 'Website Design',
+    title: 'Websites',
     text: 'Modern, responsive websites that give your business a strong digital identity.',
   },
 ]
