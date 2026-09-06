@@ -8,31 +8,14 @@ const normalize = (value = '') =>
     .replace(/\s+/g, ' ')
     .trim()
 
+const slugify = (value = '') =>
+  value
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')
+
 const getWorkItems = () => Array.from(document.querySelectorAll('#work .figma-project-card'))
-
-const getCategoryForService = (serviceTitle) => {
-  const requested = new Set(normalize(serviceTitle).split(' ').filter(Boolean))
-  const categories = [
-    ...new Set(
-      getWorkItems()
-        .map((item) => item.querySelector('.figma-project-overlay span')?.textContent)
-        .filter(Boolean)
-        .map(normalize),
-    ),
-  ]
-
-  let bestCategory = ''
-  let bestScore = 0
-  categories.forEach((category) => {
-    const score = category.split(' ').filter((token) => requested.has(token)).length
-    if (score > bestScore) {
-      bestScore = score
-      bestCategory = category
-    }
-  })
-
-  return bestCategory || normalize(serviceTitle)
-}
 
 const applyWorkFilter = (button) => {
   const filter = normalize(button.dataset.filter || button.textContent)
@@ -66,6 +49,87 @@ const applyWorkFilter = (button) => {
   }
 }
 
+const syncServices = async () => {
+  const serviceCards = Array.from(document.querySelectorAll('#services .row-service-card'))
+  if (!serviceCards.length) return
+
+  try {
+    const response = await fetch('/api/services', { credentials: 'include' })
+    if (!response.ok) return
+    const payload = await response.json()
+    const services = Array.isArray(payload.data) ? payload.data : []
+    if (!services.length) return
+
+    const grid = document.querySelector('#services .row-service-grid')
+    if (!grid) return
+
+    services.forEach((service, index) => {
+      let card = serviceCards[index]
+      if (!card) {
+        card = serviceCards[serviceCards.length - 1]?.cloneNode(true)
+        if (!card) return
+        grid.appendChild(card)
+        serviceCards.push(card)
+      }
+
+      const title = card.querySelector('h3')
+      const description = card.querySelector('p')
+      if (title) title.textContent = service.title
+      if (description) description.textContent = service.description
+      card.dataset.serviceSlug = service.slug
+      card.href = `/work?service=${encodeURIComponent(service.slug)}`
+      card.setAttribute('aria-label', `View ${service.title} portfolio`)
+      card.hidden = false
+    })
+
+    serviceCards.slice(services.length).forEach((card) => card.remove())
+
+    const contactSelect = document.querySelector('.figma-contact-form select')
+    if (contactSelect) {
+      const current = contactSelect.value
+      contactSelect.innerHTML = '<option value="">Select a service</option>'
+      services.forEach((service) => {
+        const option = document.createElement('option')
+        option.value = service.title
+        option.textContent = service.title
+        contactSelect.appendChild(option)
+      })
+      contactSelect.value = services.some((service) => service.title === current) ? current : ''
+    }
+  } catch {
+    // Keep the static fallback services if the API is unavailable.
+  }
+}
+
+const syncProjectCategorySelect = async () => {
+  const selects = Array.from(document.querySelectorAll('.admin-editor-page select'))
+  if (!selects.length) return
+
+  try {
+    const response = await fetch('/api/services', { credentials: 'include' })
+    if (!response.ok) return
+    const payload = await response.json()
+    const services = Array.isArray(payload.data) ? payload.data : []
+    if (!services.length) return
+
+    const select = selects[0]
+    const current = select.value
+    select.innerHTML = ''
+    services.forEach((service) => {
+      const option = document.createElement('option')
+      option.value = service.slug
+      option.textContent = service.title
+      select.appendChild(option)
+    })
+
+    if (services.some((service) => service.slug === current)) {
+      select.value = current
+    }
+  } catch {
+    // Keep the existing category options if the API is unavailable.
+  }
+}
+
 const initializeWorkFilters = () => {
   const buttons = document.querySelectorAll('#work .row-work-filters button')
   buttons.forEach((button) => {
@@ -73,6 +137,9 @@ const initializeWorkFilters = () => {
     button.dataset.filter = normalize(button.textContent)
     button.setAttribute('aria-pressed', button.classList.contains('selected') ? 'true' : 'false')
   })
+
+  syncServices()
+  syncProjectCategorySelect()
 
   if (!document.documentElement.dataset.gwmWorkFilterBound) {
     document.addEventListener('click', (event) => {
@@ -84,13 +151,9 @@ const initializeWorkFilters = () => {
 
       const serviceCard = event.target.closest('.row-service-card')
       if (serviceCard) {
+        const slug = serviceCard.dataset.serviceSlug
         const title = serviceCard.querySelector('h3')?.textContent?.trim()
-        if (title) {
-          const category = getCategoryForService(title)
-          window.location.href = `/work?service=${encodeURIComponent(category)}`
-        } else {
-          window.location.href = '/work'
-        }
+        window.location.href = `/work?service=${encodeURIComponent(slug || slugify(title || ''))}`
       }
     })
     document.documentElement.dataset.gwmWorkFilterBound = 'true'
