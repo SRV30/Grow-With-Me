@@ -10,6 +10,30 @@ const normalize = (value = '') =>
 
 const getWorkItems = () => Array.from(document.querySelectorAll('#work .figma-project-card'))
 
+const getCategoryForService = (serviceTitle) => {
+  const requested = new Set(normalize(serviceTitle).split(' ').filter(Boolean))
+  const categories = [...new Set(
+    getWorkItems()
+      .map((item) => item.querySelector('.figma-project-overlay span')?.textContent)
+      .filter(Boolean)
+      .map(normalize),
+  )]
+
+  let bestCategory = ''
+  let bestScore = 0
+  categories.forEach((category) => {
+    const score = category
+      .split(' ')
+      .filter((token) => requested.has(token)).length
+    if (score > bestScore) {
+      bestScore = score
+      bestCategory = category
+    }
+  })
+
+  return bestCategory || normalize(serviceTitle)
+}
+
 const applyWorkFilter = (button) => {
   const filter = normalize(button.dataset.filter || button.textContent)
   const items = getWorkItems()
@@ -62,7 +86,8 @@ const initializeWorkFilters = () => {
       if (serviceCard) {
         const title = serviceCard.querySelector('h3')?.textContent?.trim()
         if (title) {
-          window.location.href = `/work?service=${encodeURIComponent(title)}`
+          const category = getCategoryForService(title)
+          window.location.href = `/work?service=${encodeURIComponent(category)}`
         } else {
           window.location.href = '/work'
         }
