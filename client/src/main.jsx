@@ -30,10 +30,12 @@ import './styles/professional-spacing.css'
 import './styles/contact-logo.css'
 import './styles/mobile-balanced.css'
 import './styles/mobile-hero-three.css'
+import './styles/mobile-hero-design.css'
 import './styles/notifications.css'
 import './admin/admin.css'
 import './admin/user-management.css'
 import './scripts/work-filter.js'
+import './scripts/mobile-hero-enhancer.js'
 
 const Hero3D = lazy(() => import('./components/Hero3D.jsx'))
 
