@@ -315,7 +315,12 @@ function ServicesSection({ servicesList }) {
               <Link
                 className="row-service-card"
                 key={service._id || service.title}
-                to={`/services/${(service.title || '').trim().toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`}
+                to={`/services/${(service.title || '')
+                  .trim()
+                  .toLowerCase()
+                  .replace(/&/g, 'and')
+                  .replace(/[^a-z0-9]+/g, '-')
+                  .replace(/^-|-$/g, '')}`}
                 aria-label={`View ${service.title} portfolio`}
               >
                 <Icon className="row-service-icon" size={42} />
