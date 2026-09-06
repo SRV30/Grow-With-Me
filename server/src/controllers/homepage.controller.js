@@ -19,16 +19,47 @@ const defaults = {
     experienceYear: 2020,
   },
   process: [
-    { number: '01', title: 'Discuss', text: 'We understand your business, requirements and goals.', order: 1 },
-    { number: '02', title: 'Plan', text: 'We plan the content according to your business and audience.', order: 2 },
-    { number: '03', title: 'Create', text: 'We create designs, videos and promotional content.', order: 3 },
-    { number: '04', title: 'Review', text: 'You review the content and share your feedback.', order: 4 },
+    {
+      number: '01',
+      title: 'Discuss',
+      text: 'We understand your business, requirements and goals.',
+      order: 1,
+    },
+    {
+      number: '02',
+      title: 'Plan',
+      text: 'We plan the content according to your business and audience.',
+      order: 2,
+    },
+    {
+      number: '03',
+      title: 'Create',
+      text: 'We create designs, videos and promotional content.',
+      order: 3,
+    },
+    {
+      number: '04',
+      title: 'Review',
+      text: 'You review the content and share your feedback.',
+      order: 4,
+    },
     { number: '05', title: 'Publish', text: 'Approved content is ready to go live.', order: 5 },
-    { number: '06', title: 'Grow', text: 'Consistent content and promotion help strengthen your online presence.', order: 6 },
+    {
+      number: '06',
+      title: 'Grow',
+      text: 'Consistent content and promotion help strengthen your online presence.',
+      order: 6,
+    },
   ],
   industries: [
-    'Jewellery', 'Furniture', 'Restaurants', 'Retail Stores', 'Professionals',
-    'Local Businesses', 'Startups', 'Service Businesses',
+    'Jewellery',
+    'Furniture',
+    'Restaurants',
+    'Retail Stores',
+    'Professionals',
+    'Local Businesses',
+    'Startups',
+    'Service Businesses',
   ].map((name, i) => ({ name, active: true, order: i })),
   cta: {
     eyebrow: 'Ready to grow?',
@@ -38,7 +69,10 @@ const defaults = {
     secondaryText: 'Send Email',
     secondaryLink: 'mailto:growithmeayush@gmail.com',
   },
-  marquee: ['Social Media', 'Video', 'Design', 'Digital Marketing', 'Websites'].map((text, i) => ({ text, order: i })),
+  marquee: ['Social Media', 'Video', 'Design', 'Digital Marketing', 'Websites'].map((text, i) => ({
+    text,
+    order: i,
+  })),
 }
 
 const stringValue = (value) => (typeof value === 'string' ? value.trim() : '')
