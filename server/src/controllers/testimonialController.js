@@ -1,9 +1,23 @@
+import mongoose from 'mongoose'
 import { Testimonial } from '../models/Testimonial.js'
 
 export const listTestimonials = async (req, res, next) => {
   try {
-    const filter = req.user ? {} : { published: true }
-    const testimonials = await Testimonial.find(filter).sort({
+    const testimonials = await Testimonial.find({ published: true }).sort({
+      featured: -1,
+      order: 1,
+      createdAt: -1,
+    })
+    res.json({ success: true, data: testimonials })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const listAdminTestimonials = async (req, res, next) => {
+  try {
+    const testimonials = await Testimonial.find({}).sort({
+      published: 1,
       featured: -1,
       order: 1,
       createdAt: -1,
