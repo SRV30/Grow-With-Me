@@ -14,7 +14,10 @@ const unwrapHomepage = (payload) => {
 const getErrorMessage = (error, fallback) =>
   error?.response?.data?.message || error?.message || fallback
 
-const asText = (value, max = 5000) => String(value ?? '').trim().slice(0, max)
+const asText = (value, max = 5000) =>
+  String(value ?? '')
+    .trim()
+    .slice(0, max)
 
 const normalizePage = (value) => {
   const source = unwrapHomepage(value)
@@ -148,7 +151,10 @@ export default function HomepageEditor() {
       const order = current.process.length + 1
       return {
         ...current,
-        process: [...current.process, { number: String(order).padStart(2, '0'), title: '', text: '', order }],
+        process: [
+          ...current.process,
+          { number: String(order).padStart(2, '0'), title: '', text: '', order },
+        ],
       }
     })
   }
@@ -172,7 +178,10 @@ export default function HomepageEditor() {
       if (current.industries.length >= MAX_INDUSTRIES) return current
       return {
         ...current,
-        industries: [...current.industries, { name: '', active: true, order: current.industries.length }],
+        industries: [
+          ...current.industries,
+          { name: '', active: true, order: current.industries.length },
+        ],
       }
     })
   }
@@ -200,43 +209,82 @@ export default function HomepageEditor() {
           <p className="admin-eyebrow">Content management</p>
           <h1>Homepage</h1>
         </div>
-        <button className="admin-primary admin-add" onClick={save} disabled={saving} aria-busy={saving}>
+        <button
+          className="admin-primary admin-add"
+          onClick={save}
+          disabled={saving}
+          aria-busy={saving}
+        >
           <Save size={17} /> {saving ? 'Saving…' : 'Save changes'}
         </button>
       </header>
       {message && <div className="admin-alert">{message}</div>}
-      {error && <div className="admin-error" role="alert">{error}</div>}
+      {error && (
+        <div className="admin-error" role="alert">
+          {error}
+        </div>
+      )}
       <div className="admin-editor-grid">
         <section className="admin-card">
           <h2>Hero</h2>
           <label>
             Eyebrow
-            <input maxLength={160} value={page.hero?.eyebrow || ''} onChange={(e) => update('hero', 'eyebrow', e.target.value)} />
+            <input
+              maxLength={160}
+              value={page.hero?.eyebrow || ''}
+              onChange={(e) => update('hero', 'eyebrow', e.target.value)}
+            />
           </label>
           <label>
             Title
-            <textarea maxLength={300} rows="3" value={page.hero?.title || ''} onChange={(e) => update('hero', 'title', e.target.value)} />
+            <textarea
+              maxLength={300}
+              rows="3"
+              value={page.hero?.title || ''}
+              onChange={(e) => update('hero', 'title', e.target.value)}
+            />
           </label>
           <label>
             Description
-            <textarea maxLength={1000} rows="4" value={page.hero?.description || ''} onChange={(e) => update('hero', 'description', e.target.value)} />
+            <textarea
+              maxLength={1000}
+              rows="4"
+              value={page.hero?.description || ''}
+              onChange={(e) => update('hero', 'description', e.target.value)}
+            />
           </label>
           <div className="admin-two">
             <label>
               Primary CTA
-              <input maxLength={120} value={page.hero?.primaryCtaText || ''} onChange={(e) => update('hero', 'primaryCtaText', e.target.value)} />
+              <input
+                maxLength={120}
+                value={page.hero?.primaryCtaText || ''}
+                onChange={(e) => update('hero', 'primaryCtaText', e.target.value)}
+              />
             </label>
             <label>
               Primary Link
-              <input maxLength={500} value={page.hero?.primaryCtaLink || ''} onChange={(e) => update('hero', 'primaryCtaLink', e.target.value)} />
+              <input
+                maxLength={500}
+                value={page.hero?.primaryCtaLink || ''}
+                onChange={(e) => update('hero', 'primaryCtaLink', e.target.value)}
+              />
             </label>
             <label>
               Secondary CTA
-              <input maxLength={120} value={page.hero?.secondaryCtaText || ''} onChange={(e) => update('hero', 'secondaryCtaText', e.target.value)} />
+              <input
+                maxLength={120}
+                value={page.hero?.secondaryCtaText || ''}
+                onChange={(e) => update('hero', 'secondaryCtaText', e.target.value)}
+              />
             </label>
             <label>
               Secondary Link
-              <input maxLength={500} value={page.hero?.secondaryCtaLink || ''} onChange={(e) => update('hero', 'secondaryCtaLink', e.target.value)} />
+              <input
+                maxLength={500}
+                value={page.hero?.secondaryCtaLink || ''}
+                onChange={(e) => update('hero', 'secondaryCtaLink', e.target.value)}
+              />
             </label>
           </div>
         </section>
@@ -245,35 +293,83 @@ export default function HomepageEditor() {
           <h2>About</h2>
           <label>
             Eyebrow
-            <input maxLength={160} value={page.about?.eyebrow || ''} onChange={(e) => update('about', 'eyebrow', e.target.value)} />
+            <input
+              maxLength={160}
+              value={page.about?.eyebrow || ''}
+              onChange={(e) => update('about', 'eyebrow', e.target.value)}
+            />
           </label>
           <label>
             Title
-            <input maxLength={300} value={page.about?.title || ''} onChange={(e) => update('about', 'title', e.target.value)} />
+            <input
+              maxLength={300}
+              value={page.about?.title || ''}
+              onChange={(e) => update('about', 'title', e.target.value)}
+            />
           </label>
           <label>
             Description
-            <textarea maxLength={1500} rows="6" value={page.about?.description || ''} onChange={(e) => update('about', 'description', e.target.value)} />
+            <textarea
+              maxLength={1500}
+              rows="6"
+              value={page.about?.description || ''}
+              onChange={(e) => update('about', 'description', e.target.value)}
+            />
           </label>
           <label>
             Experience Since
-            <input type="number" min="2000" max={new Date().getFullYear()} value={page.about?.experienceYear || 2020} onChange={(e) => update('about', 'experienceYear', Number(e.target.value))} />
+            <input
+              type="number"
+              min="2000"
+              max={new Date().getFullYear()}
+              value={page.about?.experienceYear || 2020}
+              onChange={(e) => update('about', 'experienceYear', Number(e.target.value))}
+            />
           </label>
         </section>
 
         <section className="admin-card">
           <div className="admin-card-heading">
             <h2>Process</h2>
-            <button type="button" className="admin-icon" onClick={addProcess} disabled={saving || page.process.length >= MAX_PROCESS} aria-label="Add process step">
+            <button
+              type="button"
+              className="admin-icon"
+              onClick={addProcess}
+              disabled={saving || page.process.length >= MAX_PROCESS}
+              aria-label="Add process step"
+            >
               <Plus size={16} />
             </button>
           </div>
           {page.process?.map((item, i) => (
             <div className="admin-repeat" key={i}>
-              <input maxLength={20} aria-label={`Process ${i + 1} number`} value={item.number || ''} onChange={(e) => updateProcess(i, 'number', e.target.value)} />
-              <input maxLength={200} placeholder="Title" aria-label={`Process ${i + 1} title`} value={item.title || ''} onChange={(e) => updateProcess(i, 'title', e.target.value)} />
-              <textarea maxLength={1000} placeholder="Description" aria-label={`Process ${i + 1} description`} value={item.text || ''} onChange={(e) => updateProcess(i, 'text', e.target.value)} />
-              <button type="button" className="admin-danger" onClick={() => removeProcess(i)} disabled={saving} aria-label={`Remove process ${i + 1}`}>
+              <input
+                maxLength={20}
+                aria-label={`Process ${i + 1} number`}
+                value={item.number || ''}
+                onChange={(e) => updateProcess(i, 'number', e.target.value)}
+              />
+              <input
+                maxLength={200}
+                placeholder="Title"
+                aria-label={`Process ${i + 1} title`}
+                value={item.title || ''}
+                onChange={(e) => updateProcess(i, 'title', e.target.value)}
+              />
+              <textarea
+                maxLength={1000}
+                placeholder="Description"
+                aria-label={`Process ${i + 1} description`}
+                value={item.text || ''}
+                onChange={(e) => updateProcess(i, 'text', e.target.value)}
+              />
+              <button
+                type="button"
+                className="admin-danger"
+                onClick={() => removeProcess(i)}
+                disabled={saving}
+                aria-label={`Remove process ${i + 1}`}
+              >
                 <Trash2 size={15} />
               </button>
             </div>
@@ -283,19 +379,41 @@ export default function HomepageEditor() {
         <section className="admin-card">
           <div className="admin-card-heading">
             <h2>Industries</h2>
-            <button type="button" className="admin-icon" onClick={addIndustry} disabled={saving || page.industries.length >= MAX_INDUSTRIES} aria-label="Add industry">
+            <button
+              type="button"
+              className="admin-icon"
+              onClick={addIndustry}
+              disabled={saving || page.industries.length >= MAX_INDUSTRIES}
+              aria-label="Add industry"
+            >
               <Plus size={16} />
             </button>
           </div>
           <div className="admin-repeat-list">
             {page.industries?.map((item, i) => (
               <div className="admin-repeat" key={i}>
-                <input maxLength={160} placeholder="Industry" aria-label={`Industry ${i + 1}`} value={item.name || ''} onChange={(e) => updateIndustry(i, 'name', e.target.value)} />
+                <input
+                  maxLength={160}
+                  placeholder="Industry"
+                  aria-label={`Industry ${i + 1}`}
+                  value={item.name || ''}
+                  onChange={(e) => updateIndustry(i, 'name', e.target.value)}
+                />
                 <label className="admin-check">
-                  <input type="checkbox" checked={item.active !== false} onChange={(e) => updateIndustry(i, 'active', e.target.checked)} />{' '}
+                  <input
+                    type="checkbox"
+                    checked={item.active !== false}
+                    onChange={(e) => updateIndustry(i, 'active', e.target.checked)}
+                  />{' '}
                   Active
                 </label>
-                <button type="button" className="admin-danger" onClick={() => removeIndustry(i)} disabled={saving} aria-label={`Remove industry ${i + 1}`}>
+                <button
+                  type="button"
+                  className="admin-danger"
+                  onClick={() => removeIndustry(i)}
+                  disabled={saving}
+                  aria-label={`Remove industry ${i + 1}`}
+                >
                   <Trash2 size={15} />
                 </button>
               </div>
@@ -307,28 +425,53 @@ export default function HomepageEditor() {
           <h2>CTA</h2>
           <label>
             Eyebrow
-            <input maxLength={160} value={page.cta?.eyebrow || ''} onChange={(e) => update('cta', 'eyebrow', e.target.value)} />
+            <input
+              maxLength={160}
+              value={page.cta?.eyebrow || ''}
+              onChange={(e) => update('cta', 'eyebrow', e.target.value)}
+            />
           </label>
           <label>
             Title
-            <textarea maxLength={300} rows="3" value={page.cta?.title || ''} onChange={(e) => update('cta', 'title', e.target.value)} />
+            <textarea
+              maxLength={300}
+              rows="3"
+              value={page.cta?.title || ''}
+              onChange={(e) => update('cta', 'title', e.target.value)}
+            />
           </label>
           <div className="admin-two">
             <label>
               Primary Text
-              <input maxLength={120} value={page.cta?.primaryText || ''} onChange={(e) => update('cta', 'primaryText', e.target.value)} />
+              <input
+                maxLength={120}
+                value={page.cta?.primaryText || ''}
+                onChange={(e) => update('cta', 'primaryText', e.target.value)}
+              />
             </label>
             <label>
               Primary Link
-              <input maxLength={500} value={page.cta?.primaryLink || ''} onChange={(e) => update('cta', 'primaryLink', e.target.value)} />
+              <input
+                maxLength={500}
+                value={page.cta?.primaryLink || ''}
+                onChange={(e) => update('cta', 'primaryLink', e.target.value)}
+              />
             </label>
             <label>
               Secondary Text
-              <input maxLength={120} value={page.cta?.secondaryText || ''} onChange={(e) => update('cta', 'secondaryText', e.target.value)} />
+              <input
+                maxLength={120}
+                value={page.cta?.secondaryText || ''}
+                onChange={(e) => update('cta', 'secondaryText', e.target.value)}
+              />
             </label>
             <label>
               Secondary Link
-              <input maxLength={500} value={page.cta?.secondaryLink || ''} onChange={(e) => update('cta', 'secondaryLink', e.target.value)} />
+              <input
+                maxLength={500}
+                value={page.cta?.secondaryLink || ''}
+                onChange={(e) => update('cta', 'secondaryLink', e.target.value)}
+              />
             </label>
           </div>
         </section>
