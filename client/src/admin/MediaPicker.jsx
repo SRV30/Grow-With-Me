@@ -2,6 +2,16 @@ import { useEffect, useMemo, useState } from 'react'
 import { Check, ImagePlus, X } from 'lucide-react'
 import { getMedia } from './api.js'
 
+const unwrapMedia = (value) => {
+  if (Array.isArray(value)) return value
+  if (Array.isArray(value?.items)) return value.items
+  if (Array.isArray(value?.media)) return value.media
+  if (Array.isArray(value?.data)) return value.data
+  return []
+}
+
+const mediaId = (item) => item?.publicId || item?._id || item?.secureUrl || item?.url
+
 export default function MediaPicker({
   mode = 'image',
   multiple = false,
@@ -15,31 +25,43 @@ export default function MediaPicker({
   const [search, setSearch] = useState('')
 
   useEffect(() => {
+    let active = true
+    setLoading(true)
+    setError('')
     getMedia({ limit: 200 })
-      .then((result) => setItems(result.items || []))
-      .catch((e) => setError(e.response?.data?.message || 'Unable to load media'))
-      .finally(() => setLoading(false))
+      .then((result) => {
+        if (active) setItems(unwrapMedia(result))
+      })
+      .catch((e) => {
+        if (active) setError(e.response?.data?.message || 'Unable to load media')
+      })
+      .finally(() => {
+        if (active) setLoading(false)
+      })
+    return () => {
+      active = false
+    }
   }, [])
 
-  const allowed = mode === 'video' ? ['video'] : ['image']
-  const filtered = useMemo(
-    () =>
-      items.filter(
-        (item) =>
-          allowed.includes(item.resourceType) &&
-          `${item.filename || ''} ${item.publicId || ''}`
-            .toLowerCase()
-            .includes(search.toLowerCase()),
-      ),
-    [items, search, mode],
-  )
-  const selectedIds = new Set(selected.map((item) => item.publicId))
+  const filtered = useMemo(() => {
+    const resourceType = mode === 'video' ? 'video' : 'image'
+    const term = search.trim().toLowerCase()
+    return items.filter((item) => {
+      if (item.resourceType !== resourceType) return false
+      if (!term) return true
+      return `${item.filename || ''} ${item.publicId || ''}`.toLowerCase().includes(term)
+    })
+  }, [items, search, mode])
+
+  const selectedIds = new Set((Array.isArray(selected) ? selected : []).map(mediaId))
 
   const choose = (item) => {
+    const id = mediaId(item)
+    if (!id) return
     if (multiple) {
       onChange(
-        selectedIds.has(item.publicId)
-          ? selected.filter((value) => value.publicId !== item.publicId)
+        selectedIds.has(id)
+          ? selected.filter((value) => mediaId(value) !== id)
           : [...selected, item],
       )
     } else {
@@ -62,44 +84,44 @@ export default function MediaPicker({
               {multiple ? 's' : ''}
             </h2>
           </div>
-          <button className="admin-close" onClick={onClose}>
+          <button type="button" className="admin-close" onClick={onClose} aria-label="Close media picker">
             <X />
           </button>
         </header>
         <input
           className="admin-picker-search"
           placeholder="Search media…"
+          aria-label="Search media"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        {error && <p className="admin-error">{error}</p>}
+        {error && <p className="admin-error" role="alert">{error}</p>}
         <div className="admin-picker-grid">
           {loading ? (
-            <div className="admin-empty">Loading media…</div>
+            <div className="admin-empty" role="status">Loading media…</div>
           ) : filtered.length === 0 ? (
             <div className="admin-empty">No matching media found.</div>
           ) : (
             filtered.map((item) => {
-              const active = selectedIds.has(item.publicId)
+              const id = mediaId(item)
+              const active = selectedIds.has(id)
+              const url = item.secureUrl || item.url
               return (
                 <button
                   type="button"
                   className={`admin-picker-item ${active ? 'selected' : ''}`}
-                  key={item._id}
+                  key={id}
                   onClick={() => choose(item)}
+                  aria-pressed={multiple ? active : undefined}
                 >
                   {item.resourceType === 'video' ? (
-                    <video src={item.secureUrl} muted preload="metadata" />
+                    <video src={url} muted preload="metadata" />
                   ) : (
-                    <img
-                      src={item.secureUrl}
-                      alt={item.alt || item.filename || ''}
-                      loading="lazy"
-                    />
+                    <img src={url} alt={item.alt || item.filename || ''} loading="lazy" />
                   )}
                   <span>
                     {active ? <Check size={16} /> : <ImagePlus size={16} />}
-                    {item.filename || item.publicId.split('/').pop()}
+                    {item.filename || item.publicId?.split('/').pop() || 'Untitled media'}
                   </span>
                 </button>
               )
@@ -109,7 +131,7 @@ export default function MediaPicker({
         {multiple && (
           <footer className="admin-picker-foot">
             <span>{selected.length} selected</span>
-            <button className="admin-primary" onClick={onClose}>
+            <button type="button" className="admin-primary" onClick={onClose}>
               Use selected
             </button>
           </footer>
