@@ -64,7 +64,7 @@ function enhanceMobileHero() {
   if (primaryButton && primaryButton.dataset.mobileEnhanced !== 'true') {
     primaryButton.dataset.mobileEnhanced = 'true'
     primaryButton.childNodes.forEach((node) => {
-      if (node.nodeType === Node.TEXT_NODE) node.textContent = ""
+      if (node.nodeType === Node.TEXT_NODE) node.textContent = ''
     })
   }
 }
