@@ -2,6 +2,17 @@ const normalize = (value = '') => value.trim().toLowerCase().replace(/[-_]+/g, '
 
 const getWorkItems = () => Array.from(document.querySelectorAll('#work .figma-project-card'))
 
+const SERVICE_FILTERS = {
+  'social media management': 'social media',
+  'reels & video editing': 'video',
+  'graphic designing': 'graphic design',
+  'social media advertising': 'digital marketing',
+  'business promotion': 'digital marketing',
+  'website design': 'web design',
+}
+
+const getServiceFilter = (serviceTitle) => SERVICE_FILTERS[normalize(serviceTitle)] || 'all'
+
 const applyWorkFilter = (button) => {
   const filter = normalize(button.dataset.filter || button.textContent)
   const items = getWorkItems()
@@ -35,16 +46,41 @@ const applyWorkFilter = (button) => {
 }
 
 const initializeWorkFilters = () => {
-  document.querySelectorAll('#work .row-work-filters button').forEach((button) => {
+  const buttons = document.querySelectorAll('#work .row-work-filters button')
+  buttons.forEach((button) => {
     button.type = 'button'
     button.dataset.filter = normalize(button.textContent)
     button.setAttribute('aria-pressed', button.classList.contains('selected') ? 'true' : 'false')
   })
 
+  const requestedFilter = new URLSearchParams(window.location.search).get('service')
+  if (requestedFilter && buttons.length && !document.documentElement.dataset.gwmRequestedServiceApplied) {
+    const selected = normalize(requestedFilter)
+    const button = Array.from(buttons).find((item) => normalize(item.dataset.filter) === selected)
+    if (button) {
+      document.documentElement.dataset.gwmRequestedServiceApplied = 'true'
+      applyWorkFilter(button)
+    }
+  }
+
   if (!document.documentElement.dataset.gwmWorkFilterBound) {
     document.addEventListener('click', (event) => {
       const button = event.target.closest('#work .row-work-filters button')
-      if (button) applyWorkFilter(button)
+      if (button) {
+        applyWorkFilter(button)
+        return
+      }
+
+      const serviceCard = event.target.closest('.row-service-card')
+      if (serviceCard) {
+        const title = serviceCard.querySelector('h3')?.textContent?.trim()
+        const filter = getServiceFilter(title)
+        if (filter !== 'all') {
+          window.location.href = `/work?service=${encodeURIComponent(filter)}`
+        } else {
+          window.location.href = '/work'
+        }
+      }
     })
     document.documentElement.dataset.gwmWorkFilterBound = 'true'
   }
