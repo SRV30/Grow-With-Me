@@ -1,4 +1,5 @@
-import logoUrl from '../assets/img.png'
+import logoUrl from '../assets/logo.PNG'
+import contactLogoUrl from '../assets/img.png'
 
 const API_BASE = (import.meta.env.VITE_BACKEND_URL || '/api').replace(/\/$/, '')
 
@@ -67,7 +68,7 @@ const applyContactLogo = () => {
     if (!image) {
       image = document.createElement('img')
       image.className = 'row-contact-logo'
-      image.src = logoUrl
+      image.src = contactLogoUrl
       image.alt = 'Grow With Me'
       image.loading = 'lazy'
       image.decoding = 'async'
