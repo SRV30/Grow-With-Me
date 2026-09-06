@@ -41,49 +41,91 @@ const serviceContent = {
     headline: 'Build a social presence people remember.',
     description:
       'We plan, create and manage consistent social content that makes your brand look professional and keeps your audience engaged.',
-    deliverables: ['Content strategy', 'Content calendars', 'Post & caption creation', 'Publishing & scheduling', 'Audience engagement'],
+    deliverables: [
+      'Content strategy',
+      'Content calendars',
+      'Post & caption creation',
+      'Publishing & scheduling',
+      'Audience engagement',
+    ],
   },
   'reels-video-editing': {
     eyebrow: '02 / Short-form video',
     headline: 'Turn attention into something worth watching.',
     description:
       'From raw footage to polished reels, we create fast, clear and engaging short-form videos built for modern social platforms.',
-    deliverables: ['Reels editing', 'Short-form videos', 'Transitions & pacing', 'Subtitles & captions', 'Platform-ready exports'],
+    deliverables: [
+      'Reels editing',
+      'Short-form videos',
+      'Transitions & pacing',
+      'Subtitles & captions',
+      'Platform-ready exports',
+    ],
   },
   'graphic-designing': {
     eyebrow: '03 / Visual design',
     headline: 'Make every visual look intentional.',
     description:
       'We create branded graphics that communicate clearly, look professional and keep your visual identity consistent.',
-    deliverables: ['Social posts', 'Promotional creatives', 'Posters & banners', 'Thumbnails', 'Campaign graphics'],
+    deliverables: [
+      'Social posts',
+      'Promotional creatives',
+      'Posters & banners',
+      'Thumbnails',
+      'Campaign graphics',
+    ],
   },
   'social-media-advertising': {
     eyebrow: '04 / Paid growth',
     headline: 'Put your business in front of the right people.',
     description:
       'We help turn paid social campaigns into focused growth opportunities through clear creative and audience-first campaign thinking.',
-    deliverables: ['Campaign planning', 'Ad creatives', 'Audience targeting', 'Campaign monitoring', 'Performance-focused iteration'],
+    deliverables: [
+      'Campaign planning',
+      'Ad creatives',
+      'Audience targeting',
+      'Campaign monitoring',
+      'Performance-focused iteration',
+    ],
   },
   'business-promotion': {
     eyebrow: '05 / Promotion',
     headline: 'Give your next offer the attention it deserves.',
     description:
       'We combine creative content and promotional thinking to help products, offers and local businesses get noticed.',
-    deliverables: ['Promotional concepts', 'Offer creatives', 'Campaign content', 'Launch assets', 'Digital promotion'],
+    deliverables: [
+      'Promotional concepts',
+      'Offer creatives',
+      'Campaign content',
+      'Launch assets',
+      'Digital promotion',
+    ],
   },
   websites: {
     eyebrow: '06 / Digital presence',
     headline: 'Give your business a website worth remembering.',
     description:
       'We design modern, responsive websites that communicate your value clearly and create a professional first impression.',
-    deliverables: ['Responsive UI design', 'Landing pages', 'Business websites', 'Mobile-first layouts', 'Conversion-focused sections'],
+    deliverables: [
+      'Responsive UI design',
+      'Landing pages',
+      'Business websites',
+      'Mobile-first layouts',
+      'Conversion-focused sections',
+    ],
   },
   'website-design': {
     eyebrow: '06 / Digital presence',
     headline: 'Give your business a website worth remembering.',
     description:
       'We design modern, responsive websites that communicate your value clearly and create a professional first impression.',
-    deliverables: ['Responsive UI design', 'Landing pages', 'Business websites', 'Mobile-first layouts', 'Conversion-focused sections'],
+    deliverables: [
+      'Responsive UI design',
+      'Landing pages',
+      'Business websites',
+      'Mobile-first layouts',
+      'Conversion-focused sections',
+    ],
   },
 }
 
@@ -113,8 +155,12 @@ export default function ServicePage() {
     let active = true
     Promise.allSettled([getServices(), getProjects()]).then(([serviceResult, projectResult]) => {
       if (!active) return
-      const serviceList = unwrapList(serviceResult.status === 'fulfilled' ? serviceResult.value : null)
-      const projectList = unwrapList(projectResult.status === 'fulfilled' ? projectResult.value : null)
+      const serviceList = unwrapList(
+        serviceResult.status === 'fulfilled' ? serviceResult.value : null,
+      )
+      const projectList = unwrapList(
+        projectResult.status === 'fulfilled' ? projectResult.value : null,
+      )
       if (serviceList.length) setServices(serviceList)
       setProjects(projectList)
       setLoading(false)
@@ -131,7 +177,10 @@ export default function ServicePage() {
       null,
     [services, slug],
   )
-  const content = serviceContent[slug] || serviceContent[slugify(service?.title)] || serviceContent['social-media-management']
+  const content =
+    serviceContent[slug] ||
+    serviceContent[slugify(service?.title)] ||
+    serviceContent['social-media-management']
   const isWebsitesService = slug === 'websites' || slugify(service?.title) === 'websites'
   const relatedProjects = useMemo(
     () =>
@@ -145,8 +194,16 @@ export default function ServicePage() {
     if (!root.current || !service || window.matchMedia('(prefers-reduced-motion: reduce)').matches)
       return undefined
     const ctx = gsap.context(() => {
-      gsap.fromTo('[data-service-reveal]', { y: 28, opacity: 0 }, { y: 0, opacity: 1, duration: 0.75, stagger: 0.06, ease: 'power3.out' })
-      gsap.fromTo('[data-service-media]', { clipPath: 'inset(8% 0)', scale: 1.03 }, { clipPath: 'inset(0)', scale: 1, duration: 1, ease: 'power3.inOut' })
+      gsap.fromTo(
+        '[data-service-reveal]',
+        { y: 28, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.75, stagger: 0.06, ease: 'power3.out' },
+      )
+      gsap.fromTo(
+        '[data-service-media]',
+        { clipPath: 'inset(8% 0)', scale: 1.03 },
+        { clipPath: 'inset(0)', scale: 1, duration: 1, ease: 'power3.inOut' },
+      )
     }, root)
     return () => ctx.revert()
   }, [service])
@@ -166,54 +223,108 @@ export default function ServicePage() {
     <main ref={root} className="service-page">
       <SEO title={service.title} description={service.text} path={`/services/${slug}`} />
       <header className="service-topbar">
-        <Link to="/" className="service-brand"><img src={logoUrl} alt="Grow With Me" /></Link>
+        <Link to="/" className="service-brand">
+          <img src={logoUrl} alt="Grow With Me" />
+        </Link>
         <nav aria-label="Service navigation">
-          <Link to="/#services" className="active">Services</Link>
+          <Link to="/#services" className="active">
+            Services
+          </Link>
           <Link to="/work">Work</Link>
           <Link to="/#about">About</Link>
-          <Link to="/#contact" className="service-topbar-cta">Start a project <ArrowUpRight size={15} /></Link>
+          <Link to="/#contact" className="service-topbar-cta">
+            Start a project <ArrowUpRight size={15} />
+          </Link>
         </nav>
       </header>
 
       <section className="service-hero service-container">
-        <Link to="/#services" className="service-back" data-service-reveal><ArrowLeft size={15} /> All services</Link>
+        <Link to="/#services" className="service-back" data-service-reveal>
+          <ArrowLeft size={15} /> All services
+        </Link>
         <div className="service-hero-grid">
           <div className="service-hero-copy">
-            <p className="service-eyebrow" data-service-reveal><span /> {content.eyebrow}</p>
+            <p className="service-eyebrow" data-service-reveal>
+              <span /> {content.eyebrow}
+            </p>
             <h1 data-service-reveal>{content.headline}</h1>
-            <p className="service-hero-description" data-service-reveal>{content.description}</p>
+            <p className="service-hero-description" data-service-reveal>
+              {content.description}
+            </p>
             <div className="service-actions" data-service-reveal>
-              <Link to="/#contact" className="service-primary-button">Get a quote <ArrowRight size={17} /></Link>
-              <Link to="/work" className="service-secondary-button">View our work <ArrowUpRight size={16} /></Link>
+              <Link to="/#contact" className="service-primary-button">
+                Get a quote <ArrowRight size={17} />
+              </Link>
+              <Link to="/work" className="service-secondary-button">
+                View our work <ArrowUpRight size={16} />
+              </Link>
             </div>
           </div>
           <div className="service-hero-card" data-service-media>
             <div className="service-card-pattern" />
-            <div className="service-card-content"><Sparkles size={22} /><span>{service.title}</span><strong>Creative work.<br />Business purpose.</strong></div>
+            <div className="service-card-content">
+              <Sparkles size={22} />
+              <span>{service.title}</span>
+              <strong>
+                Creative work.
+                <br />
+                Business purpose.
+              </strong>
+            </div>
           </div>
         </div>
       </section>
 
       <section className="service-intro service-container">
-        <div><p className="service-eyebrow">What you get</p><h2>Everything you need to show up professionally.</h2></div>
-        <p>{service.text} Our approach keeps the creative work connected to a clear business objective.</p>
+        <div>
+          <p className="service-eyebrow">What you get</p>
+          <h2>Everything you need to show up professionally.</h2>
+        </div>
+        <p>
+          {service.text} Our approach keeps the creative work connected to a clear business
+          objective.
+        </p>
       </section>
 
       <section className="service-deliverables service-container">
-        <div className="service-section-heading"><p className="service-eyebrow">Deliverables</p><h2>Built around your needs.</h2></div>
+        <div className="service-section-heading">
+          <p className="service-eyebrow">Deliverables</p>
+          <h2>Built around your needs.</h2>
+        </div>
         <div className="service-deliverables-grid">
           {content.deliverables.map((item, index) => (
-            <article key={item} data-service-reveal><span>{String(index + 1).padStart(2, '0')}</span><CheckCircle2 size={20} /><strong>{item}</strong></article>
+            <article key={item} data-service-reveal>
+              <span>{String(index + 1).padStart(2, '0')}</span>
+              <CheckCircle2 size={20} />
+              <strong>{item}</strong>
+            </article>
           ))}
         </div>
       </section>
 
       <section className="service-process">
         <div className="service-container">
-          <div className="service-section-heading"><p className="service-eyebrow">Our process</p><h2>Simple, clear, effective.</h2></div>
+          <div className="service-section-heading">
+            <p className="service-eyebrow">Our process</p>
+            <h2>Simple, clear, effective.</h2>
+          </div>
           <div className="service-process-grid">
             {['Discuss', 'Plan', 'Create', 'Review', 'Launch'].map((step, index) => (
-              <article key={step}><span>0{index + 1}</span><h3>{step}</h3><p>{['Understand your goals.', 'Build the right direction.', 'Create the work.', 'Refine with your feedback.', 'Deliver ready-to-use assets.'][index]}</p></article>
+              <article key={step}>
+                <span>0{index + 1}</span>
+                <h3>{step}</h3>
+                <p>
+                  {
+                    [
+                      'Understand your goals.',
+                      'Build the right direction.',
+                      'Create the work.',
+                      'Refine with your feedback.',
+                      'Deliver ready-to-use assets.',
+                    ][index]
+                  }
+                </p>
+              </article>
             ))}
           </div>
         </div>
@@ -221,8 +332,13 @@ export default function ServicePage() {
 
       <section className="service-related service-container">
         <div className="service-related-heading">
-          <div><p className="service-eyebrow">Selected work</p><h2>Work made for this service.</h2></div>
-          <Link to={`/work?service=${encodeURIComponent(service.title)}`}>View all <ArrowUpRight size={15} /></Link>
+          <div>
+            <p className="service-eyebrow">Selected work</p>
+            <h2>Work made for this service.</h2>
+          </div>
+          <Link to={`/work?service=${encodeURIComponent(service.title)}`}>
+            View all <ArrowUpRight size={15} />
+          </Link>
         </div>
         {relatedProjects.length ? (
           <div className="service-related-grid">
@@ -230,14 +346,29 @@ export default function ServicePage() {
               <article key={project._id || project.slug} className="service-project-card">
                 <Link to={`/work/${project.slug}`} className="service-project-link">
                   {project.coverImage?.url ? (
-                    <CloudinaryImage src={project.coverImage.url} alt={project.coverImage.alt || project.title} className="service-project-image" width={900} sizes="(max-width: 800px) 100vw, 33vw" blur={false} />
+                    <CloudinaryImage
+                      src={project.coverImage.url}
+                      alt={project.coverImage.alt || project.title}
+                      className="service-project-image"
+                      width={900}
+                      sizes="(max-width: 800px) 100vw, 33vw"
+                      blur={false}
+                    />
                   ) : (
                     <div className="service-project-placeholder">GWM</div>
                   )}
-                  <div className="service-project-info"><span>{project.year || 'Project'}</span><strong>{project.title}</strong></div>
+                  <div className="service-project-info">
+                    <span>{project.year || 'Project'}</span>
+                    <strong>{project.title}</strong>
+                  </div>
                 </Link>
                 {isWebsitesService && project.liveUrl ? (
-                  <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="service-live-link">
+                  <a
+                    href={project.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="service-live-link"
+                  >
                     Visit Live Website <ArrowUpRight size={15} />
                   </a>
                 ) : null}
@@ -253,7 +384,9 @@ export default function ServicePage() {
         <div className="service-container">
           <p className="service-eyebrow">Ready when you are</p>
           <h2>Let&apos;s build something that gets noticed.</h2>
-          <Link to="/#contact" className="service-primary-button">Start your project <ArrowUpRight size={17} /></Link>
+          <Link to="/#contact" className="service-primary-button">
+            Start your project <ArrowUpRight size={17} />
+          </Link>
         </div>
       </section>
     </main>
