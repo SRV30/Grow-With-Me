@@ -36,13 +36,20 @@ const projectSchema = z
     published: z.boolean().optional().default(false),
     order: z.coerce.number().int().min(0).optional().default(0),
     seo: z
-      .object({ title: z.string().max(160).optional(), description: z.string().max(320).optional() })
+      .object({
+        title: z.string().max(160).optional(),
+        description: z.string().max(320).optional(),
+      })
       .optional()
       .default({}),
   })
   .superRefine((value, ctx) => {
     if (value.category !== 'websites' && value.liveUrl) {
-      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['liveUrl'], message: 'Live website URL is only allowed for Websites projects.' })
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['liveUrl'],
+        message: 'Live website URL is only allowed for Websites projects.',
+      })
     }
   })
 
