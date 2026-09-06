@@ -3,35 +3,36 @@ import { ArrowRight, Check, RotateCcw } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import '../styles/quote-calculator.css'
 
+// Affordable starting prices aimed at tier-3 / lower-cost Indian cities.
 const options = {
   service: [
-    ['social', 'Social Media Management', 12000],
-    ['reels', 'Reels & Video Editing', 6000],
-    ['design', 'Graphic Designing', 4000],
-    ['ads', 'Social Media Advertising', 8000],
-    ['promotion', 'Business Promotion', 7000],
-    ['website', 'Website Design', 18000],
+    ['social', 'Social Media Management', 7000],
+    ['reels', 'Reels & Video Editing', 3500],
+    ['design', 'Graphic Designing', 2500],
+    ['ads', 'Social Media Advertising', 5000],
+    ['promotion', 'Business Promotion', 4000],
+    ['website', 'Website Design', 10000],
   ],
   size: [
     ['small', 'Starter', 1],
-    ['medium', 'Growth', 1.45],
-    ['large', 'Scale', 2.1],
+    ['medium', 'Growth', 1.4],
+    ['large', 'Scale', 1.9],
   ],
   complexity: [
     ['simple', 'Simple', 1],
-    ['standard', 'Standard', 1.25],
-    ['premium', 'Premium', 1.6],
+    ['standard', 'Standard', 1.2],
+    ['premium', 'Premium', 1.5],
   ],
   timeline: [
     ['flexible', 'Flexible timeline', 1],
     ['standard', 'Standard timeline', 1.1],
-    ['rush', 'Rush delivery', 1.3],
+    ['rush', 'Rush delivery', 1.25],
   ],
 }
 const addons = [
-  ['strategy', 'Strategy & planning', 3000],
-  ['content', 'Content calendar', 2500],
-  ['extra', 'Extra revision round', 1500],
+  ['strategy', 'Strategy & planning', 1500],
+  ['content', 'Content calendar', 1200],
+  ['extra', 'Extra revision round', 800],
 ]
 
 const money = (value) => `₹${Math.round(value).toLocaleString('en-IN')}`
