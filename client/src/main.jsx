@@ -36,6 +36,7 @@ import './styles/mobile-hero-design.css'
 import './styles/mobile-trust.css'
 import './styles/manual-chatbot.css'
 import './styles/notifications.css'
+import './styles/header-footer-final.css'
 import './admin/admin.css'
 import './admin/user-management.css'
 import './scripts/mobile-hero-enhancer.js'
@@ -80,36 +81,23 @@ function PublicShell() {
         <Route path="/work/:slug" element={<ProjectPage />} />
         <Route path="/services/:slug" element={<ServicePage />} />
       </Routes>
-      <PageMotion />
-      <DeferredHero3D />
-      <HeaderEnhancer />
-      <ManualChatbot key={`${location.pathname}${location.search}`} />
     </>
   )
 }
 
-function PublicApp() {
+function AppShell() {
   return (
     <BrowserRouter>
-      <PublicShell />
+      <ErrorBoundary>
+        <Notifications />
+        <ScrollChoreography />
+        <PageMotion />
+        {!isAdminRoute ? <HeaderEnhancer /> : null}
+        {!isAdminRoute ? <ManualChatbot /> : null}
+        {isAdminRoute ? <AdminApp /> : <PublicShell />}
+      </ErrorBoundary>
     </BrowserRouter>
   )
 }
 
-function Root() {
-  return (
-    <ErrorBoundary>
-      {isAdminRoute ? (
-        <AdminApp />
-      ) : (
-        <>
-          <PublicApp />
-          <ScrollChoreography />
-        </>
-      )}
-      <Notifications />
-    </ErrorBoundary>
-  )
-}
-
-ReactDOM.createRoot(document.getElementById('root')).render(<Root />)
+ReactDOM.createRoot(document.getElementById('root')).render(<AppShell />)
