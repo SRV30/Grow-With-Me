@@ -8,6 +8,7 @@ const projectSchema = new mongoose.Schema(
     client: { type: String, default: '', trim: true, maxlength: 160 },
     category: { type: String, required: true, trim: true, lowercase: true, maxlength: 160 },
     year: { type: Number, min: 2000, max: 2100 },
+    liveUrl: { type: String, trim: true, maxlength: 500 },
     coverImage: { url: String, publicId: String, alt: String },
     gallery: [{ url: String, publicId: String, alt: String }],
     videos: [{ url: String, publicId: String, thumbnail: String }],
