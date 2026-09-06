@@ -37,7 +37,9 @@
   border: 1px solid rgba(17, 17, 17, 0.14);
   border-radius: 18px;
   box-shadow: 4px 4px 0 #111111;
-  transition: transform 180ms ease, box-shadow 180ms ease;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
 }
 
 .figma-header .figma-logo:hover img {
@@ -68,7 +70,10 @@
   font-size: 11px;
   font-weight: 750;
   text-decoration: none;
-  transition: background 160ms ease, color 160ms ease, transform 160ms ease;
+  transition:
+    background 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
 }
 
 .figma-header .figma-nav a.active,
@@ -117,7 +122,9 @@
   height: 480px;
   border: 1px solid rgba(245, 196, 0, 0.16);
   border-radius: 50%;
-  box-shadow: 0 0 0 70px rgba(245, 196, 0, 0.025), 0 0 0 140px rgba(245, 196, 0, 0.015);
+  box-shadow:
+    0 0 0 70px rgba(245, 196, 0, 0.025),
+    0 0 0 140px rgba(245, 196, 0, 0.015);
   content: '';
   pointer-events: none;
 }
@@ -141,7 +148,9 @@
   border-right: 1px solid rgba(17, 17, 17, 0.16);
   color: #111111;
   text-decoration: none;
-  transition: background 160ms ease, padding-left 160ms ease;
+  transition:
+    background 160ms ease,
+    padding-left 160ms ease;
 }
 
 .figma-footer .row-footer-contact a:last-child {
@@ -228,7 +237,9 @@
   color: rgba(255, 255, 255, 0.72);
   font-size: 11px;
   text-decoration: none;
-  transition: color 160ms ease, transform 160ms ease;
+  transition:
+    color 160ms ease,
+    transform 160ms ease;
 }
 
 .figma-footer .row-footer-main > div:not(:first-child) a:hover {
