@@ -167,10 +167,16 @@ function getEstimateBasePrice(service) {
 
   if (estimatePricing[key]) return estimatePricing[key]
   if (estimatePricing[slugify(service?.title || '')]) return estimatePricing[slugify(service.title)]
-  if (title.includes('website') || title.includes('web design') || title.includes('web development'))
+  if (
+    title.includes('website') ||
+    title.includes('web design') ||
+    title.includes('web development')
+  )
     return estimatePricing['website-design']
-  if (title.includes('reel') || title.includes('video')) return estimatePricing['reels-video-editing']
-  if (title.includes('graphic') || title.includes('design')) return estimatePricing['graphic-designing']
+  if (title.includes('reel') || title.includes('video'))
+    return estimatePricing['reels-video-editing']
+  if (title.includes('graphic') || title.includes('design'))
+    return estimatePricing['graphic-designing']
   if (title.includes('advertis') || title.includes('ads'))
     return estimatePricing['social-media-advertising']
   if (title.includes('social media') || title.includes('social'))
