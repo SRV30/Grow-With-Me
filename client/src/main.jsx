@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import App from './App.jsx'
 import WorkPage from './pages/WorkPage.jsx'
 import ProjectPage from './pages/ProjectPage.jsx'
+import ServicePage from './pages/ServicePage.jsx'
 import AdminApp from './admin/AdminApp.jsx'
 import ErrorBoundary from './components/ErrorBoundary.jsx'
 import Notifications from './components/Notifications.jsx'
@@ -77,6 +78,7 @@ function PublicShell() {
         <Route path="/" element={<App />} />
         <Route path="/work" element={<WorkPage />} />
         <Route path="/work/:slug" element={<ProjectPage />} />
+        <Route path="/services/:slug" element={<ServicePage />} />
       </Routes>
       <PageMotion />
       <DeferredHero3D />
