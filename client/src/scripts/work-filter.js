@@ -1,3 +1,5 @@
+const API_BASE = (import.meta.env.VITE_BACKEND_URL || '/api').replace(/\/$/, '')
+
 const normalize = (value = '') =>
   value
     .trim()
@@ -50,19 +52,17 @@ const applyWorkFilter = (button) => {
 }
 
 const syncServices = async () => {
-  const serviceCards = Array.from(document.querySelectorAll('#services .row-service-card'))
-  if (!serviceCards.length) return
+  const grid = document.querySelector('#services .row-service-grid')
+  if (!grid || grid.dataset.gwmServicesSynced === 'true') return
 
   try {
-    const response = await fetch('/api/services', { credentials: 'include' })
+    const response = await fetch(`${API_BASE}/services`, { credentials: 'include' })
     if (!response.ok) return
     const payload = await response.json()
     const services = Array.isArray(payload.data) ? payload.data : []
     if (!services.length) return
 
-    const grid = document.querySelector('#services .row-service-grid')
-    if (!grid) return
-
+    const serviceCards = Array.from(grid.querySelectorAll('.row-service-card'))
     services.forEach((service, index) => {
       let card = serviceCards[index]
       if (!card) {
@@ -83,9 +83,10 @@ const syncServices = async () => {
     })
 
     serviceCards.slice(services.length).forEach((card) => card.remove())
+    grid.dataset.gwmServicesSynced = 'true'
 
     const contactSelect = document.querySelector('.figma-contact-form select')
-    if (contactSelect) {
+    if (contactSelect && contactSelect.dataset.gwmServicesSynced !== 'true') {
       const current = contactSelect.value
       contactSelect.innerHTML = '<option value="">Select a service</option>'
       services.forEach((service) => {
@@ -95,6 +96,7 @@ const syncServices = async () => {
         contactSelect.appendChild(option)
       })
       contactSelect.value = services.some((service) => service.title === current) ? current : ''
+      contactSelect.dataset.gwmServicesSynced = 'true'
     }
   } catch {
     // Keep the static fallback services if the API is unavailable.
@@ -102,17 +104,16 @@ const syncServices = async () => {
 }
 
 const syncProjectCategorySelect = async () => {
-  const selects = Array.from(document.querySelectorAll('.admin-editor-page select'))
-  if (!selects.length) return
+  const select = document.querySelector('.admin-editor-page select')
+  if (!select || select.dataset.gwmServicesSynced === 'true') return
 
   try {
-    const response = await fetch('/api/services', { credentials: 'include' })
+    const response = await fetch(`${API_BASE}/services`, { credentials: 'include' })
     if (!response.ok) return
     const payload = await response.json()
     const services = Array.isArray(payload.data) ? payload.data : []
     if (!services.length) return
 
-    const select = selects[0]
     const current = select.value
     select.innerHTML = ''
     services.forEach((service) => {
@@ -122,9 +123,8 @@ const syncProjectCategorySelect = async () => {
       select.appendChild(option)
     })
 
-    if (services.some((service) => service.slug === current)) {
-      select.value = current
-    }
+    if (services.some((service) => service.slug === current)) select.value = current
+    select.dataset.gwmServicesSynced = 'true'
   } catch {
     // Keep the existing category options if the API is unavailable.
   }
