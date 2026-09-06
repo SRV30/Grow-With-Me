@@ -10,8 +10,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    padding: 8px max(20px, env(safe-area-inset-right)) 8px
-      max(20px, env(safe-area-inset-left));
+    padding: 8px max(20px, env(safe-area-inset-right)) 8px max(20px, env(safe-area-inset-left));
     box-sizing: border-box;
   }
 
