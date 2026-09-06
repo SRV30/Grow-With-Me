@@ -10,7 +10,7 @@ const pricing = {
   'graphic-designing': 1500,
   'social-media-advertising': 3500,
   'business-promotion': 2500,
-  'website-design': 6500,
+  'website-design': 8000,
 }
 
 const sizeOptions = [
