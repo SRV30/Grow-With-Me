@@ -31,14 +31,22 @@ const shuffle = (items) => {
 const filterAliases = {
   posters: ['poster', 'posters'],
   reels: ['reel', 'reels', 'video', 'video editing', 'reels and video editing'],
-  advertisements: ['advertisement', 'advertisements', 'advertising', 'social media advertising', 'ads'],
+  advertisements: [
+    'advertisement',
+    'advertisements',
+    'advertising',
+    'social media advertising',
+    'ads',
+  ],
   'social media': ['social media', 'social media management'],
   websites: ['website', 'websites', 'web design', 'website design', 'web development'],
 }
 const matchesFilter = (filter, category) => {
   if (filter === 'all') return true
   const aliases = filterAliases[filter] || [filter]
-  return aliases.some((value) => category === value || category.includes(value) || value.includes(category))
+  return aliases.some(
+    (value) => category === value || category.includes(value) || value.includes(category),
+  )
 }
 
 const applyHeaderLogo = () =>
