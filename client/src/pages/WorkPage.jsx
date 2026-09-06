@@ -5,6 +5,7 @@ import { getProjects } from '../services/api.js'
 import SEO from '../components/SEO.jsx'
 import CloudinaryImage from '../components/CloudinaryImage.jsx'
 import { EmptyState, LoadingState, ErrorState } from '../components/StatusState.jsx'
+import logoUrl from '../assets/logo.PNG'
 import '../styles/work-page.css'
 
 const normalizeCategory = (value = '') =>
@@ -148,7 +149,7 @@ export default function WorkPage() {
       <header className="work-header">
         <div className="work-container work-header-inner">
           <Link className="work-logo" to="/" aria-label="Grow With Me home">
-            <span className="work-logo-mark">G</span>
+            <img className="work-logo-image" src={logoUrl} alt="Grow With Me" />
             <strong>
               GROW WITH <em>ME</em>
             </strong>
