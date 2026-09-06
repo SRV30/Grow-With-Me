@@ -172,28 +172,54 @@ export default function QuoteCalculator() {
             <Field title="2. Project size">
               <div className="quote-options three">
                 {sizeOptions.map(([key, label]) => (
-                  <button type="button" className={form.size === key ? 'selected' : ''} onClick={() => update('size', key)} key={key}>{label}</button>
+                  <button
+                    type="button"
+                    className={form.size === key ? 'selected' : ''}
+                    onClick={() => update('size', key)}
+                    key={key}
+                  >
+                    {label}
+                  </button>
                 ))}
               </div>
             </Field>
             <Field title="3. Complexity">
               <div className="quote-options three">
                 {complexityOptions.map(([key, label]) => (
-                  <button type="button" className={form.complexity === key ? 'selected' : ''} onClick={() => update('complexity', key)} key={key}>{label}</button>
+                  <button
+                    type="button"
+                    className={form.complexity === key ? 'selected' : ''}
+                    onClick={() => update('complexity', key)}
+                    key={key}
+                  >
+                    {label}
+                  </button>
                 ))}
               </div>
             </Field>
             <Field title="4. Timeline">
               <div className="quote-options three">
                 {timelineOptions.map(([key, label]) => (
-                  <button type="button" className={form.timeline === key ? 'selected' : ''} onClick={() => update('timeline', key)} key={key}>{label}</button>
+                  <button
+                    type="button"
+                    className={form.timeline === key ? 'selected' : ''}
+                    onClick={() => update('timeline', key)}
+                    key={key}
+                  >
+                    {label}
+                  </button>
                 ))}
               </div>
             </Field>
             <Field title="5. Add-ons">
               <div className="quote-addons">
                 {addons.map(([key, label]) => (
-                  <button type="button" className={form.addons.includes(key) ? 'selected' : ''} onClick={() => toggleAddon(key)} key={key}>
+                  <button
+                    type="button"
+                    className={form.addons.includes(key) ? 'selected' : ''}
+                    onClick={() => toggleAddon(key)}
+                    key={key}
+                  >
                     <span>{form.addons.includes(key) ? <Check size={15} /> : null}</span>
                     {label}
                   </button>
@@ -203,15 +229,23 @@ export default function QuoteCalculator() {
           </div>
           <aside className="quote-result-panel">
             <p>Estimated range</p>
-            <strong>{estimateLow} — {estimateHigh}</strong>
-            <small>Based on your selections. This is a starting range, not a final quotation.</small>
+            <strong>
+              {estimateLow} — {estimateHigh}
+            </strong>
+            <small>
+              Based on your selections. This is a starting range, not a final quotation.
+            </small>
             <Link to={`/${contactHash}`} className="quote-cta" onClick={() => setSubmitted(true)}>
               Get this estimate <ArrowRight size={17} />
             </Link>
             <button className="quote-reset" type="button" onClick={reset}>
               <RotateCcw size={14} /> Start over
             </button>
-            {submitted ? <div className="quote-saved">Your estimate is ready. Share your requirements in the enquiry form.</div> : null}
+            {submitted ? (
+              <div className="quote-saved">
+                Your estimate is ready. Share your requirements in the enquiry form.
+              </div>
+            ) : null}
           </aside>
         </div>
       </div>
@@ -220,5 +254,10 @@ export default function QuoteCalculator() {
 }
 
 function Field({ title, children }) {
-  return <div className="quote-field"><h3>{title}</h3>{children}</div>
+  return (
+    <div className="quote-field">
+      <h3>{title}</h3>
+      {children}
+    </div>
+  )
 }
