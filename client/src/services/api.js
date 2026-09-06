@@ -54,6 +54,10 @@ export const getTestimonials = async () => {
   const { data } = await api.get('/testimonials')
   return data.data
 }
+export const submitTestimonial = async (payload) => {
+  const { data } = await api.post('/testimonials/submit', payload)
+  return data.data
+}
 export const submitEnquiry = async (payload) => {
   const { data } = await api.post('/enquiries', payload)
   return data.data
