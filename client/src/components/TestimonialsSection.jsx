@@ -54,7 +54,9 @@ export default function TestimonialsSection() {
       setSubmitted(true)
       setForm(emptyForm)
     } catch (error) {
-      setSubmitError(error.response?.data?.message || 'Unable to submit your testimonial. Please try again.')
+      setSubmitError(
+        error.response?.data?.message || 'Unable to submit your testimonial. Please try again.',
+      )
     } finally {
       setSubmitting(false)
     }
@@ -82,7 +84,11 @@ export default function TestimonialsSection() {
                 </button>
               </div>
             )}
-            <button type="button" className="testimonial-submit-button" onClick={() => setShowForm(true)}>
+            <button
+              type="button"
+              className="testimonial-submit-button"
+              onClick={() => setShowForm(true)}
+            >
               Share your experience
             </button>
           </div>
@@ -92,7 +98,10 @@ export default function TestimonialsSection() {
           <>
             <article className="testimonial-card">
               <Quote className="testimonial-quote-icon" size={42} />
-              <div className="testimonial-stars" aria-label={`${items[index].rating || 5} out of 5 stars`}>
+              <div
+                className="testimonial-stars"
+                aria-label={`${items[index].rating || 5} out of 5 stars`}
+              >
                 {Array.from({ length: 5 }, (_, star) => (
                   <Star
                     key={star}
@@ -104,7 +113,10 @@ export default function TestimonialsSection() {
               <blockquote>“{items[index].quote}”</blockquote>
               <div className="testimonial-author">
                 {items[index].avatar?.url ? (
-                  <img src={items[index].avatar.url} alt={items[index].avatar.alt || items[index].name} />
+                  <img
+                    src={items[index].avatar.url}
+                    alt={items[index].avatar.alt || items[index].name}
+                  />
                 ) : (
                   <span className="testimonial-avatar-fallback">
                     {items[index].name?.charAt(0)?.toUpperCase()}
@@ -113,7 +125,8 @@ export default function TestimonialsSection() {
                 <div>
                   <strong>{items[index].name}</strong>
                   <span>
-                    {[items[index].role, items[index].company].filter(Boolean).join(' · ') || 'Client'}
+                    {[items[index].role, items[index].company].filter(Boolean).join(' · ') ||
+                      'Client'}
                   </span>
                 </div>
               </div>
@@ -134,7 +147,11 @@ export default function TestimonialsSection() {
         ) : (
           <div className="testimonials-empty">
             <p>Be the first client to share your experience.</p>
-            <button type="button" className="testimonial-submit-button" onClick={() => setShowForm(true)}>
+            <button
+              type="button"
+              className="testimonial-submit-button"
+              onClick={() => setShowForm(true)}
+            >
               Share your experience
             </button>
           </div>
@@ -155,7 +172,12 @@ export default function TestimonialsSection() {
                 <p className="testimonials-eyebrow">Your experience</p>
                 <h3 id="testimonial-modal-title">Tell us what you think.</h3>
               </div>
-              <button type="button" className="testimonial-modal-close" onClick={closeForm} aria-label="Close">
+              <button
+                type="button"
+                className="testimonial-modal-close"
+                onClick={closeForm}
+                aria-label="Close"
+              >
                 <X size={19} />
               </button>
             </div>
@@ -174,19 +196,35 @@ export default function TestimonialsSection() {
                 <div className="testimonial-form-grid">
                   <label>
                     Name *
-                    <input value={form.name} onChange={(e) => updateForm('name', e.target.value)} required maxLength={120} />
+                    <input
+                      value={form.name}
+                      onChange={(e) => updateForm('name', e.target.value)}
+                      required
+                      maxLength={120}
+                    />
                   </label>
                   <label>
                     Company
-                    <input value={form.company} onChange={(e) => updateForm('company', e.target.value)} maxLength={160} />
+                    <input
+                      value={form.company}
+                      onChange={(e) => updateForm('company', e.target.value)}
+                      maxLength={160}
+                    />
                   </label>
                   <label>
                     Role
-                    <input value={form.role} onChange={(e) => updateForm('role', e.target.value)} maxLength={120} />
+                    <input
+                      value={form.role}
+                      onChange={(e) => updateForm('role', e.target.value)}
+                      maxLength={120}
+                    />
                   </label>
                   <label>
                     Rating
-                    <select value={form.rating} onChange={(e) => updateForm('rating', Number(e.target.value))}>
+                    <select
+                      value={form.rating}
+                      onChange={(e) => updateForm('rating', Number(e.target.value))}
+                    >
                       {[5, 4, 3, 2, 1].map((rating) => (
                         <option key={rating} value={rating}>
                           {rating} / 5
@@ -206,11 +244,19 @@ export default function TestimonialsSection() {
                     placeholder="Tell us about your experience working with Grow With Me..."
                   />
                 </label>
-                {submitError && <p className="testimonial-form-error" role="alert">{submitError}</p>}
+                {submitError && (
+                  <p className="testimonial-form-error" role="alert">
+                    {submitError}
+                  </p>
+                )}
                 <p className="testimonial-form-note">
                   Your testimonial will be reviewed by our team before it appears on the website.
                 </p>
-                <button type="submit" className="testimonial-submit-button testimonial-submit-full" disabled={submitting}>
+                <button
+                  type="submit"
+                  className="testimonial-submit-button testimonial-submit-full"
+                  disabled={submitting}
+                >
                   {submitting ? 'Submitting…' : 'Submit testimonial'}
                 </button>
               </form>
