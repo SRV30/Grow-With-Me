@@ -26,7 +26,7 @@ import {
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { services, industries, process } from './data/site.js'
-import { api, getHomepage, getProjects } from './services/api.js'
+import { api, getHomepage, getProjects, getServices } from './services/api.js'
 import SEO from './components/SEO.jsx'
 import { OrganizationSchema } from './components/StructuredData.jsx'
 import TestimonialsSection from './components/TestimonialsSection.jsx'
@@ -68,7 +68,7 @@ function SectionHeading({ eyebrow, title, description, align = 'center' }) {
   )
 }
 
-function ContactForm() {
+function ContactForm({ servicesList }) {
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -127,8 +127,8 @@ function ContactForm() {
         <span>Service</span>
         <select value={form.service} onChange={(event) => update('service', event.target.value)}>
           <option value="">Select a service</option>
-          {services.map((service) => (
-            <option key={service.title}>{service.title}</option>
+          {servicesList.map((service) => (
+            <option key={service._id || service.title}>{service.title}</option>
           ))}
         </select>
       </label>
@@ -188,8 +188,19 @@ function HeroSection({ hero, projects }) {
     () => [...projects].sort(() => Math.random() - 0.5).slice(0, 5),
     [projects],
   )
-  const [mobileIndex, setMobileIndex] = useState(() => Math.floor(Math.random() * 5))
-  const slots = Array.from({ length: 5 }, (_, index) => heroProjects[index] || null)
+  const [mobileIndex] = useState(() => Math.floor(Math.random() * 5))
+  const slots = Array.from({ length: 5 }, (_, index) => {
+    if (heroProjects[index]) return heroProjects[index]
+    if (index === 0 && hero?.media?.url) {
+      return {
+        _id: 'homepage-hero-media',
+        slug: '',
+        title: 'Featured Grow With Me work',
+        coverImage: hero.media,
+      }
+    }
+    return null
+  })
 
   return (
     <section className="row-section row-hero hero-collage-section">
@@ -227,7 +238,7 @@ function HeroSection({ hero, projects }) {
             <a
               key={project?._id || `brand-${index}`}
               className={`hero-collage-card hero-collage-card-${index + 1}${index === mobileIndex ? ' hero-collage-mobile-selected' : ''}`}
-              href={project ? `/work/${project.slug}` : '/work'}
+              href={project?.slug ? `/work/${project.slug}` : '/work'}
               aria-label={project ? `View ${project.title}` : 'View Grow With Me work'}
             >
               {project?.coverImage?.url ? (
@@ -244,7 +255,7 @@ function HeroSection({ hero, projects }) {
                   <small>CREATIVE DIGITAL SOLUTIONS</small>
                 </div>
               )}
-              {project ? (
+              {project?.slug ? (
                 <span className="hero-collage-label">
                   {project.category?.replaceAll('-', ' ') || 'Featured work'}
                 </span>
@@ -290,24 +301,24 @@ function TrustSection() {
     </section>
   )
 }
-function ServicesSection() {
+function ServicesSection({ servicesList }) {
   return (
     <section id="services" className="row-section row-white">
       <div className="row-container">
         <SectionHeading eyebrow="What we do" title="Our Services" />
         <div className="row-service-grid">
-          {services.map((service, index) => {
+          {servicesList.map((service, index) => {
             const Icon = serviceIcons[index] || PenTool
             return (
               <Link
                 className="row-service-card"
-                key={service.title}
+                key={service._id || service.title}
                 to={`/work?service=${encodeURIComponent(service.title)}`}
                 aria-label={`View ${service.title} portfolio`}
               >
                 <Icon className="row-service-icon" size={42} />
                 <h3>{service.title}</h3>
-                <p>{service.text}</p>
+                <p>{service.text || service.description || ''}</p>
                 <ArrowRight className="row-service-arrow" size={22} />
               </Link>
             )
@@ -500,7 +511,7 @@ function CtaSection({ cta, ctaImage }) {
     </section>
   )
 }
-function ContactSection() {
+function ContactSection({ servicesList }) {
   return (
     <section id="contact" className="row-section row-contact">
       <div className="row-container row-contact-grid">
@@ -512,7 +523,7 @@ function ContactSection() {
             presence.
           </p>
         </div>
-        <ContactForm />
+        <ContactForm servicesList={servicesList} />
       </div>
     </section>
   )
@@ -569,13 +580,27 @@ export default function App() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [projects, setProjects] = useState([])
   const [homepage, setHomepage] = useState(null)
+  const [servicesList, setServicesList] = useState(services)
   useEffect(() => {
+    let active = true
     getProjects({ featured: true })
-      .then(setProjects)
+      .then((result) => {
+        if (active) setProjects(Array.isArray(result) ? result : result?.projects || result?.data || [])
+      })
       .catch(() => {})
     getHomepage()
-      .then(setHomepage)
+      .then((result) => {
+        if (active) setHomepage(result)
+      })
       .catch(() => {})
+    getServices()
+      .then((result) => {
+        if (active && Array.isArray(result) && result.length) setServicesList(result)
+      })
+      .catch(() => {})
+    return () => {
+      active = false
+    }
   }, [])
   const hero = homepage?.hero
   const about = homepage?.about
@@ -594,7 +619,7 @@ export default function App() {
     ? homepage.process.slice().sort((a, b) => a.order - b.order)
     : process.map(([number, title, text], index) => ({ number, title, text, order: index }))
   const featuredProjects = projects.slice(0, 6)
-  const aboutImage = hero?.media?.url || featuredProjects[1]?.coverImage?.url
+  const aboutImage = featuredProjects[1]?.coverImage?.url
   const ctaImage = cta?.media?.url || featuredProjects[2]?.coverImage?.url
   return (
     <div className="figma-site row-layout-site">
@@ -660,7 +685,7 @@ export default function App() {
       <main id="top">
         <HeroSection hero={hero} projects={featuredProjects} />
         <TrustSection />
-        <ServicesSection />
+        <ServicesSection servicesList={servicesList} />
         <WorkSection projects={featuredProjects} />
         <TestimonialsSection />
         <QuoteCalculator />
@@ -668,7 +693,7 @@ export default function App() {
         <IndustriesSection industriesList={liveIndustries} />
         <AboutSection about={about} aboutImage={aboutImage} />
         <CtaSection cta={cta} ctaImage={ctaImage} />
-        <ContactSection />
+        <ContactSection servicesList={servicesList} />
       </main>
       <Footer />
     </div>
