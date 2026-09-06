@@ -1,55 +1,75 @@
-/* Responsive header alignment fix
-   Keeps the mobile/tablet menu control anchored to the right edge
-   while the brand stays anchored to the left. */
+/* Responsive header / hamburger system
+   One layout rule for phones, tablets and narrow laptops. */
 
-@media (max-width: 900px) {
+/* Tablet + mobile: switch the header to a simple two-sided flex layout. */
+@media (max-width: 1024px) {
   .figma-header .row-header-inner {
     display: flex !important;
     width: 100%;
-    min-height: 74px;
+    min-height: clamp(68px, 8vw, 76px);
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    padding: 8px 24px;
+    padding: 8px max(20px, env(safe-area-inset-right)) 8px
+      max(20px, env(safe-area-inset-left));
     box-sizing: border-box;
   }
 
+  /* Keep the brand locked to the left. */
   .figma-header .figma-logo {
     flex: 0 0 auto;
+    min-width: 0;
     margin: 0;
   }
 
   .figma-header .figma-logo img {
-    width: 54px !important;
-    height: 54px !important;
+    width: clamp(50px, 6vw, 58px) !important;
+    height: clamp(50px, 6vw, 58px) !important;
   }
 
+  /* Hide desktop controls before they can squeeze the hamburger. */
+  .figma-header .figma-nav,
+  .figma-header .header-cta {
+    display: none !important;
+  }
+
+  /* Hamburger is always the right-most control. */
   .figma-header .figma-menu-button {
     display: grid !important;
-    flex: 0 0 48px;
-    width: 48px;
-    height: 48px;
+    flex: 0 0 clamp(44px, 5.5vw, 50px);
+    width: clamp(44px, 5.5vw, 50px);
+    height: clamp(44px, 5.5vw, 50px);
     margin: 0 0 0 auto;
     padding: 0;
     place-items: center;
     box-sizing: border-box;
     border: 1px solid rgba(17, 17, 17, 0.14);
-    border-radius: 14px;
-    background: rgba(255, 255, 255, 0.9);
+    border-radius: clamp(12px, 1.5vw, 15px);
+    background: rgba(255, 255, 255, 0.92);
     color: #111;
     box-shadow: 3px 3px 0 #111;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .figma-header .figma-menu-button svg {
-    width: 22px;
-    height: 22px;
+    width: clamp(20px, 2.6vw, 23px);
+    height: clamp(20px, 2.6vw, 23px);
+  }
+
+  .figma-header .figma-menu-button:focus-visible {
+    outline: 3px solid rgba(245, 196, 0, 0.9);
+    outline-offset: 3px;
   }
 }
 
-@media (max-width: 560px) {
+/* Small phones. */
+@media (max-width: 600px) {
   .figma-header .row-header-inner {
-    min-height: 68px;
-    padding: 7px 16px;
+    min-height: 66px;
+    gap: 12px;
+    padding-top: 7px;
+    padding-bottom: 7px;
   }
 
   .figma-header .figma-logo img {
@@ -64,5 +84,55 @@
     width: 46px;
     height: 46px;
     border-radius: 13px;
+  }
+}
+
+/* Very narrow phones: preserve usable side margins without overflow. */
+@media (max-width: 360px) {
+  .figma-header .row-header-inner {
+    padding-right: max(12px, env(safe-area-inset-right));
+    padding-left: max(12px, env(safe-area-inset-left));
+  }
+
+  .figma-header .figma-logo img {
+    width: 46px !important;
+    height: 46px !important;
+    border-radius: 12px;
+  }
+
+  .figma-header .figma-menu-button {
+    flex-basis: 44px;
+    width: 44px;
+    height: 44px;
+  }
+}
+
+/* Landscape phones / compact tablets. */
+@media (max-width: 1024px) and (orientation: landscape) {
+  .figma-header .row-header-inner {
+    min-height: 62px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+
+  .figma-header .figma-logo img {
+    width: 46px !important;
+    height: 46px !important;
+  }
+
+  .figma-header .figma-menu-button {
+    width: 44px;
+    height: 44px;
+    flex-basis: 44px;
+  }
+}
+
+/* Respect devices with display cutouts / home indicators. */
+@supports (padding: max(0px)) {
+  @media (max-width: 1024px) {
+    .figma-header .row-header-inner {
+      padding-right: max(20px, env(safe-area-inset-right));
+      padding-left: max(20px, env(safe-area-inset-left));
+    }
   }
 }
