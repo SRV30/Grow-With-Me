@@ -32,9 +32,10 @@ function applyQuoteToContact() {
   const serviceOption = [...serviceSelect.options].find((option) => option.text === quote.service)
   if (serviceOption) setReactField(serviceSelect, serviceOption.value)
 
-  const estimateText = quote.low && quote.high
-    ? `\n\nQuote estimate: ${quote.low} — ${quote.high}. This is an estimate only.`
-    : ''
+  const estimateText =
+    quote.low && quote.high
+      ? `\n\nQuote estimate: ${quote.low} — ${quote.high}. This is an estimate only.`
+      : ''
   const currentMessage = textarea.value || ''
   if (!currentMessage.includes('Quote estimate:')) {
     setReactField(textarea, `${currentMessage}${estimateText}`.trim())
