@@ -61,6 +61,24 @@ const applyHeaderLogo = () => {
   })
 }
 
+const applyContactLogo = () => {
+  document.querySelectorAll('.row-contact-copy').forEach((copy) => {
+    let image = copy.querySelector('.row-contact-logo')
+    if (!image) {
+      image = document.createElement('img')
+      image.className = 'row-contact-logo'
+      image.src = logoUrl
+      image.alt = 'Grow With Me'
+      image.loading = 'lazy'
+      image.decoding = 'async'
+
+      const description = copy.querySelector('p:last-child')
+      if (description) description.insertAdjacentElement('afterend', image)
+      else copy.appendChild(image)
+    }
+  })
+}
+
 const applyWorkFilter = (button) => {
   const filter = normalize(button.dataset.filter || button.textContent)
   const items = getWorkItems()
@@ -174,6 +192,7 @@ const syncProjectCategorySelect = async () => {
 
 const initializeWorkFilters = () => {
   applyHeaderLogo()
+  applyContactLogo()
 
   const buttons = document.querySelectorAll('#work .row-work-filters button')
   buttons.forEach((button) => {
