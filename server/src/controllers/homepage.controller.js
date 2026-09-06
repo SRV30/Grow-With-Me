@@ -19,47 +19,16 @@ const defaults = {
     experienceYear: 2020,
   },
   process: [
-    {
-      number: '01',
-      title: 'Discuss',
-      text: 'We understand your business, requirements and goals.',
-      order: 1,
-    },
-    {
-      number: '02',
-      title: 'Plan',
-      text: 'We plan the content according to your business and audience.',
-      order: 2,
-    },
-    {
-      number: '03',
-      title: 'Create',
-      text: 'We create designs, videos and promotional content.',
-      order: 3,
-    },
-    {
-      number: '04',
-      title: 'Review',
-      text: 'You review the content and share your feedback.',
-      order: 4,
-    },
+    { number: '01', title: 'Discuss', text: 'We understand your business, requirements and goals.', order: 1 },
+    { number: '02', title: 'Plan', text: 'We plan the content according to your business and audience.', order: 2 },
+    { number: '03', title: 'Create', text: 'We create designs, videos and promotional content.', order: 3 },
+    { number: '04', title: 'Review', text: 'You review the content and share your feedback.', order: 4 },
     { number: '05', title: 'Publish', text: 'Approved content is ready to go live.', order: 5 },
-    {
-      number: '06',
-      title: 'Grow',
-      text: 'Consistent content and promotion help strengthen your online presence.',
-      order: 6,
-    },
+    { number: '06', title: 'Grow', text: 'Consistent content and promotion help strengthen your online presence.', order: 6 },
   ],
   industries: [
-    'Jewellery',
-    'Furniture',
-    'Restaurants',
-    'Retail Stores',
-    'Professionals',
-    'Local Businesses',
-    'Startups',
-    'Service Businesses',
+    'Jewellery', 'Furniture', 'Restaurants', 'Retail Stores', 'Professionals',
+    'Local Businesses', 'Startups', 'Service Businesses',
   ].map((name, i) => ({ name, active: true, order: i })),
   cta: {
     eyebrow: 'Ready to grow?',
@@ -69,10 +38,73 @@ const defaults = {
     secondaryText: 'Send Email',
     secondaryLink: 'mailto:growithmeayush@gmail.com',
   },
-  marquee: ['Social Media', 'Video', 'Design', 'Digital Marketing', 'Websites'].map((text, i) => ({
-    text,
-    order: i,
-  })),
+  marquee: ['Social Media', 'Video', 'Design', 'Digital Marketing', 'Websites'].map((text, i) => ({ text, order: i })),
+}
+
+const stringValue = (value) => (typeof value === 'string' ? value.trim() : '')
+
+const buildPayload = (body = {}) => {
+  const hero = body.hero || {}
+  const about = body.about || {}
+  const cta = body.cta || {}
+
+  return {
+    hero: {
+      eyebrow: stringValue(hero.eyebrow),
+      title: stringValue(hero.title),
+      description: stringValue(hero.description),
+      primaryCtaText: stringValue(hero.primaryCtaText),
+      primaryCtaLink: stringValue(hero.primaryCtaLink),
+      secondaryCtaText: stringValue(hero.secondaryCtaText),
+      secondaryCtaLink: stringValue(hero.secondaryCtaLink),
+      ...(hero.media && typeof hero.media === 'object'
+        ? {
+            media: {
+              publicId: stringValue(hero.media.publicId),
+              url: stringValue(hero.media.url),
+              alt: stringValue(hero.media.alt),
+            },
+          }
+        : {}),
+    },
+    about: {
+      eyebrow: stringValue(about.eyebrow),
+      title: stringValue(about.title),
+      description: stringValue(about.description),
+      experienceYear: Number.isFinite(Number(about.experienceYear))
+        ? Number(about.experienceYear)
+        : defaults.about.experienceYear,
+    },
+    process: Array.isArray(body.process)
+      ? body.process.slice(0, 20).map((item, index) => ({
+          number: stringValue(item?.number),
+          title: stringValue(item?.title),
+          text: stringValue(item?.text),
+          order: Number.isFinite(Number(item?.order)) ? Number(item.order) : index + 1,
+        }))
+      : [],
+    industries: Array.isArray(body.industries)
+      ? body.industries.slice(0, 30).map((item, index) => ({
+          name: stringValue(item?.name),
+          active: item?.active !== false,
+          order: Number.isFinite(Number(item?.order)) ? Number(item.order) : index,
+        }))
+      : [],
+    cta: {
+      eyebrow: stringValue(cta.eyebrow),
+      title: stringValue(cta.title),
+      primaryText: stringValue(cta.primaryText),
+      primaryLink: stringValue(cta.primaryLink),
+      secondaryText: stringValue(cta.secondaryText),
+      secondaryLink: stringValue(cta.secondaryLink),
+    },
+    marquee: Array.isArray(body.marquee)
+      ? body.marquee.slice(0, 30).map((item, index) => ({
+          text: stringValue(item?.text),
+          order: Number.isFinite(Number(item?.order)) ? Number(item.order) : index,
+        }))
+      : [],
+  }
 }
 
 export const getHomepage = async (_req, res, next) => {
@@ -87,9 +119,10 @@ export const getHomepage = async (_req, res, next) => {
 
 export const updateHomepage = async (req, res, next) => {
   try {
+    const payload = buildPayload(req.body)
     const page = await Homepage.findOneAndUpdate(
       { singleton: 'homepage' },
-      { $set: req.body },
+      { $set: payload },
       { new: true, upsert: true, runValidators: true, setDefaultsOnInsert: true },
     )
     res.json({ success: true, data: page })
