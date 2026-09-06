@@ -25,6 +25,36 @@ export const getTestimonial = async (req, res, next) => {
   }
 }
 
+export const createPublicTestimonial = async (req, res, next) => {
+  try {
+    const { name, company, role, quote, rating } = req.body
+    if (!name?.trim() || !quote?.trim()) {
+      return res.status(400).json({
+        success: false,
+        message: 'Name and testimonial are required',
+      })
+    }
+
+    const testimonial = await Testimonial.create({
+      name: name.trim(),
+      company: company?.trim() || '',
+      role: role?.trim() || '',
+      quote: quote.trim(),
+      rating: Math.min(5, Math.max(1, Number(rating) || 5)),
+      published: false,
+      featured: false,
+    })
+
+    res.status(201).json({
+      success: true,
+      data: testimonial,
+      message: 'Testimonial submitted for review',
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
 export const createTestimonial = async (req, res, next) => {
   try {
     const testimonial = await Testimonial.create(req.body)
