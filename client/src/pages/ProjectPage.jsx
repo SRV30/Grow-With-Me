@@ -88,7 +88,9 @@ export default function ProjectPage() {
           <Link to="/">Home</Link>
           <Link to="/about">About</Link>
           <Link to="/services">Services</Link>
-          <Link to="/work" className="active">Work</Link>
+          <Link to="/work" className="active">
+            Work
+          </Link>
           <Link to="/contact">Contact</Link>
         </nav>
         <Link to="/contact" className="project-detail-start">
@@ -107,7 +109,8 @@ export default function ProjectPage() {
               {category}
             </div>
             <h1 className="project-detail-title" data-project-reveal>
-              {project.title}<em>.</em>
+              {project.title}
+              <em>.</em>
             </h1>
             <p className="project-detail-tagline" data-project-reveal>
               More than a project, it&apos;s an experience.
