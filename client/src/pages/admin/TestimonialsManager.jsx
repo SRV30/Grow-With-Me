@@ -27,7 +27,7 @@ export default function TestimonialsManager() {
     setLoading(true)
     setError('')
     try {
-      const { data } = await api.get('/testimonials')
+      const { data } = await api.get('/testimonials/admin')
       setItems(data.data || [])
     } catch (e) {
       setError(e.response?.data?.message || 'Unable to load testimonials')
@@ -108,135 +108,45 @@ export default function TestimonialsManager() {
             Review client feedback before it appears on the website.
           </p>
         </div>
-        <button
-          type="button"
-          className="admin-icon"
-          onClick={load}
-          title="Refresh testimonials"
-          aria-label="Refresh testimonials"
-        >
+        <button type="button" className="admin-icon" onClick={load} title="Refresh testimonials" aria-label="Refresh testimonials">
           <RefreshCw size={17} />
         </button>
       </header>
-      {error && (
-        <div className="admin-alert" role="alert">
-          {error}
-        </div>
-      )}
+      {error && <div className="admin-alert" role="alert">{error}</div>}
 
       <section className="testimonial-admin-stats" aria-label="Testimonial statistics">
-        <button
-          type="button"
-          className={filter === 'pending' ? 'active' : ''}
-          onClick={() => setFilter('pending')}
-        >
-          <span>Pending approval</span>
-          <strong>{pending.length}</strong>
+        <button type="button" className={filter === 'pending' ? 'active' : ''} onClick={() => setFilter('pending')}>
+          <span>Pending approval</span><strong>{pending.length}</strong>
         </button>
-        <button
-          type="button"
-          className={filter === 'published' ? 'active' : ''}
-          onClick={() => setFilter('published')}
-        >
-          <span>Published</span>
-          <strong>{published.length}</strong>
+        <button type="button" className={filter === 'published' ? 'active' : ''} onClick={() => setFilter('published')}>
+          <span>Published</span><strong>{published.length}</strong>
         </button>
-        <button
-          type="button"
-          className={filter === 'all' ? 'active' : ''}
-          onClick={() => setFilter('all')}
-        >
-          <span>Total</span>
-          <strong>{items.length}</strong>
+        <button type="button" className={filter === 'all' ? 'active' : ''} onClick={() => setFilter('all')}>
+          <span>Total</span><strong>{items.length}</strong>
         </button>
       </section>
 
       {editing && (
         <form className="testimonial-admin-form" onSubmit={submit}>
           <div className="testimonial-admin-form-title">
-            <div>
-              <span>Edit testimonial</span>
-              <small>Changes are saved directly to the CMS.</small>
-            </div>
-            <button
-              type="button"
-              className="testimonial-admin-close"
-              onClick={cancelEdit}
-              aria-label="Cancel editing"
-            >
-              <X size={18} />
-            </button>
+            <div><span>Edit testimonial</span><small>Changes are saved directly to the CMS.</small></div>
+            <button type="button" className="testimonial-admin-close" onClick={cancelEdit} aria-label="Cancel editing"><X size={18} /></button>
           </div>
           <div className="testimonial-admin-form-grid">
-            <label>
-              Name *
-              <input value={form.name} onChange={(e) => update('name', e.target.value)} required />
-            </label>
-            <label>
-              Company
-              <input value={form.company} onChange={(e) => update('company', e.target.value)} />
-            </label>
-            <label>
-              Role
-              <input value={form.role} onChange={(e) => update('role', e.target.value)} />
-            </label>
-            <label>
-              Rating
-              <select
-                value={form.rating}
-                onChange={(e) => update('rating', Number(e.target.value))}
-              >
-                {[5, 4, 3, 2, 1].map((n) => (
-                  <option key={n} value={n}>
-                    {n} / 5
-                  </option>
-                ))}
-              </select>
-            </label>
+            <label>Name *<input value={form.name} onChange={(e) => update('name', e.target.value)} required /></label>
+            <label>Company<input value={form.company} onChange={(e) => update('company', e.target.value)} /></label>
+            <label>Role<input value={form.role} onChange={(e) => update('role', e.target.value)} /></label>
+            <label>Rating<select value={form.rating} onChange={(e) => update('rating', Number(e.target.value))}>{[5, 4, 3, 2, 1].map((n) => <option key={n} value={n}>{n} / 5</option>)}</select></label>
           </div>
-          <label>
-            Testimonial *
-            <textarea
-              rows="5"
-              value={form.quote}
-              onChange={(e) => update('quote', e.target.value)}
-              required
-              maxLength={1200}
-            />
-          </label>
+          <label>Testimonial *<textarea rows="5" value={form.quote} onChange={(e) => update('quote', e.target.value)} required maxLength={1200} /></label>
           <div className="testimonial-admin-form-options">
-            <label>
-              <input
-                type="checkbox"
-                checked={form.featured}
-                onChange={(e) => update('featured', e.target.checked)}
-              />{' '}
-              Featured
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                checked={form.published}
-                onChange={(e) => update('published', e.target.checked)}
-              />{' '}
-              Published
-            </label>
-            <label>
-              Order
-              <input
-                type="number"
-                value={form.order}
-                onChange={(e) => update('order', Number(e.target.value))}
-              />
-            </label>
+            <label><input type="checkbox" checked={form.featured} onChange={(e) => update('featured', e.target.checked)} /> Featured</label>
+            <label><input type="checkbox" checked={form.published} onChange={(e) => update('published', e.target.checked)} /> Published</label>
+            <label>Order<input type="number" value={form.order} onChange={(e) => update('order', Number(e.target.value))} /></label>
           </div>
           <div className="testimonial-admin-form-actions">
-            <button type="submit" className="admin-primary" disabled={saving}>
-              {saving ? 'Saving…' : 'Save testimonial'}
-            </button>
-            <button type="button" className="admin-secondary" onClick={cancelEdit}>
-              Cancel
-            </button>
+            <button type="submit" className="admin-primary" disabled={saving}>{saving ? 'Saving…' : 'Save testimonial'}</button>
+            <button type="button" className="admin-secondary" onClick={cancelEdit}>Cancel</button>
           </div>
         </form>
       )}
@@ -244,88 +154,40 @@ export default function TestimonialsManager() {
       <section className="testimonial-admin-list" aria-label="Testimonials">
         <div className="testimonial-admin-list-header">
           <div>
-            <h2>
-              {filter === 'pending'
-                ? 'Awaiting approval'
-                : filter === 'published'
-                  ? 'Published testimonials'
-                  : 'All testimonials'}
-            </h2>
-            <span>
-              {visibleItems.length} {visibleItems.length === 1 ? 'testimonial' : 'testimonials'}
-            </span>
+            <h2>{filter === 'pending' ? 'Awaiting approval' : filter === 'published' ? 'Published testimonials' : 'All testimonials'}</h2>
+            <span>{visibleItems.length} {visibleItems.length === 1 ? 'testimonial' : 'testimonials'}</span>
           </div>
         </div>
-        {loading ? (
-          <div className="testimonial-admin-empty">Loading testimonials…</div>
-        ) : visibleItems.length === 0 ? (
+        {loading ? <div className="testimonial-admin-empty">Loading testimonials…</div> : visibleItems.length === 0 ? (
           <div className="testimonial-admin-empty">
             <MessageSquareQuote size={28} />
-            <strong>
-              {filter === 'pending'
-                ? 'No testimonials waiting for approval.'
-                : 'No testimonials here yet.'}
-            </strong>
+            <strong>{filter === 'pending' ? 'No testimonials waiting for approval.' : 'No testimonials here yet.'}</strong>
             <span>New client submissions will appear here automatically.</span>
           </div>
-        ) : (
-          visibleItems.map((item) => (
-            <article
-              className={
-                item.published ? 'testimonial-review-card published' : 'testimonial-review-card'
-              }
-              key={item._id}
-            >
-              <div className="testimonial-review-main">
-                <div className="testimonial-review-meta">
-                  <span
-                    className={
-                      item.published ? 'testimonial-status approved' : 'testimonial-status pending'
-                    }
-                  >
-                    {item.published ? 'Published' : 'Pending approval'}
-                  </span>
-                  <span>{item.rating}/5</span>
-                </div>
-                <blockquote>“{item.quote}”</blockquote>
-                <div className="testimonial-review-author">
-                  <span className="testimonial-review-avatar">
-                    {item.name?.charAt(0)?.toUpperCase()}
-                  </span>
-                  <div>
-                    <strong>{item.name}</strong>
-                    <span>{[item.role, item.company].filter(Boolean).join(' · ') || 'Client'}</span>
-                  </div>
-                </div>
+        ) : visibleItems.map((item) => (
+          <article className={item.published ? 'testimonial-review-card published' : 'testimonial-review-card'} key={item._id}>
+            <div className="testimonial-review-main">
+              <div className="testimonial-review-meta">
+                <span className={item.published ? 'testimonial-status approved' : 'testimonial-status pending'}>{item.published ? 'Published' : 'Pending approval'}</span>
+                <span>{item.rating}/5</span>
               </div>
-              <div className="testimonial-review-actions">
-                {!item.published ? (
-                  <button
-                    type="button"
-                    className="testimonial-approve"
-                    onClick={() => setPublished(item, true)}
-                  >
-                    <Check size={16} /> Approve & publish
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    className="testimonial-unpublish"
-                    onClick={() => setPublished(item, false)}
-                  >
-                    Unpublish
-                  </button>
-                )}
-                <button type="button" className="testimonial-edit" onClick={() => startEdit(item)}>
-                  <Edit3 size={15} /> Edit
-                </button>
-                <button type="button" className="testimonial-reject" onClick={() => remove(item)}>
-                  <Trash2 size={15} /> {item.published ? 'Delete' : 'Reject'}
-                </button>
+              <blockquote>“{item.quote}”</blockquote>
+              <div className="testimonial-review-author">
+                <span className="testimonial-review-avatar">{item.name?.charAt(0)?.toUpperCase()}</span>
+                <div><strong>{item.name}</strong><span>{[item.role, item.company].filter(Boolean).join(' · ') || 'Client'}</span></div>
               </div>
-            </article>
-          ))
-        )}
+            </div>
+            <div className="testimonial-review-actions">
+              {!item.published ? (
+                <button type="button" className="testimonial-approve" onClick={() => setPublished(item, true)}><Check size={16} /> Approve & publish</button>
+              ) : (
+                <button type="button" className="testimonial-unpublish" onClick={() => setPublished(item, false)}>Unpublish</button>
+              )}
+              <button type="button" className="testimonial-edit" onClick={() => startEdit(item)}><Edit3 size={15} /> Edit</button>
+              <button type="button" className="testimonial-reject" onClick={() => remove(item)}><Trash2 size={15} /> {item.published ? 'Delete' : 'Reject'}</button>
+            </div>
+          </article>
+        ))}
       </section>
     </section>
   )
