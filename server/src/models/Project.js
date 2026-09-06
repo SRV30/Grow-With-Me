@@ -6,29 +6,9 @@ const projectSchema = new mongoose.Schema(
     slug: { type: String, required: true, unique: true, lowercase: true, trim: true },
     description: { type: String, default: '', maxlength: 5000 },
     client: { type: String, default: '', trim: true, maxlength: 160 },
-    category: {
-      type: String,
-      enum: [
-        'social-media',
-        'reels',
-        'graphic-design',
-        'social-media-advertising',
-        'business-promotion',
-        'website-design',
-        'posters',
-        'advertisements',
-        'branding',
-        'websites',
-        'other',
-      ],
-      default: 'social-media',
-    },
+    category: { type: String, required: true, trim: true, lowercase: true, maxlength: 160 },
     year: { type: Number, min: 2000, max: 2100 },
-    coverImage: {
-      url: String,
-      publicId: String,
-      alt: String,
-    },
+    coverImage: { url: String, publicId: String, alt: String },
     gallery: [{ url: String, publicId: String, alt: String }],
     videos: [{ url: String, publicId: String, thumbnail: String }],
     services: [{ type: String, trim: true }],
@@ -44,6 +24,7 @@ const projectSchema = new mongoose.Schema(
 )
 
 projectSchema.index({ published: 1, featured: 1, order: 1 })
+projectSchema.index({ category: 1 })
 projectSchema.index({ title: 'text', description: 'text', client: 'text' })
 
 export const Project = mongoose.model('Project', projectSchema)
