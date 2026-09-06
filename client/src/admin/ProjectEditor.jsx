@@ -9,7 +9,6 @@ const categories = [
   { value: 'graphic-design', label: 'Graphic Designing' },
   { value: 'social-media-advertising', label: 'Social Media Advertising' },
   { value: 'business-promotion', label: 'Business Promotion' },
-  { value: 'website-design', label: 'Website Design' },
   { value: 'posters', label: 'Posters' },
   { value: 'advertisements', label: 'Advertisements' },
   { value: 'branding', label: 'Branding' },
@@ -24,6 +23,7 @@ const emptyProject = {
   client: '',
   category: 'social-media',
   year: new Date().getFullYear(),
+  liveUrl: '',
   services: [],
   featured: false,
   published: false,
@@ -37,6 +37,7 @@ const emptyProject = {
 const normalize = (project) => ({
   ...emptyProject,
   ...project,
+  liveUrl: project?.liveUrl || '',
   services: Array.isArray(project?.services) ? project.services : [],
   gallery: Array.isArray(project?.gallery) ? project.gallery : [],
   videos: Array.isArray(project?.videos) ? project.videos : [],
@@ -85,12 +86,24 @@ export default function ProjectEditor({ project, onBack, onSaved }) {
     const title = form.title.trim()
     const slug = slugify(form.slug)
     const category = form.category.trim().toLowerCase()
+    const liveUrl = form.liveUrl.trim()
 
     if (!title) return setError('Project title is required.')
     if (!slug) return setError('Project slug is required.')
     if (!category) return setError('Project category is required.')
     if (form.coverImage && !(form.coverImage.secureUrl || form.coverImage.url)) {
       return setError('The selected cover image is missing its URL. Please choose it again.')
+    }
+    if (category === 'websites' && liveUrl) {
+      try {
+        const url = new URL(liveUrl)
+        if (!['http:', 'https:'].includes(url.protocol)) throw new Error()
+      } catch {
+        return setError('Live website URL must start with http:// or https://.')
+      }
+    }
+    if (category !== 'websites' && liveUrl) {
+      return setError('Live website URL is only available for Websites projects.')
     }
 
     setSaving(true)
@@ -105,6 +118,7 @@ export default function ProjectEditor({ project, onBack, onSaved }) {
         client: form.client.trim(),
         category,
         ...(Number.isFinite(numericYear) && numericYear > 0 ? { year: numericYear } : {}),
+        liveUrl: category === 'websites' ? liveUrl : '',
         services: Array.isArray(form.services)
           ? form.services.map((service) => service.trim()).filter(Boolean)
           : [],
@@ -252,6 +266,19 @@ export default function ProjectEditor({ project, onBack, onSaved }) {
                   }
                 />
               </label>
+              {form.category === 'websites' ? (
+                <label className="full">
+                  Live website URL
+                  <input
+                    type="url"
+                    value={form.liveUrl}
+                    placeholder="https://example.com"
+                    maxLength="500"
+                    onChange={(e) => update({ liveUrl: e.target.value })}
+                  />
+                  <small>Shown only for Websites projects so visitors can open the live site.</small>
+                </label>
+              ) : null}
               <label className="full">
                 Description
                 <textarea
