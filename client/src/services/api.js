@@ -1,10 +1,34 @@
 import axios from 'axios'
+import { notify } from '../components/Notifications.jsx'
 
 export const api = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000/api',
   withCredentials: true,
   headers: { 'Content-Type': 'application/json' },
 })
+
+const mutationMethods = new Set(['post', 'put', 'patch', 'delete'])
+
+api.interceptors.response.use(
+  (response) => {
+    if (mutationMethods.has(response.config?.method?.toLowerCase())) {
+      const method = response.config.method.toLowerCase()
+      const message = method === 'delete' ? 'Deleted successfully.' : 'Changes saved successfully.'
+      notify(message, 'success')
+    }
+    return response
+  },
+  (error) => {
+    const method = error.config?.method?.toLowerCase()
+    if (mutationMethods.has(method)) {
+      const message =
+        error.response?.data?.message ||
+        (error.response?.status === 401 ? 'Your session has expired. Please sign in again.' : 'Something went wrong. Please try again.')
+      notify(message, 'error', 5000)
+    }
+    return Promise.reject(error)
+  },
+)
 
 export const getProjects = async (params = {}) => {
   const { data } = await api.get('/projects', { params })
