@@ -55,13 +55,19 @@ const getServiceBasePrice = (service) => {
   if (pricing[title]) return pricing[title]
 
   // Keep pricing reliable even when the admin CMS uses a different slug/title.
-  if (title.includes('website') || title.includes('web-design') || title.includes('web-development')) {
+  if (
+    title.includes('website') ||
+    title.includes('web-design') ||
+    title.includes('web-development')
+  ) {
     return pricing['website-design']
   }
   if (title.includes('reel') || title.includes('video')) return pricing['reels-video-editing']
   if (title.includes('graphic') || title.includes('design')) return pricing['graphic-designing']
-  if (title.includes('advertis') || title.includes('ads')) return pricing['social-media-advertising']
-  if (title.includes('social-media') || title.includes('social')) return pricing['social-media-management']
+  if (title.includes('advertis') || title.includes('ads'))
+    return pricing['social-media-advertising']
+  if (title.includes('social-media') || title.includes('social'))
+    return pricing['social-media-management']
   if (title.includes('promotion')) return pricing['business-promotion']
 
   return 2500
