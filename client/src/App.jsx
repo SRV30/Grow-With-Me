@@ -585,7 +585,8 @@ export default function App() {
     let active = true
     getProjects({ featured: true })
       .then((result) => {
-        if (active) setProjects(Array.isArray(result) ? result : result?.projects || result?.data || [])
+        if (active)
+          setProjects(Array.isArray(result) ? result : result?.projects || result?.data || [])
       })
       .catch(() => {})
     getHomepage()
