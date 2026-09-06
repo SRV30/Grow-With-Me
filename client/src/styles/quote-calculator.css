@@ -89,7 +89,11 @@
   font-size: 0.72rem;
   font-weight: 650;
   cursor: pointer;
-  transition: transform 0.18s, border-color 0.18s, background 0.18s, box-shadow 0.18s;
+  transition:
+    transform 0.18s,
+    border-color 0.18s,
+    background 0.18s,
+    box-shadow 0.18s;
 }
 .quote-options button:hover,
 .quote-addons button:hover {
@@ -184,7 +188,9 @@
   text-decoration: none;
   font-size: 0.72rem;
   font-weight: 900;
-  transition: transform 0.18s, box-shadow 0.18s;
+  transition:
+    transform 0.18s,
+    box-shadow 0.18s;
 }
 .quote-cta:hover {
   transform: translateY(-2px);
