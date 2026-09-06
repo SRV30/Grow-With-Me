@@ -345,43 +345,124 @@
 }
 
 @media (max-width: 520px) {
+  .hero-collage-section {
+    padding-top: 34px;
+    padding-bottom: 28px;
+  }
+
+  .hero-collage-section .row-hero-copy {
+    max-width: 100%;
+  }
+
+  .hero-collage-section .row-hero-copy h1 {
+    max-width: 340px;
+    margin-top: 14px;
+    font-size: clamp(2.35rem, 9.7vw, 3.15rem);
+    line-height: 0.96;
+    letter-spacing: -0.06em;
+  }
+
   .hero-collage-section .row-lead-services {
-    font-size: 0.84rem;
+    max-width: 340px;
+    margin-top: 17px;
+    font-size: 0.78rem;
+    line-height: 1.55;
   }
+
   .hero-collage-section .row-hero-description {
-    font-size: 0.88rem;
+    max-width: 340px;
+    margin-top: 11px;
+    font-size: 0.78rem;
+    line-height: 1.65;
   }
+
   .hero-collage-section .figma-actions {
-    gap: 8px;
+    margin-top: 17px;
   }
-  .hero-collage-section .figma-yellow-button,
+
   .hero-collage-section .figma-outline-button {
-    min-height: 44px;
-    padding-inline: 16px;
+    display: none;
+  }
+
+  .hero-collage-section .figma-yellow-button {
+    min-height: 42px;
+    padding-inline: 18px;
+    border-radius: 999px;
     font-size: 0.72rem;
   }
+
   .hero-collage {
-    min-height: 390px;
+    width: 100%;
+    min-height: 330px;
+    margin-top: 4px;
   }
+
+  /* Mobile: show exactly one random project, large enough to read its artwork. */
   .hero-collage-card {
-    border-radius: 14px;
+    display: none;
   }
-  .hero-collage-float {
-    width: 34px;
-    height: 34px;
-    font-size: 0.75rem;
+
+  .hero-collage-card.hero-collage-mobile-selected {
+    display: block;
+    top: 2%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    width: min(68%, 255px);
+    aspect-ratio: 0.76;
+    transform: translateX(-50%) rotate(-3deg);
+    border-radius: 20px;
+    box-shadow: 0 24px 48px rgba(17, 17, 17, 0.2);
+    z-index: 6;
   }
-  .hero-collage-dot {
-    width: 26px;
-    height: 26px;
+
+  .hero-collage-card.hero-collage-mobile-selected:hover {
+    transform: translateX(-50%) rotate(-1deg) translateY(-5px) scale(1.01);
   }
-  .hero-collage-sign {
-    font-size: 0.62rem;
+
+  .hero-collage-card.hero-collage-mobile-selected img {
+    object-position: center;
   }
+
   .hero-collage-dots {
-    width: 100px;
-    height: 80px;
+    top: 4%;
+    right: 7%;
+    width: 92px;
+    height: 74px;
     background-size: 9px 9px;
+  }
+
+  .hero-collage::before {
+    inset: 4% 8% 0;
+    background: radial-gradient(circle, rgba(245, 196, 0, 0.2), transparent 66%);
+  }
+
+  .hero-collage-float {
+    width: 36px;
+    height: 36px;
+    border-radius: 11px;
+    font-size: 0.72rem;
+  }
+
+  .hero-collage-heart {
+    top: 28%;
+    left: 6%;
+  }
+
+  .hero-collage-play {
+    top: 50%;
+    right: 5%;
+  }
+
+  .hero-collage-dot {
+    bottom: 6%;
+    left: 50%;
+    width: 27px;
+    height: 27px;
+  }
+
+  .hero-collage-sign {
+    display: none;
   }
 }
 
