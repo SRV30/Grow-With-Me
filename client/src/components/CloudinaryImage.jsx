@@ -17,7 +17,7 @@ export default function CloudinaryImage({
   width = 1600,
   sizes = '100vw',
   priority = false,
-  blur = true,
+  blur = false,
   ...props
 }) {
   const [loaded, setLoaded] = useState(false)
