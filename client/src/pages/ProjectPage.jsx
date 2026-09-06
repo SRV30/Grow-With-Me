@@ -11,7 +11,11 @@ import logoUrl from '../assets/logo.PNG'
 import '../styles/project-detail.css'
 
 const formatCategory = (value = '') =>
-  value.replaceAll('-', ' ').replaceAll('_', ' ').trim().replace(/\b\w/g, (letter) => letter.toUpperCase())
+  value
+    .replaceAll('-', ' ')
+    .replaceAll('_', ' ')
+    .trim()
+    .replace(/\b\w/g, (letter) => letter.toUpperCase())
 
 export default function ProjectPage() {
   const { slug } = useParams()
@@ -33,21 +37,47 @@ export default function ProjectPage() {
     if (!root.current || !project || window.matchMedia('(prefers-reduced-motion: reduce)').matches)
       return undefined
     const ctx = gsap.context(() => {
-      gsap.fromTo('[data-project-reveal]', { y: 45, opacity: 0 }, {
-        y: 0, opacity: 1, duration: .9, stagger: .07, ease: 'power4.out',
-      })
-      gsap.fromTo('[data-project-media]', { clipPath: 'inset(8% 0)', scale: 1.04 }, {
-        clipPath: 'inset(0% 0)', scale: 1, duration: 1.1, ease: 'power4.inOut',
-      })
+      gsap.fromTo(
+        '[data-project-reveal]',
+        { y: 45, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.9,
+          stagger: 0.07,
+          ease: 'power4.out',
+        },
+      )
+      gsap.fromTo(
+        '[data-project-media]',
+        { clipPath: 'inset(8% 0)', scale: 1.04 },
+        {
+          clipPath: 'inset(0% 0)',
+          scale: 1,
+          duration: 1.1,
+          ease: 'power4.inOut',
+        },
+      )
     }, root)
     return () => ctx.revert()
   }, [project])
 
-  if (loading) return <main className="project-detail-page project-detail-container" style={{ minHeight: '100vh', paddingTop: 160 }}>Loading project…</main>
+  if (loading)
+    return (
+      <main
+        className="project-detail-page project-detail-container"
+        style={{ minHeight: '100vh', paddingTop: 160 }}
+      >
+        Loading project…
+      </main>
+    )
 
   if (error || !project) {
     return (
-      <main className="project-detail-page project-detail-container" style={{ minHeight: '100vh', paddingTop: 120 }}>
+      <main
+        className="project-detail-page project-detail-container"
+        style={{ minHeight: '100vh', paddingTop: 120 }}
+      >
         <p>{error || 'Project not found'}</p>
         <Link to="/work" className="project-detail-back" style={{ marginTop: 24 }}>
           <ArrowLeft size={15} /> Back to work
@@ -62,7 +92,12 @@ export default function ProjectPage() {
 
   return (
     <main ref={root} className="project-detail-page">
-      <SEO title={project.title} description={project.description} image={project.coverImage?.url} path={`/work/${project.slug}`} />
+      <SEO
+        title={project.title}
+        description={project.description}
+        image={project.coverImage?.url}
+        path={`/work/${project.slug}`}
+      />
       <ProjectSchema project={project} />
 
       <header className="project-detail-container project-detail-topbar">
@@ -81,13 +116,17 @@ export default function ProjectPage() {
         <div className="project-detail-hero-grid">
           <div>
             <h1 className="project-detail-title" data-project-reveal>
-              {project.title}<em>.</em>
+              {project.title}
+              <em>.</em>
             </h1>
           </div>
           <div data-project-reveal>
             <p className="project-detail-summary">{project.description}</p>
             {project.client ? (
-              <p className="project-detail-client"><span>Client · </span>{project.client}</p>
+              <p className="project-detail-client">
+                <span>Client · </span>
+                {project.client}
+              </p>
             ) : null}
           </div>
         </div>
@@ -109,13 +148,19 @@ export default function ProjectPage() {
       <section className="project-detail-container project-detail-info">
         <div>
           <p className="project-detail-info-label">Project overview</p>
-          <h2>Built to<br />stand out.</h2>
+          <h2>
+            Built to
+            <br />
+            stand out.
+          </h2>
         </div>
         <div>
           {project.services?.length ? (
             <div className="project-detail-services" data-project-reveal>
               {project.services.map((service) => (
-                <span className="project-detail-service" key={service}>{service}</span>
+                <span className="project-detail-service" key={service}>
+                  {service}
+                </span>
               ))}
             </div>
           ) : null}
@@ -137,17 +182,19 @@ export default function ProjectPage() {
                 </figure>
               ))}
               {videos.map((video, index) => (
-                <figure key={`${video.publicId || video.url}-${index}`} className="project-detail-media" data-project-media>
-                  <CloudinaryVideo
-                    src={video.url}
-                    poster={video.thumbnail || undefined}
-                    controls
-                  />
+                <figure
+                  key={`${video.publicId || video.url}-${index}`}
+                  className="project-detail-media"
+                  data-project-media
+                >
+                  <CloudinaryVideo src={video.url} poster={video.thumbnail || undefined} controls />
                 </figure>
               ))}
             </div>
           ) : (
-            <div className="project-detail-empty-gallery">More project visuals will be added here.</div>
+            <div className="project-detail-empty-gallery">
+              More project visuals will be added here.
+            </div>
           )}
         </div>
       </section>
@@ -155,10 +202,22 @@ export default function ProjectPage() {
       <section className="project-detail-cta">
         <div className="project-detail-container project-detail-cta-grid">
           <div data-project-reveal>
-            <p className="project-detail-kicker" style={{ marginBottom: 0 }}>Grow with us</p>
-            <h2>Ready for<br />your next<br /><span>project?</span></h2>
+            <p className="project-detail-kicker" style={{ marginBottom: 0 }}>
+              Grow with us
+            </p>
+            <h2>
+              Ready for
+              <br />
+              your next
+              <br />
+              <span>project?</span>
+            </h2>
           </div>
-          <a href="mailto:growithmeayush@gmail.com" className="project-detail-button" data-project-reveal>
+          <a
+            href="mailto:growithmeayush@gmail.com"
+            className="project-detail-button"
+            data-project-reveal
+          >
             Start a project <ArrowUpRight size={17} />
           </a>
         </div>
