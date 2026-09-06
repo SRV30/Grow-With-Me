@@ -83,8 +83,9 @@ export default function ProjectPage() {
   const category = formatCategory(project.category) || 'Creative project'
   const services = Array.isArray(project.services) ? project.services : []
   const gallery = Array.isArray(project.gallery) ? project.gallery.filter((item) => item?.url) : []
+  const visibleGallery = gallery.length > 1 ? gallery.slice(1) : gallery
   const videos = Array.isArray(project.videos) ? project.videos.filter((item) => item?.url) : []
-  const mediaCount = gallery.length + videos.length
+  const mediaCount = visibleGallery.length + videos.length
 
   return (
     <main ref={root} className="project-detail-page">
@@ -245,7 +246,7 @@ export default function ProjectPage() {
             </p>
           </div>
           <div className="project-detail-gallery">
-            {gallery.map((item, index) => (
+            {visibleGallery.map((item, index) => (
               <figure
                 className={`project-detail-media ${index === 0 ? 'featured' : ''}`}
                 key={`image-${item.publicId || item.url}`}
