@@ -313,7 +313,7 @@ function ServicesSection({ servicesList }) {
               <Link
                 className="row-service-card"
                 key={service._id || service.title}
-                to={`/work?service=${encodeURIComponent(service.title)}`}
+                to={`/services/${service.slug}`}
                 aria-label={`View ${service.title} portfolio`}
               >
                 <Icon className="row-service-icon" size={42} />
