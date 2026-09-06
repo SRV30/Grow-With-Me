@@ -29,6 +29,8 @@ import { services, industries, process } from './data/site.js'
 import { api, getHomepage, getProjects } from './services/api.js'
 import SEO from './components/SEO.jsx'
 import { OrganizationSchema } from './components/StructuredData.jsx'
+import TestimonialsSection from './components/TestimonialsSection.jsx'
+import QuoteCalculator from './components/QuoteCalculator.jsx'
 import './styles/figma-home.css'
 import './styles/hero-collage.css'
 
@@ -606,9 +608,7 @@ export default function App() {
         <div className="row-container row-header-inner">
           <Logo />
           <nav className="figma-nav" aria-label="Primary navigation">
-            <a className="active" href="#top">
-              Home
-            </a>
+            <a className="active" href="#top">Home</a>
             <a href="#services">Services</a>
             <a href="#work">Portfolio</a>
             <a href="#about">About Us</a>
@@ -629,26 +629,12 @@ export default function App() {
           </button>
         </div>
         {menuOpen ? (
-          <nav
-            id="gwm-mobile-navigation"
-            className="figma-mobile-nav row-mobile-nav"
-            aria-label="Mobile navigation"
-          >
-            <a href="#top" onClick={() => setMenuOpen(false)}>
-              Home
-            </a>
-            <a href="#services" onClick={() => setMenuOpen(false)}>
-              Services
-            </a>
-            <a href="#work" onClick={() => setMenuOpen(false)}>
-              Portfolio
-            </a>
-            <a href="#about" onClick={() => setMenuOpen(false)}>
-              About Us
-            </a>
-            <a href="#contact" onClick={() => setMenuOpen(false)}>
-              Contact
-            </a>
+          <nav id="gwm-mobile-navigation" className="figma-mobile-nav row-mobile-nav" aria-label="Mobile navigation">
+            <a href="#top" onClick={() => setMenuOpen(false)}>Home</a>
+            <a href="#services" onClick={() => setMenuOpen(false)}>Services</a>
+            <a href="#work" onClick={() => setMenuOpen(false)}>Portfolio</a>
+            <a href="#about" onClick={() => setMenuOpen(false)}>About Us</a>
+            <a href="#contact" onClick={() => setMenuOpen(false)}>Contact</a>
             <a className="mobile-nav-cta" href="#contact" onClick={() => setMenuOpen(false)}>
               Get Started <ArrowUpRight size={15} />
             </a>
@@ -660,6 +646,8 @@ export default function App() {
         <TrustSection />
         <ServicesSection />
         <WorkSection projects={featuredProjects} />
+        <TestimonialsSection />
+        <QuoteCalculator />
         <ProcessSection processItems={liveProcess} />
         <IndustriesSection industriesList={liveIndustries} />
         <AboutSection about={about} aboutImage={aboutImage} />
