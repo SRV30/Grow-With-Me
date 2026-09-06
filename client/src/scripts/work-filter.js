@@ -28,6 +28,19 @@ const shuffle = (items) => {
   return shuffled
 }
 
+const filterAliases = {
+  posters: ['poster', 'posters'],
+  reels: ['reel', 'reels', 'video', 'video editing', 'reels and video editing'],
+  advertisements: ['advertisement', 'advertisements', 'advertising', 'social media advertising', 'ads'],
+  'social media': ['social media', 'social media management'],
+  websites: ['website', 'websites', 'web design', 'website design', 'web development'],
+}
+const matchesFilter = (filter, category) => {
+  if (filter === 'all') return true
+  const aliases = filterAliases[filter] || [filter]
+  return aliases.some((value) => category === value || category.includes(value) || value.includes(category))
+}
+
 const applyHeaderLogo = () =>
   document.querySelectorAll('.figma-logo').forEach((logo) => {
     let image = logo.querySelector('.figma-header-logo-image')
@@ -76,7 +89,7 @@ const applyWorkFilter = (button) => {
   let visible = 0
   items.forEach((item) => {
     const category = normalize(item.querySelector('.figma-project-overlay span')?.textContent)
-    const matches = filter === 'all' || category === filter
+    const matches = matchesFilter(filter, category)
     item.hidden = !matches
     if (matches) visible += 1
   })
@@ -171,6 +184,8 @@ const initializeWorkFilters = () => {
     button.dataset.filter = normalize(button.textContent)
     button.setAttribute('aria-pressed', button.classList.contains('selected') ? 'true' : 'false')
   })
+  const selected = document.querySelector('#work .row-work-filters button.selected') || buttons[0]
+  if (selected) applyWorkFilter(selected)
   syncServices()
   syncProjectCategorySelect()
   if (!document.documentElement.dataset.gwmWorkFilterBound) {
