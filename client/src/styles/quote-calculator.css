@@ -1,1 +1,235 @@
-.quote-calculator{padding:105px 0;background:#fff;color:#111}.quote-calculator-container{width:min(calc(100% - 110px),1240px);margin:auto}.quote-calculator-heading{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:42px}.quote-eyebrow{margin:0 0 10px;color:#9a7800;font-size:.65rem;font-weight:900;letter-spacing:.15em;text-transform:uppercase}.quote-calculator-heading h2{margin:0;font-size:clamp(2.6rem,5vw,5rem);line-height:.92;letter-spacing:-.065em}.quote-calculator-heading>div>p:last-child{max-width:650px;margin:18px 0 0;color:#666974;font-size:.9rem;line-height:1.65}.quote-badge{padding:8px 12px;border-radius:999px;background:#ffd21c;font-size:.62rem;font-weight:900;white-space:nowrap}.quote-calculator-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(310px,.75fr);gap:20px}.quote-form-panel{padding:30px;border:1px solid #e8e8e8;border-radius:18px;background:#fafafa}.quote-field{padding:0 0 28px;margin-bottom:28px;border-bottom:1px solid #e6e6e6}.quote-field:last-child{padding-bottom:0;margin-bottom:0;border-bottom:0}.quote-field h3{margin:0 0 14px;font-size:.75rem}.quote-options{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.quote-options.three{grid-template-columns:repeat(3,1fr)}.quote-options button,.quote-addons button{min-height:48px;padding:11px 13px;border:1px solid #ddd;border-radius:9px;background:#fff;color:#222;text-align:left;font:inherit;font-size:.72rem;font-weight:650;cursor:pointer;transition:.2s}.quote-options button:hover,.quote-addons button:hover{border-color:#aaa}.quote-options button.selected,.quote-addons button.selected{border-color:#111;background:#111;color:#fff}.quote-addons{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.quote-addons button{display:flex;align-items:center;gap:8px}.quote-addons button span{width:18px;height:18px;display:grid;place-items:center;border:1px solid #ccc;border-radius:4px}.quote-addons button.selected span{border-color:#ffd21c;background:#ffd21c;color:#111}.quote-result-panel{position:sticky;top:25px;align-self:start;min-height:400px;padding:34px;border-radius:18px;background:#11151a;color:#fff;display:flex;flex-direction:column}.quote-result-panel>p{margin:0;color:#ffd21c;font-size:.67rem;font-weight:900;letter-spacing:.13em;text-transform:uppercase}.quote-result-panel>strong{display:block;margin:18px 0;font-size:clamp(2rem,3.2vw,3.2rem);line-height:1;letter-spacing:-.055em}.quote-result-panel>small{color:#a7aab0;font-size:.73rem;line-height:1.65}.quote-cta{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:auto;padding:15px;border-radius:9px;background:#ffd21c;color:#111;text-decoration:none;font-size:.72rem;font-weight:900}.quote-reset{display:flex;align-items:center;justify-content:center;gap:7px;margin-top:12px;padding:11px;border:0;background:transparent;color:#aaa;font:inherit;font-size:.68rem;cursor:pointer}.quote-saved{margin-top:15px;padding:10px;border-left:2px solid #ffd21c;color:#c4c6ca;font-size:.68rem;line-height:1.5}@media(max-width:900px){.quote-calculator-container{width:min(calc(100% - 40px),720px)}.quote-calculator-grid{grid-template-columns:1fr}.quote-result-panel{position:static;min-height:300px}.quote-addons{grid-template-columns:1fr 1fr}}@media(max-width:620px){.quote-calculator{padding:70px 0}.quote-calculator-container{width:calc(100% - 28px)}.quote-calculator-heading{align-items:flex-start;flex-direction:column}.quote-options,.quote-options.three,.quote-addons{grid-template-columns:1fr}.quote-form-panel{padding:20px}.quote-result-panel{padding:25px}.quote-result-panel>strong{font-size:2.1rem}}
+.quote-calculator {
+  padding: 105px 0;
+  background: #fff;
+  color: #111;
+}
+.quote-calculator-container {
+  width: min(calc(100% - 110px), 1240px);
+  margin: auto;
+}
+.quote-calculator-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 30px;
+  margin-bottom: 42px;
+}
+.quote-eyebrow {
+  margin: 0 0 10px;
+  color: #9a7800;
+  font-size: 0.65rem;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+.quote-calculator-heading h2 {
+  margin: 0;
+  font-size: clamp(2.6rem, 5vw, 5rem);
+  line-height: 0.92;
+  letter-spacing: -0.065em;
+}
+.quote-calculator-heading > div > p:last-child {
+  max-width: 650px;
+  margin: 18px 0 0;
+  color: #666974;
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+.quote-badge {
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #ffd21c;
+  font-size: 0.62rem;
+  font-weight: 900;
+  white-space: nowrap;
+}
+.quote-calculator-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(310px, 0.75fr);
+  gap: 20px;
+}
+.quote-form-panel {
+  padding: 30px;
+  border: 1px solid #e8e8e8;
+  border-radius: 18px;
+  background: #fafafa;
+}
+.quote-field {
+  padding: 0 0 28px;
+  margin-bottom: 28px;
+  border-bottom: 1px solid #e6e6e6;
+}
+.quote-field:last-child {
+  padding-bottom: 0;
+  margin-bottom: 0;
+  border-bottom: 0;
+}
+.quote-field h3 {
+  margin: 0 0 14px;
+  font-size: 0.75rem;
+}
+.quote-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 9px;
+}
+.quote-options.three {
+  grid-template-columns: repeat(3, 1fr);
+}
+.quote-options button,
+.quote-addons button {
+  min-height: 48px;
+  padding: 11px 13px;
+  border: 1px solid #ddd;
+  border-radius: 9px;
+  background: #fff;
+  color: #222;
+  text-align: left;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 650;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.quote-options button:hover,
+.quote-addons button:hover {
+  border-color: #aaa;
+}
+.quote-options button.selected,
+.quote-addons button.selected {
+  border-color: #111;
+  background: #111;
+  color: #fff;
+}
+.quote-addons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 9px;
+}
+.quote-addons button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.quote-addons button span {
+  width: 18px;
+  height: 18px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.quote-addons button.selected span {
+  border-color: #ffd21c;
+  background: #ffd21c;
+  color: #111;
+}
+.quote-result-panel {
+  position: sticky;
+  top: 25px;
+  align-self: start;
+  min-height: 400px;
+  padding: 34px;
+  border-radius: 18px;
+  background: #11151a;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+}
+.quote-result-panel > p {
+  margin: 0;
+  color: #ffd21c;
+  font-size: 0.67rem;
+  font-weight: 900;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+.quote-result-panel > strong {
+  display: block;
+  margin: 18px 0;
+  font-size: clamp(2rem, 3.2vw, 3.2rem);
+  line-height: 1;
+  letter-spacing: -0.055em;
+}
+.quote-result-panel > small {
+  color: #a7aab0;
+  font-size: 0.73rem;
+  line-height: 1.65;
+}
+.quote-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: auto;
+  padding: 15px;
+  border-radius: 9px;
+  background: #ffd21c;
+  color: #111;
+  text-decoration: none;
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+.quote-reset {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 12px;
+  padding: 11px;
+  border: 0;
+  background: transparent;
+  color: #aaa;
+  font: inherit;
+  font-size: 0.68rem;
+  cursor: pointer;
+}
+.quote-saved {
+  margin-top: 15px;
+  padding: 10px;
+  border-left: 2px solid #ffd21c;
+  color: #c4c6ca;
+  font-size: 0.68rem;
+  line-height: 1.5;
+}
+@media (max-width: 900px) {
+  .quote-calculator-container {
+    width: min(calc(100% - 40px), 720px);
+  }
+  .quote-calculator-grid {
+    grid-template-columns: 1fr;
+  }
+  .quote-result-panel {
+    position: static;
+    min-height: 300px;
+  }
+  .quote-addons {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 620px) {
+  .quote-calculator {
+    padding: 70px 0;
+  }
+  .quote-calculator-container {
+    width: calc(100% - 28px);
+  }
+  .quote-calculator-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .quote-options,
+  .quote-options.three,
+  .quote-addons {
+    grid-template-columns: 1fr;
+  }
+  .quote-form-panel {
+    padding: 20px;
+  }
+  .quote-result-panel {
+    padding: 25px;
+  }
+  .quote-result-panel > strong {
+    font-size: 2.1rem;
+  }
+}
