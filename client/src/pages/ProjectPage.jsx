@@ -81,6 +81,7 @@ export default function ProjectPage() {
   }
 
   const category = formatCategory(project.category) || 'Creative project'
+  const isWebsiteProject = normalize(project.category) === 'websites'
   const services = Array.isArray(project.services) ? project.services : []
   const gallery = Array.isArray(project.gallery) ? project.gallery.filter((item) => item?.url) : []
   const visibleGallery = gallery.length > 1 ? gallery.slice(1) : gallery
@@ -135,6 +136,18 @@ export default function ProjectPage() {
               {project.description ||
                 'A focused creative project built around the client’s goals and audience.'}
             </p>
+            {isWebsiteProject && project.liveUrl ? (
+              <div className="project-detail-live-wrap" data-project-reveal>
+                <a
+                  href={project.liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="project-detail-button project-detail-live-link"
+                >
+                  Visit Live Website <ArrowUpRight size={17} />
+                </a>
+              </div>
+            ) : null}
             <div className="project-detail-meta" data-project-reveal>
               <div>
                 <strong>{project.year || '—'}</strong>
