@@ -45,6 +45,28 @@ const slugify = (value = '') =>
 
 const money = (value) => `₹${Math.round(value).toLocaleString('en-IN')}`
 
+const getServiceBasePrice = (service) => {
+  if (!service) return 2500
+
+  const slug = slugify(service.slug || '')
+  const title = slugify(service.title || '')
+
+  if (pricing[slug]) return pricing[slug]
+  if (pricing[title]) return pricing[title]
+
+  // Keep pricing reliable even when the admin CMS uses a different slug/title.
+  if (title.includes('website') || title.includes('web-design') || title.includes('web-development')) {
+    return pricing['website-design']
+  }
+  if (title.includes('reel') || title.includes('video')) return pricing['reels-video-editing']
+  if (title.includes('graphic') || title.includes('design')) return pricing['graphic-designing']
+  if (title.includes('advertis') || title.includes('ads')) return pricing['social-media-advertising']
+  if (title.includes('social-media') || title.includes('social')) return pricing['social-media-management']
+  if (title.includes('promotion')) return pricing['business-promotion']
+
+  return 2500
+}
+
 export default function QuoteCalculator() {
   const [services, setServices] = useState([])
   const [servicesLoading, setServicesLoading] = useState(true)
@@ -96,10 +118,9 @@ export default function QuoteCalculator() {
   const selectedService = services.find(
     (service) => (service.slug || slugify(service.title)) === form.service,
   )
-  const serviceKey = selectedService?.slug || slugify(selectedService?.title)
 
   const estimate = useMemo(() => {
-    const base = pricing[serviceKey] || 2500
+    const base = getServiceBasePrice(selectedService)
     const multiplier =
       (sizeOptions.find(([key]) => key === form.size)?.[2] || 1) *
       (complexityOptions.find(([key]) => key === form.complexity)?.[2] || 1) *
@@ -109,7 +130,7 @@ export default function QuoteCalculator() {
       .reduce((sum, [, , price]) => sum + price, 0)
     const total = base * multiplier + extras
     return { low: total * 0.9, high: total * 1.1 }
-  }, [form, serviceKey])
+  }, [form, selectedService])
 
   const selectedServiceTitle = selectedService?.title || ''
   const estimateLow = money(estimate.low)
