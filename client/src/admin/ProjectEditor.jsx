@@ -16,6 +16,7 @@ const categories = [
   { value: 'websites', label: 'Websites' },
   { value: 'other', label: 'Other' },
 ]
+
 const emptyProject = {
   title: '',
   slug: '',
@@ -36,28 +37,40 @@ const emptyProject = {
 const normalize = (project) => ({
   ...emptyProject,
   ...project,
-  services: project?.services || [],
-  gallery: project?.gallery || [],
-  videos: project?.videos || [],
-  seo: project?.seo || { title: '', description: '' },
+  services: Array.isArray(project?.services) ? project.services : [],
+  gallery: Array.isArray(project?.gallery) ? project.gallery : [],
+  videos: Array.isArray(project?.videos) ? project.videos : [],
+  seo: {
+    title: project?.seo?.title || '',
+    description: project?.seo?.description || '',
+  },
+  featured: project?.featured === true,
+  published: project?.published === true,
+  order: Number.isFinite(Number(project?.order)) ? Number(project.order) : 0,
 })
+
 const imagePayload = (item) => ({
   url: item.secureUrl || item.url,
   publicId: item.publicId || '',
   alt: item.alt || '',
 })
+
 const videoPayload = (item) => ({
   url: item.secureUrl || item.url,
   publicId: item.publicId || '',
   thumbnail: item.thumbnail || '',
 })
 
+const mediaKey = (item, index) => item.publicId || item.url || `${index}`
+
 export default function ProjectEditor({ project, onBack, onSaved }) {
   const [form, setForm] = useState(normalize(project))
   const [picker, setPicker] = useState(null)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
+
   const update = (patch) => setForm((current) => ({ ...current, ...patch }))
+
   const slugify = (value) =>
     value
       .toLowerCase()
@@ -67,17 +80,52 @@ export default function ProjectEditor({ project, onBack, onSaved }) {
 
   const save = async (event) => {
     event.preventDefault()
+    if (saving) return
+
+    const title = form.title.trim()
+    const slug = slugify(form.slug)
+    const category = form.category.trim().toLowerCase()
+
+    if (!title) return setError('Project title is required.')
+    if (!slug) return setError('Project slug is required.')
+    if (!category) return setError('Project category is required.')
+    if (form.coverImage && !(form.coverImage.secureUrl || form.coverImage.url)) {
+      return setError('The selected cover image is missing its URL. Please choose it again.')
+    }
+
     setSaving(true)
     setError('')
     try {
+      const numericYear = Number(form.year)
+      const numericOrder = Number(form.order)
       const payload = {
-        ...form,
-        services: Array.isArray(form.services) ? form.services : [],
+        title,
+        slug,
+        description: form.description.trim(),
+        client: form.client.trim(),
+        category,
+        ...(Number.isFinite(numericYear) && numericYear > 0 ? { year: numericYear } : {}),
+        services: Array.isArray(form.services)
+          ? form.services.map((service) => service.trim()).filter(Boolean)
+          : [],
+        featured: form.featured === true,
+        published: form.published === true,
+        order: Number.isFinite(numericOrder) && numericOrder >= 0 ? numericOrder : 0,
         coverImage: form.coverImage ? imagePayload(form.coverImage) : null,
-        gallery: form.gallery.map(imagePayload),
-        videos: form.videos.map(videoPayload),
-        seo: form.seo,
+        gallery: Array.isArray(form.gallery)
+          ? form.gallery
+              .filter((item) => item?.secureUrl || item?.url)
+              .map(imagePayload)
+          : [],
+        videos: Array.isArray(form.videos)
+          ? form.videos.filter((item) => item?.secureUrl || item?.url).map(videoPayload)
+          : [],
+        seo: {
+          title: form.seo.title.trim(),
+          description: form.seo.description.trim(),
+        },
       }
+
       const saved = form._id
         ? await updateAdminProject(form._id, payload)
         : await createAdminProject(payload)
@@ -89,28 +137,47 @@ export default function ProjectEditor({ project, onBack, onSaved }) {
     }
   }
 
-  const removeGallery = (publicId) =>
-    update({ gallery: form.gallery.filter((item) => item.publicId !== publicId) })
-  const removeVideo = (publicId) =>
-    update({ videos: form.videos.filter((item) => item.publicId !== publicId) })
+  const removeGallery = (item) =>
+    update({
+      gallery: form.gallery.filter(
+        (current) => current !== item && current.publicId !== item.publicId && current.url !== item.url,
+      ),
+    })
+
+  const removeVideo = (item) =>
+    update({
+      videos: form.videos.filter(
+        (current) => current !== item && current.publicId !== item.publicId && current.url !== item.url,
+      ),
+    })
 
   return (
     <section className="admin-editor-page">
       <header className="admin-topbar">
         <div>
-          <button className="admin-back-button" onClick={onBack}>
+          <button type="button" className="admin-back-button" onClick={onBack} disabled={saving}>
             <ArrowLeft size={16} /> Projects
           </button>
           <p className="admin-eyebrow">Portfolio editor</p>
           <h1>{form._id ? 'Edit project' : 'New project'}</h1>
         </div>
-        <button className="admin-primary" onClick={save} disabled={saving}>
+        <button
+          type="submit"
+          form="project-editor-form"
+          className="admin-primary"
+          disabled={saving}
+          aria-busy={saving}
+        >
           <Save size={16} />
           {saving ? 'Saving…' : 'Save project'}
         </button>
       </header>
-      {error && <div className="admin-alert">{error}</div>}
-      <form className="admin-editor-grid" onSubmit={save}>
+      {error && (
+        <div className="admin-alert" role="alert">
+          {error}
+        </div>
+      )}
+      <form id="project-editor-form" className="admin-editor-grid" onSubmit={save}>
         <div className="admin-editor-main">
           <section className="admin-panel">
             <h2>Project details</h2>
@@ -125,6 +192,7 @@ export default function ProjectEditor({ project, onBack, onSaved }) {
                       slug: form._id ? form.slug : slugify(e.target.value),
                     })
                   }
+                  maxLength="160"
                   required
                 />
               </label>
@@ -133,17 +201,24 @@ export default function ProjectEditor({ project, onBack, onSaved }) {
                 <input
                   value={form.slug}
                   onChange={(e) => update({ slug: slugify(e.target.value) })}
+                  maxLength="160"
                   required
                 />
               </label>
               <label>
                 Client
-                <input value={form.client} onChange={(e) => update({ client: e.target.value })} />
+                <input
+                  value={form.client}
+                  onChange={(e) => update({ client: e.target.value })}
+                  maxLength="160"
+                />
               </label>
               <label>
                 Year
                 <input
                   type="number"
+                  min="2000"
+                  max="2100"
                   value={form.year || ''}
                   onChange={(e) => update({ year: e.target.value })}
                 />
@@ -153,6 +228,7 @@ export default function ProjectEditor({ project, onBack, onSaved }) {
                 <select
                   value={form.category}
                   onChange={(e) => update({ category: e.target.value })}
+                  required
                 >
                   {categories.map((category) => (
                     <option key={category.value} value={category.value}>
@@ -180,12 +256,14 @@ export default function ProjectEditor({ project, onBack, onSaved }) {
                 Description
                 <textarea
                   rows="7"
+                  maxLength="5000"
                   value={form.description}
                   onChange={(e) => update({ description: e.target.value })}
                 />
               </label>
             </div>
           </section>
+
           <section className="admin-panel">
             <div className="admin-panel-title">
               <div>
@@ -196,6 +274,7 @@ export default function ProjectEditor({ project, onBack, onSaved }) {
                 type="button"
                 className="admin-secondary"
                 onClick={() => setPicker({ type: 'cover' })}
+                disabled={saving}
               >
                 <ImagePlus size={15} /> Choose image
               </button>
@@ -210,6 +289,8 @@ export default function ProjectEditor({ project, onBack, onSaved }) {
                   type="button"
                   className="admin-danger"
                   onClick={() => update({ coverImage: null })}
+                  disabled={saving}
+                  aria-label="Remove cover image"
                 >
                   <Trash2 size={16} />
                 </button>
@@ -218,6 +299,7 @@ export default function ProjectEditor({ project, onBack, onSaved }) {
               <div className="admin-media-placeholder">No cover image selected.</div>
             )}
           </section>
+
           <section className="admin-panel">
             <div className="admin-panel-title">
               <div>
@@ -228,19 +310,22 @@ export default function ProjectEditor({ project, onBack, onSaved }) {
                 type="button"
                 className="admin-secondary"
                 onClick={() => setPicker({ type: 'gallery' })}
+                disabled={saving}
               >
                 <ImagePlus size={15} /> Add images
               </button>
             </div>
             <div className="admin-selected-grid">
               {form.gallery.length ? (
-                form.gallery.map((item) => (
-                  <div className="admin-selected-media" key={item.publicId}>
+                form.gallery.map((item, index) => (
+                  <div className="admin-selected-media" key={mediaKey(item, index)}>
                     <img src={item.secureUrl || item.url} alt={item.alt || ''} />
                     <button
                       type="button"
                       className="admin-danger"
-                      onClick={() => removeGallery(item.publicId)}
+                      onClick={() => removeGallery(item)}
+                      disabled={saving}
+                      aria-label="Remove gallery image"
                     >
                       <Trash2 size={15} />
                     </button>
@@ -251,6 +336,7 @@ export default function ProjectEditor({ project, onBack, onSaved }) {
               )}
             </div>
           </section>
+
           <section className="admin-panel">
             <div className="admin-panel-title">
               <div>
@@ -261,19 +347,22 @@ export default function ProjectEditor({ project, onBack, onSaved }) {
                 type="button"
                 className="admin-secondary"
                 onClick={() => setPicker({ type: 'videos' })}
+                disabled={saving}
               >
                 <Video size={15} /> Add videos
               </button>
             </div>
             <div className="admin-selected-grid">
               {form.videos.length ? (
-                form.videos.map((item) => (
-                  <div className="admin-selected-media" key={item.publicId}>
+                form.videos.map((item, index) => (
+                  <div className="admin-selected-media" key={mediaKey(item, index)}>
                     <video src={item.secureUrl || item.url} muted controls preload="metadata" />
                     <button
                       type="button"
                       className="admin-danger"
-                      onClick={() => removeVideo(item.publicId)}
+                      onClick={() => removeVideo(item)}
+                      disabled={saving}
+                      aria-label="Remove video"
                     >
                       <Trash2 size={15} />
                     </button>
@@ -285,6 +374,7 @@ export default function ProjectEditor({ project, onBack, onSaved }) {
             </div>
           </section>
         </div>
+
         <aside className="admin-editor-side">
           <section className="admin-panel">
             <h2>Publishing</h2>
@@ -293,6 +383,7 @@ export default function ProjectEditor({ project, onBack, onSaved }) {
                 type="checkbox"
                 checked={form.published}
                 onChange={(e) => update({ published: e.target.checked })}
+                disabled={saving}
               />
               <span>Published</span>
             </label>
@@ -301,6 +392,7 @@ export default function ProjectEditor({ project, onBack, onSaved }) {
                 type="checkbox"
                 checked={form.featured}
                 onChange={(e) => update({ featured: e.target.checked })}
+                disabled={saving}
               />
               <span>Featured project</span>
             </label>
@@ -311,9 +403,11 @@ export default function ProjectEditor({ project, onBack, onSaved }) {
                 min="0"
                 value={form.order}
                 onChange={(e) => update({ order: Number(e.target.value) })}
+                disabled={saving}
               />
             </label>
           </section>
+
           <section className="admin-panel">
             <h2>SEO</h2>
             <label>
@@ -322,6 +416,7 @@ export default function ProjectEditor({ project, onBack, onSaved }) {
                 maxLength="160"
                 value={form.seo.title}
                 onChange={(e) => update({ seo: { ...form.seo, title: e.target.value } })}
+                disabled={saving}
               />
             </label>
             <label>
@@ -331,11 +426,13 @@ export default function ProjectEditor({ project, onBack, onSaved }) {
                 rows="6"
                 value={form.seo.description}
                 onChange={(e) => update({ seo: { ...form.seo, description: e.target.value } })}
+                disabled={saving}
               />
             </label>
           </section>
         </aside>
       </form>
+
       {picker?.type === 'cover' && (
         <MediaPicker
           mode="image"
