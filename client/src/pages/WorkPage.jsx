@@ -101,7 +101,11 @@ export default function WorkPage() {
     const unique = []
     projects.forEach((project) => {
       if (!project.category) return
-      if (!unique.some((category) => normalizeCategory(category) === normalizeCategory(project.category))) {
+      if (
+        !unique.some(
+          (category) => normalizeCategory(category) === normalizeCategory(project.category),
+        )
+      ) {
         unique.push(project.category)
       }
     })
