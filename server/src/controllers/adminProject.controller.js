@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { Project } from '../models/Project.js'
+import { Service } from '../models/Service.js'
 import { connectDatabase } from '../config/db.js'
 
 const imageSchema = z.object({
@@ -23,9 +24,7 @@ const projectSchema = z
       .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
     description: z.string().max(5000).optional().default(''),
     client: z.string().max(160).optional().default(''),
-    category: z
-      .enum(['social-media', 'posters', 'reels', 'advertisements', 'branding', 'websites', 'other'])
-      .default('social-media'),
+    category: z.string().trim().min(1).max(160).toLowerCase(),
     year: z.coerce.number().int().min(2000).max(2100).optional(),
     liveUrl: z.string().url().max(500).optional().or(z.literal('')).default(''),
     coverImage: imageSchema.nullable().optional().default(null),
@@ -82,6 +81,13 @@ const saveProject = async (req, res, next, id = null) => {
   try {
     await connectDatabase()
     const payload = projectSchema.parse(req.body)
+    const serviceExists = await Service.exists({ slug: payload.category })
+    if (!serviceExists) {
+      return res.status(400).json({
+        success: false,
+        message: 'Project category must match an existing service slug.',
+      })
+    }
     const query = id ? { _id: id } : null
     const project = id
       ? await Project.findOneAndUpdate(query, payload, { new: true, runValidators: true })
