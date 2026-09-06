@@ -19,6 +19,15 @@ const slugify = (value = '') =>
 
 const getWorkItems = () => Array.from(document.querySelectorAll('#work .figma-project-card'))
 
+const shuffle = (items) => {
+  const shuffled = [...items]
+  for (let i = shuffled.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+  }
+  return shuffled
+}
+
 const applyWorkFilter = (button) => {
   const filter = normalize(button.dataset.filter || button.textContent)
   const items = getWorkItems()
@@ -59,7 +68,7 @@ const syncServices = async () => {
     const response = await fetch(`${API_BASE}/services`, { credentials: 'include' })
     if (!response.ok) return
     const payload = await response.json()
-    const services = Array.isArray(payload.data) ? payload.data : []
+    const services = Array.isArray(payload.data) ? shuffle(payload.data) : []
     if (!services.length) return
 
     const serviceCards = Array.from(grid.querySelectorAll('.row-service-card'))
