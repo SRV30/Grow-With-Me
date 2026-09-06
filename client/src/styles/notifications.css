@@ -15,20 +15,26 @@
   align-items: center;
   gap: 10px;
   padding: 13px 14px;
-  border: 1px solid rgba(0,0,0,.12);
+  border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 12px;
   background: #fff;
   color: #171717;
-  box-shadow: 0 12px 35px rgba(0,0,0,.14);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.14);
   font-size: 14px;
   line-height: 1.4;
   pointer-events: auto;
-  animation: gwm-notification-in .22s ease-out;
+  animation: gwm-notification-in 0.22s ease-out;
 }
 
-.gwm-notification-success { border-left: 4px solid #16803c; }
-.gwm-notification-error { border-left: 4px solid #c62828; }
-.gwm-notification-info { border-left: 4px solid #2563eb; }
+.gwm-notification-success {
+  border-left: 4px solid #16803c;
+}
+.gwm-notification-error {
+  border-left: 4px solid #c62828;
+}
+.gwm-notification-info {
+  border-left: 4px solid #2563eb;
+}
 .gwm-notification button {
   display: grid;
   place-items: center;
@@ -40,13 +46,26 @@
   cursor: pointer;
   border-radius: 6px;
 }
-.gwm-notification button:hover { background: rgba(0,0,0,.06); }
+.gwm-notification button:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
 
 @keyframes gwm-notification-in {
-  from { opacity: 0; transform: translateY(-8px) translateX(8px); }
-  to { opacity: 1; transform: translateY(0) translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-8px) translateX(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) translateX(0);
+  }
 }
 
 @media (max-width: 600px) {
-  .gwm-notifications { top: 12px; right: 12px; left: 12px; width: auto; }
+  .gwm-notifications {
+    top: 12px;
+    right: 12px;
+    left: 12px;
+    width: auto;
+  }
 }

@@ -30,12 +30,21 @@ export default function Notifications() {
   return (
     <div className="gwm-notifications" aria-live="polite" aria-atomic="false">
       {items.map((item) => {
-        const Icon = item.type === 'error' ? TriangleAlert : item.type === 'info' ? Info : CheckCircle2
+        const Icon =
+          item.type === 'error' ? TriangleAlert : item.type === 'info' ? Info : CheckCircle2
         return (
-          <div className={`gwm-notification gwm-notification-${item.type}`} key={item.id} role={item.type === 'error' ? 'alert' : 'status'}>
+          <div
+            className={`gwm-notification gwm-notification-${item.type}`}
+            key={item.id}
+            role={item.type === 'error' ? 'alert' : 'status'}
+          >
             <Icon size={18} aria-hidden="true" />
             <span>{item.message}</span>
-            <button type="button" onClick={() => dismiss(item.id)} aria-label="Dismiss notification">
+            <button
+              type="button"
+              onClick={() => dismiss(item.id)}
+              aria-label="Dismiss notification"
+            >
               <X size={16} />
             </button>
           </div>
