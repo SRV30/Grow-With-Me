@@ -37,7 +37,9 @@
   border: 1px solid rgba(17, 17, 17, 0.14);
   border-radius: 18px;
   box-shadow: 4px 4px 0 #111111;
-  transition: transform 180ms ease, box-shadow 180ms ease;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
 }
 
 .figma-header .figma-logo:hover img {
@@ -68,7 +70,10 @@
   font-size: 11px;
   font-weight: 750;
   text-decoration: none;
-  transition: background 160ms ease, color 160ms ease, transform 160ms ease;
+  transition:
+    background 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
 }
 
 .figma-header .figma-nav a.active,
@@ -117,7 +122,9 @@
   height: 480px;
   border: 1px solid rgba(245, 196, 0, 0.16);
   border-radius: 50%;
-  box-shadow: 0 0 0 70px rgba(245, 196, 0, 0.025), 0 0 0 140px rgba(245, 196, 0, 0.015);
+  box-shadow:
+    0 0 0 70px rgba(245, 196, 0, 0.025),
+    0 0 0 140px rgba(245, 196, 0, 0.015);
   content: '';
   pointer-events: none;
 }
@@ -141,13 +148,28 @@
   border-right: 1px solid rgba(17, 17, 17, 0.16);
   color: #111111;
   text-decoration: none;
-  transition: background 160ms ease, padding-left 160ms ease;
+  transition:
+    background 160ms ease,
+    padding-left 160ms ease;
 }
 
-.figma-footer .row-footer-contact a:last-child { border-right: 0; }
-.figma-footer .row-footer-contact a:hover { background: #ffd52f; padding-left: 35px; }
-.figma-footer .row-footer-contact span { font-size: 9px; font-weight: 850; letter-spacing: 0.14em; text-transform: uppercase; }
-.figma-footer .row-footer-contact strong { font-size: 13px; font-weight: 800; }
+.figma-footer .row-footer-contact a:last-child {
+  border-right: 0;
+}
+.figma-footer .row-footer-contact a:hover {
+  background: #ffd52f;
+  padding-left: 35px;
+}
+.figma-footer .row-footer-contact span {
+  font-size: 9px;
+  font-weight: 850;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.figma-footer .row-footer-contact strong {
+  font-size: 13px;
+  font-weight: 800;
+}
 
 .figma-footer .row-footer-main {
   position: relative;
@@ -159,33 +181,139 @@
   padding-bottom: 52px;
 }
 
-.figma-footer .row-footer-main > div { min-width: 0; }
-.figma-footer .row-footer-main > div:first-child { max-width: 390px; padding: 22px; border: 1px solid #343434; border-radius: 18px; background: #f7f7f3; }
-.figma-footer .row-footer-main .figma-logo { display: inline-flex; width: max-content; padding: 0; }
-.figma-footer .row-footer-main .figma-logo img { display: block; width: 88px !important; height: 88px !important; max-width: none; border: 1px solid rgba(17,17,17,.12); border-radius: 16px; box-shadow: 4px 4px 0 #111111; }
-.figma-footer .row-footer-main > div:first-child p { margin: 18px 0 0; color: #66645d; font-size: 10px; font-weight: 650; line-height: 1.8; }
-.figma-footer .row-footer-main h3 { margin: 4px 0 17px; color: #f5c400; font-size: 9px; font-weight: 850; letter-spacing: 0.16em; text-transform: uppercase; }
-.figma-footer .row-footer-main > div:not(:first-child) a { display: block; width: max-content; max-width: 100%; margin: 0 0 11px; color: rgba(255,255,255,.72); font-size: 11px; text-decoration: none; transition: color 160ms ease, transform 160ms ease; }
-.figma-footer .row-footer-main > div:not(:first-child) a:hover { color: #f5c400; transform: translateX(4px); }
-.figma-footer .row-footer-bottom { position: relative; z-index: 1; display: flex; justify-content: space-between; gap: 20px; border-top: 1px solid #292929; padding: 18px 0; color: rgba(255,255,255,.42); font-size: 8px; line-height: 1.5; }
+.figma-footer .row-footer-main > div {
+  min-width: 0;
+}
+.figma-footer .row-footer-main > div:first-child {
+  max-width: 390px;
+  padding: 22px;
+  border: 1px solid #343434;
+  border-radius: 18px;
+  background: #f7f7f3;
+}
+.figma-footer .row-footer-main .figma-logo {
+  display: inline-flex;
+  width: max-content;
+  padding: 0;
+}
+.figma-footer .row-footer-main .figma-logo img {
+  display: block;
+  width: 88px !important;
+  height: 88px !important;
+  max-width: none;
+  border: 1px solid rgba(17, 17, 17, 0.12);
+  border-radius: 16px;
+  box-shadow: 4px 4px 0 #111111;
+}
+.figma-footer .row-footer-main > div:first-child p {
+  margin: 18px 0 0;
+  color: #66645d;
+  font-size: 10px;
+  font-weight: 650;
+  line-height: 1.8;
+}
+.figma-footer .row-footer-main h3 {
+  margin: 4px 0 17px;
+  color: #f5c400;
+  font-size: 9px;
+  font-weight: 850;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.figma-footer .row-footer-main > div:not(:first-child) a {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  margin: 0 0 11px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 11px;
+  text-decoration: none;
+  transition:
+    color 160ms ease,
+    transform 160ms ease;
+}
+.figma-footer .row-footer-main > div:not(:first-child) a:hover {
+  color: #f5c400;
+  transform: translateX(4px);
+}
+.figma-footer .row-footer-bottom {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  border-top: 1px solid #292929;
+  padding: 18px 0;
+  color: rgba(255, 255, 255, 0.42);
+  font-size: 8px;
+  line-height: 1.5;
+}
 
 @media (max-width: 900px) {
-  .figma-header .row-header-inner { min-height: 78px; }
-  .figma-header .figma-logo img { width: 66px !important; height: 66px !important; border-radius: 15px; }
-  .figma-header .figma-nav, .figma-header .header-cta { display: none; }
-  .figma-header .figma-menu-button { display: grid; width: 44px; height: 44px; place-items: center; justify-self: end; border: 1px solid #d2cfc5; border-radius: 50%; background: #fff; color: #111; }
-  .figma-footer .row-footer-contact { grid-template-columns: 1fr; }
-  .figma-footer .row-footer-contact a { min-height: 62px; border-right: 0; border-bottom: 1px solid rgba(17,17,17,.14); }
-  .figma-footer .row-footer-contact a:last-child { border-bottom: 0; }
-  .figma-footer .row-footer-main { grid-template-columns: 1fr 1fr; gap: 34px; padding-top: 44px; }
-  .figma-footer .row-footer-main > div:first-child { grid-column: 1 / -1; max-width: none; }
+  .figma-header .row-header-inner {
+    min-height: 78px;
+  }
+  .figma-header .figma-logo img {
+    width: 66px !important;
+    height: 66px !important;
+    border-radius: 15px;
+  }
+  .figma-header .figma-nav,
+  .figma-header .header-cta {
+    display: none;
+  }
+  .figma-header .figma-menu-button {
+    display: grid;
+    width: 44px;
+    height: 44px;
+    place-items: center;
+    justify-self: end;
+    border: 1px solid #d2cfc5;
+    border-radius: 50%;
+    background: #fff;
+    color: #111;
+  }
+  .figma-footer .row-footer-contact {
+    grid-template-columns: 1fr;
+  }
+  .figma-footer .row-footer-contact a {
+    min-height: 62px;
+    border-right: 0;
+    border-bottom: 1px solid rgba(17, 17, 17, 0.14);
+  }
+  .figma-footer .row-footer-contact a:last-child {
+    border-bottom: 0;
+  }
+  .figma-footer .row-footer-main {
+    grid-template-columns: 1fr 1fr;
+    gap: 34px;
+    padding-top: 44px;
+  }
+  .figma-footer .row-footer-main > div:first-child {
+    grid-column: 1 / -1;
+    max-width: none;
+  }
 }
 
 @media (max-width: 560px) {
-  .figma-header .row-header-inner { padding-left: 16px; padding-right: 16px; }
-  .figma-header .figma-logo img { width: 60px !important; height: 60px !important; border-radius: 13px; box-shadow: 3px 3px 0 #111111; }
-  .figma-footer .row-footer-main { grid-template-columns: 1fr; gap: 28px; }
-  .figma-footer .row-footer-bottom { flex-direction: column; padding: 16px; }
+  .figma-header .row-header-inner {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .figma-header .figma-logo img {
+    width: 60px !important;
+    height: 60px !important;
+    border-radius: 13px;
+    box-shadow: 3px 3px 0 #111111;
+  }
+  .figma-footer .row-footer-main {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .figma-footer .row-footer-bottom {
+    flex-direction: column;
+    padding: 16px;
+  }
 }
 
 /* Premium header override */
@@ -207,7 +335,9 @@
   height: 58px !important;
   border: 1px solid rgba(17, 17, 17, 0.12);
   border-radius: 15px;
-  box-shadow: 4px 4px 0 #111, 0 10px 28px rgba(17, 17, 17, 0.08);
+  box-shadow:
+    4px 4px 0 #111,
+    0 10px 28px rgba(17, 17, 17, 0.08);
 }
 
 .figma-header .figma-nav {
@@ -215,7 +345,9 @@
   padding: 5px;
   border: 1px solid rgba(17, 17, 17, 0.09);
   background: rgba(255, 255, 255, 0.68);
-  box-shadow: 0 10px 30px rgba(17, 17, 17, 0.06), inset 0 1px rgba(255,255,255,.8);
+  box-shadow:
+    0 10px 30px rgba(17, 17, 17, 0.06),
+    inset 0 1px rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(12px);
 }
 
@@ -231,11 +363,11 @@
 .figma-header .figma-nav a.active {
   background: #111;
   color: #fff;
-  box-shadow: 0 4px 12px rgba(17,17,17,.16);
+  box-shadow: 0 4px 12px rgba(17, 17, 17, 0.16);
 }
 
 .figma-header .figma-nav a:hover:not(.active) {
-  background: rgba(245,196,0,.18);
+  background: rgba(245, 196, 0, 0.18);
   color: #111;
   transform: translateY(-1px);
 }
@@ -249,20 +381,24 @@
   font-size: 10px;
   font-weight: 850;
   letter-spacing: 0.03em;
-  box-shadow: 4px 4px 0 #111, 0 10px 24px rgba(17,17,17,.08);
+  box-shadow:
+    4px 4px 0 #111,
+    0 10px 24px rgba(17, 17, 17, 0.08);
 }
 
 .figma-header .header-cta:hover {
   background: #ffd52a;
-  box-shadow: 6px 6px 0 #111, 0 12px 28px rgba(17,17,17,.1);
+  box-shadow:
+    6px 6px 0 #111,
+    0 12px 28px rgba(17, 17, 17, 0.1);
 }
 
 .figma-header .figma-menu-button {
   width: 46px;
   height: 46px;
-  border: 1px solid rgba(17,17,17,.14);
+  border: 1px solid rgba(17, 17, 17, 0.14);
   border-radius: 14px;
-  background: rgba(255,255,255,.86);
+  background: rgba(255, 255, 255, 0.86);
   box-shadow: 3px 3px 0 #111;
 }
 
@@ -270,9 +406,9 @@
   gap: 8px;
   margin: 0;
   padding: 16px 20px 22px;
-  border-top: 1px solid rgba(17,17,17,.08);
-  background: rgba(247,247,243,.96);
-  box-shadow: 0 20px 35px rgba(17,17,17,.08);
+  border-top: 1px solid rgba(17, 17, 17, 0.08);
+  background: rgba(247, 247, 243, 0.96);
+  box-shadow: 0 20px 35px rgba(17, 17, 17, 0.08);
   backdrop-filter: blur(18px);
 }
 
@@ -281,32 +417,65 @@
   min-height: 48px;
   align-items: center;
   padding: 0 16px;
-  border: 1px solid rgba(17,17,17,.08);
+  border: 1px solid rgba(17, 17, 17, 0.08);
   border-radius: 12px;
-  background: rgba(255,255,255,.72);
+  background: rgba(255, 255, 255, 0.72);
   color: #171717;
   font-size: 13px;
   font-weight: 750;
   text-decoration: none;
 }
 
-.figma-header .figma-mobile-nav a:hover { background: #fff; border-color: rgba(17,17,17,.16); }
-.figma-header .figma-mobile-nav .mobile-nav-cta { justify-content: center; margin-top: 5px; border-color: #111; background: #f5c400; box-shadow: 3px 3px 0 #111; font-weight: 850; }
+.figma-header .figma-mobile-nav a:hover {
+  background: #fff;
+  border-color: rgba(17, 17, 17, 0.16);
+}
+.figma-header .figma-mobile-nav .mobile-nav-cta {
+  justify-content: center;
+  margin-top: 5px;
+  border-color: #111;
+  background: #f5c400;
+  box-shadow: 3px 3px 0 #111;
+  font-weight: 850;
+}
 
 @media (max-width: 900px) {
-  .figma-header .row-header-inner { min-height: 72px; padding: 8px 20px; }
-  .figma-header .figma-logo img { width: 54px !important; height: 54px !important; border-radius: 14px; }
+  .figma-header .row-header-inner {
+    min-height: 72px;
+    padding: 8px 20px;
+  }
+  .figma-header .figma-logo img {
+    width: 54px !important;
+    height: 54px !important;
+    border-radius: 14px;
+  }
 }
 
 @media (max-width: 560px) {
-  .figma-header .row-header-inner { min-height: 68px; padding: 7px 14px; }
-  .figma-header .figma-logo img { width: 50px !important; height: 50px !important; border-radius: 13px; box-shadow: 3px 3px 0 #111; }
-  .figma-header .figma-menu-button { width: 44px; height: 44px; border-radius: 13px; }
-  .figma-header .figma-mobile-nav { padding-inline: 14px; }
+  .figma-header .row-header-inner {
+    min-height: 68px;
+    padding: 7px 14px;
+  }
+  .figma-header .figma-logo img {
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 13px;
+    box-shadow: 3px 3px 0 #111;
+  }
+  .figma-header .figma-menu-button {
+    width: 44px;
+    height: 44px;
+    border-radius: 13px;
+  }
+  .figma-header .figma-mobile-nav {
+    padding-inline: 14px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .figma-header .figma-logo img,
   .figma-header .figma-nav a,
-  .figma-header .header-cta { transition: none; }
+  .figma-header .header-cta {
+    transition: none;
+  }
 }
