@@ -149,10 +149,14 @@ export default function WorkPage() {
       <header className="work-header">
         <div className="work-container work-header-inner">
           <Link className="work-logo" to="/" aria-label="Grow With Me home">
-            <img className="work-logo-image" src={logoUrl} alt="Grow With Me" />
-            <strong>
-              GROW WITH <em>ME</em>
-            </strong>
+            <img
+              className="work-logo-image"
+              src={logoUrl}
+              alt="Grow With Me"
+              width="180"
+              height="48"
+              style={{ width: '180px', height: '48px', maxWidth: '42vw', objectFit: 'contain' }}
+            />
           </Link>
 
           <nav className="work-nav" aria-label="Portfolio navigation">
