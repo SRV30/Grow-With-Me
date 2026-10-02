@@ -53,6 +53,7 @@ export default function CloudinaryVideo({ src, poster, className = '', ...props 
       muted
       loop
       controls
+      style={{ width: '100%', height: '100%', display: 'block', objectFit: 'cover' }}
       {...props}
       src={optimize(src)}
       aria-label={props['aria-label'] || 'Project video'}
