@@ -67,9 +67,7 @@ export const uploadMedia = async (files, { folder, alt = '', tags = [] } = {}) =
   if (alt) formData.append('alt', alt)
   if (tags.length) formData.append('tags', tags.join(','))
 
-  const { data } = await api.post('/admin/media/upload', formData, {
-    headers: { 'Content-Type': 'multipart/form-data' },
-  })
+  const { data } = await api.post('/admin/media/upload', formData)
   return data.data
 }
 
