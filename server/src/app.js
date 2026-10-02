@@ -18,7 +18,13 @@ import { notFound, errorHandler } from './middleware/errorHandler.js'
 
 const app = express()
 const allowedOrigins = new Set(
-  [env.clientUrl, env.frontendWwwUrl, 'http://localhost:5173'].filter(Boolean),
+  [
+    env.clientUrl,
+    env.frontendWwwUrl,
+    'https://growwithme.me',
+    'https://www.growwithme.me',
+    'http://localhost:5173',
+  ].filter(Boolean),
 )
 const getTrustProxyConfig = (value) => {
   if (value === 'true') return true
@@ -33,7 +39,7 @@ app.use(
   cors({
     origin: (origin, callback) => {
       if (!origin || allowedOrigins.has(origin)) return callback(null, true)
-      return callback(new Error('CORS origin not allowed'))
+      return callback(new Error(`CORS origin not allowed: ${origin}`))
     },
     credentials: true,
   }),
