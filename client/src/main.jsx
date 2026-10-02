@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useState } from 'react'
-import ReactDOM, { createPortal } from 'react-dom'
+import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import App from './App.jsx'
 import WorkPage from './pages/WorkPage.jsx'
@@ -89,8 +89,6 @@ function PublicShell() {
 }
 
 function AppShell() {
-  const chatbot = !isAdminRoute ? <ManualChatbot /> : null
-
   return (
     <BrowserRouter>
       <ErrorBoundary>
@@ -98,7 +96,7 @@ function AppShell() {
         <ScrollChoreography />
         <PageMotion />
         {!isAdminRoute ? <HeaderEnhancer /> : null}
-        {chatbot && typeof document !== 'undefined' ? createPortal(chatbot, document.body) : null}
+        {!isAdminRoute ? <ManualChatbot /> : null}
         {isAdminRoute ? <AdminApp /> : <PublicShell />}
       </ErrorBoundary>
     </BrowserRouter>
