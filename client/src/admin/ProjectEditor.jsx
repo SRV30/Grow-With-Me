@@ -38,10 +38,16 @@ const normalize = (project) => ({
   order: Number.isFinite(Number(project?.order)) ? Number(project.order) : 0,
 })
 
+const isVideo = (item) =>
+  item?.resourceType === 'video' ||
+  /\/video\/upload\//i.test(item?.secureUrl || item?.url || '') ||
+  /\.(mp4|webm|mov)(\?|$)/i.test(item?.secureUrl || item?.url || '')
+
 const imagePayload = (item) => ({
   url: item.secureUrl || item.url,
   publicId: item.publicId || '',
   alt: item.alt || '',
+  ...(isVideo(item) ? { resourceType: 'video' } : {}),
 })
 
 const videoPayload = (item) => ({
@@ -97,7 +103,7 @@ export default function ProjectEditor({ project, onBack, onSaved }) {
     if (!category) return setError('Please select a service.')
     if (!serviceSlugs.has(category)) return setError('Please select an existing service.')
     if (form.coverImage && !(form.coverImage.secureUrl || form.coverImage.url)) {
-      return setError('The selected cover image is missing its URL. Please choose it again.')
+      return setError('The selected cover media is missing its URL. Please choose it again.')
     }
     if (category === 'websites' && liveUrl) {
       try {
@@ -267,9 +273,7 @@ export default function ProjectEditor({ project, onBack, onSaved }) {
                     maxLength="500"
                     onChange={(e) => update({ liveUrl: e.target.value })}
                   />
-                  <small>
-                    Shown only for Websites projects so visitors can open the live site.
-                  </small>
+                  <small>Shown only for Websites projects so visitors can open the live site.</small>
                 </label>
               ) : null}
               <label className="full">
@@ -287,8 +291,8 @@ export default function ProjectEditor({ project, onBack, onSaved }) {
           <section className="admin-panel">
             <div className="admin-panel-title">
               <div>
-                <h2>Cover image</h2>
-                <p>Primary visual shown on project cards and detail pages.</p>
+                <h2>Cover media</h2>
+                <p>Primary image or autoplaying video shown on project cards and detail pages.</p>
               </div>
               <button
                 type="button"
@@ -296,27 +300,38 @@ export default function ProjectEditor({ project, onBack, onSaved }) {
                 onClick={() => setPicker({ type: 'cover' })}
                 disabled={saving}
               >
-                <ImagePlus size={15} /> Choose image
+                <ImagePlus size={15} /> Choose media
               </button>
             </div>
             {form.coverImage ? (
               <div className="admin-cover-preview">
-                <img
-                  src={form.coverImage.secureUrl || form.coverImage.url}
-                  alt={form.coverImage.alt || form.title}
-                />
+                {isVideo(form.coverImage) ? (
+                  <video
+                    src={form.coverImage.secureUrl || form.coverImage.url}
+                    muted
+                    autoPlay
+                    loop
+                    playsInline
+                    controls
+                  />
+                ) : (
+                  <img
+                    src={form.coverImage.secureUrl || form.coverImage.url}
+                    alt={form.coverImage.alt || form.title}
+                  />
+                )}
                 <button
                   type="button"
                   className="admin-danger"
                   onClick={() => update({ coverImage: null })}
                   disabled={saving}
-                  aria-label="Remove cover image"
+                  aria-label="Remove cover media"
                 >
                   <Trash2 size={16} />
                 </button>
               </div>
             ) : (
-              <div className="admin-media-placeholder">No cover image selected.</div>
+              <div className="admin-media-placeholder">No cover media selected.</div>
             )}
           </section>
 
