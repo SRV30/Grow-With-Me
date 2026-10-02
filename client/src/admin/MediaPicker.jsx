@@ -47,11 +47,8 @@ export default function MediaPicker({
     // A single-select image picker is also used for project covers.
     // Allowing videos here lets a video be used as the cover media while
     // keeping the multi-image gallery picker restricted to images.
-    const resourceTypes = mode === 'video'
-      ? ['video']
-      : mode === 'image' && !multiple
-        ? ['image', 'video']
-        : ['image']
+    const resourceTypes =
+      mode === 'video' ? ['video'] : mode === 'image' && !multiple ? ['image', 'video'] : ['image']
     const term = search.trim().toLowerCase()
     return items.filter((item) => {
       if (!resourceTypes.includes(item.resourceType)) return false
@@ -87,7 +84,8 @@ export default function MediaPicker({
           <div>
             <p className="admin-eyebrow">Cloudinary Media</p>
             <h2>
-              Select {mode === 'video' ? 'video' : mode === 'image' && !multiple ? 'cover media' : 'image'}
+              Select{' '}
+              {mode === 'video' ? 'video' : mode === 'image' && !multiple ? 'cover media' : 'image'}
               {multiple ? 's' : ''}
             </h2>
           </div>
