@@ -44,14 +44,21 @@ export default function MediaPicker({
   }, [])
 
   const filtered = useMemo(() => {
-    const resourceType = mode === 'video' ? 'video' : 'image'
+    // A single-select image picker is also used for project covers.
+    // Allowing videos here lets a video be used as the cover media while
+    // keeping the multi-image gallery picker restricted to images.
+    const resourceTypes = mode === 'video'
+      ? ['video']
+      : mode === 'image' && !multiple
+        ? ['image', 'video']
+        : ['image']
     const term = search.trim().toLowerCase()
     return items.filter((item) => {
-      if (item.resourceType !== resourceType) return false
+      if (!resourceTypes.includes(item.resourceType)) return false
       if (!term) return true
       return `${item.filename || ''} ${item.publicId || ''}`.toLowerCase().includes(term)
     })
-  }, [items, search, mode])
+  }, [items, search, mode, multiple])
 
   const selectedIds = new Set((Array.isArray(selected) ? selected : []).map(mediaId))
 
@@ -80,7 +87,7 @@ export default function MediaPicker({
           <div>
             <p className="admin-eyebrow">Cloudinary Media</p>
             <h2>
-              Select {mode === 'video' ? 'video' : 'image'}
+              Select {mode === 'video' ? 'video' : mode === 'image' && !multiple ? 'cover media' : 'image'}
               {multiple ? 's' : ''}
             </h2>
           </div>
