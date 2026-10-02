@@ -18,6 +18,8 @@ const formatCategory = (value = '') =>
     .replace(/\b\w/g, (letter) => letter.toUpperCase())
 const normalize = (value = '') =>
   value.toLowerCase().replaceAll('-', ' ').replaceAll('_', ' ').trim()
+const isVideoUrl = (url = '') =>
+  /\/video\/upload\//i.test(url) || /\.(mp4|webm|mov)(\?|$)/i.test(url)
 
 export default function ProjectPage() {
   const { slug } = useParams()
@@ -85,13 +87,15 @@ export default function ProjectPage() {
   const visibleGallery = gallery.length > 1 ? gallery.slice(1) : gallery
   const videos = Array.isArray(project.videos) ? project.videos.filter((item) => item?.url) : []
   const mediaCount = visibleGallery.length + videos.length
+  const coverUrl = project.coverImage?.url || ''
+  const coverIsVideo = project.coverImage?.resourceType === 'video' || isVideoUrl(coverUrl)
 
   return (
     <main ref={root} className="project-detail-page">
       <SEO
         title={project.seo?.title || project.title}
         description={project.seo?.description || project.description}
-        image={project.coverImage?.url}
+        image={coverIsVideo ? undefined : project.coverImage?.url}
         path={`/work/${project.slug}`}
       />
       <ProjectSchema project={project} />
@@ -159,17 +163,26 @@ export default function ProjectPage() {
               </div>
             </div>
           </div>
-          {project.coverImage?.url ? (
+          {coverUrl ? (
             <div className="project-detail-hero-visual" data-project-media>
               <div className="project-detail-yellow-shape" />
-              <CloudinaryImage
-                src={project.coverImage.url}
-                alt={project.coverImage.alt || project.title}
-                className="project-detail-hero-image"
-                width={1500}
-                sizes="(max-width: 800px) 100vw, 55vw"
-                priority
-              />
+              {coverIsVideo ? (
+                <CloudinaryVideo
+                  src={coverUrl}
+                  className="project-detail-hero-image"
+                  aria-label={`${project.title} cover video`}
+                  controls={false}
+                />
+              ) : (
+                <CloudinaryImage
+                  src={coverUrl}
+                  alt={project.coverImage?.alt || project.title}
+                  className="project-detail-hero-image"
+                  width={1500}
+                  sizes="(max-width: 800px) 100vw, 55vw"
+                  priority
+                />
+              )}
             </div>
           ) : null}
         </div>
@@ -291,29 +304,43 @@ export default function ProjectPage() {
             </Link>
           </div>
           <div className="project-detail-related-grid">
-            {related.map((item) => (
-              <Link
-                to={`/work/${item.slug}`}
-                className="project-detail-related-card"
-                key={item.slug}
-              >
-                {item.coverImage?.url ? (
-                  <CloudinaryImage
-                    src={item.coverImage.url}
-                    alt={item.coverImage.alt || item.title}
-                    width={900}
-                    sizes="(max-width: 620px) 100vw, 33vw"
-                  />
-                ) : (
-                  <div className="project-detail-related-placeholder" />
-                )}
-                <div>
-                  <span>{formatCategory(item.category)}</span>
-                  <h3>{item.title}</h3>
-                  <ArrowUpRight size={17} />
-                </div>
-              </Link>
-            ))}
+            {related.map((item) => {
+              const relatedCover = item.coverImage?.url || ''
+              const relatedCoverIsVideo =
+                item.coverImage?.resourceType === 'video' || isVideoUrl(relatedCover)
+              return (
+                <Link
+                  to={`/work/${item.slug}`}
+                  className="project-detail-related-card"
+                  key={item.slug}
+                >
+                  {relatedCover ? (
+                    relatedCoverIsVideo ? (
+                      <CloudinaryVideo
+                        src={relatedCover}
+                        className="project-detail-related-image"
+                        controls={false}
+                        aria-label={`${item.title} cover video`}
+                      />
+                    ) : (
+                      <CloudinaryImage
+                        src={relatedCover}
+                        alt={item.coverImage?.alt || item.title}
+                        width={900}
+                        sizes="(max-width: 620px) 100vw, 33vw"
+                      />
+                    )
+                  ) : (
+                    <div className="project-detail-related-placeholder" />
+                  )}
+                  <div>
+                    <span>{formatCategory(item.category)}</span>
+                    <h3>{item.title}</h3>
+                    <ArrowUpRight size={17} />
+                  </div>
+                </Link>
+              )
+            })}
           </div>
         </section>
       ) : null}
