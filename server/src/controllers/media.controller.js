@@ -1,15 +1,11 @@
 import { z } from 'zod'
 import { Media } from '../models/Media.js'
 import { uploadBuffer, destroyMedia } from '../services/cloudinary.service.js'
+import { cloudinary } from '../config/cloudinary.js'
 import { env } from '../config/env.js'
 
 const uploadSchema = z.object({
-  folder: z
-    .string()
-    .trim()
-    .max(120)
-    .regex(/^[a-zA-Z0-9_\-/]+$/)
-    .optional(),
+  folder: z.string().trim().max(120).regex(/^[a-zA-Z0-9_\-/]+$/).optional(),
   alt: z.string().trim().max(255).optional(),
   tags: z.string().trim().max(500).optional(),
 })
@@ -26,13 +22,85 @@ export const listMedia = async (req, res, next) => {
     if (req.query.type) filter.resourceType = req.query.type
     const limit = Math.min(Math.max(Number(req.query.limit) || 30, 1), 100)
     const skip = Math.max(Number(req.query.skip) || 0, 0)
-
     const [items, total] = await Promise.all([
       Media.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit).lean(),
       Media.countDocuments(filter),
     ])
-
     res.json({ success: true, data: { items, total, limit, skip } })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const getUploadSignature = async (req, res, next) => {
+  try {
+    const { folder, resourceType } = z
+      .object({
+        folder: z.string().trim().max(120).regex(/^[a-zA-Z0-9_\-/]+$/).optional(),
+        resourceType: z.enum(['image', 'video']),
+      })
+      .parse(req.body)
+
+    const timestamp = Math.floor(Date.now() / 1000)
+    const uploadFolder = resolveFolder(folder)
+    const paramsToSign = { folder: uploadFolder, timestamp }
+    const signature = cloudinary.utils.api_sign_request(paramsToSign, env.cloudinary.apiSecret)
+
+    res.json({
+      success: true,
+      data: {
+        cloudName: env.cloudinary.cloudName,
+        apiKey: env.cloudinary.apiKey,
+        timestamp,
+        signature,
+        folder: uploadFolder,
+        resourceType,
+      },
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const completeDirectUpload = async (req, res, next) => {
+  try {
+    const schema = z.object({
+      public_id: z.string().min(1),
+      secure_url: z.string().url(),
+      url: z.string().url().optional(),
+      resource_type: z.enum(['image', 'video']),
+      format: z.string().optional(),
+      folder: z.string().optional(),
+      original_filename: z.string().optional(),
+      bytes: z.number().nonnegative(),
+      width: z.number().optional(),
+      height: z.number().optional(),
+      duration: z.number().optional(),
+      alt: z.string().trim().max(255).optional(),
+      tags: z.string().trim().max(500).optional(),
+    })
+    const data = schema.parse(req.body)
+    const tagList = data.tags
+      ? data.tags.split(',').map((tag) => tag.trim()).filter(Boolean).slice(0, 20)
+      : []
+
+    const media = await Media.create({
+      publicId: data.public_id,
+      url: data.url || data.secure_url,
+      secureUrl: data.secure_url,
+      resourceType: data.resource_type,
+      format: data.format,
+      folder: data.folder || env.cloudinary.folder,
+      filename: data.original_filename || data.public_id.split('/').pop(),
+      bytes: data.bytes,
+      width: data.width,
+      height: data.height,
+      duration: data.duration,
+      alt: data.alt || '',
+      tags: tagList,
+    })
+
+    res.status(201).json({ success: true, data: media.toObject() })
   } catch (error) {
     next(error)
   }
@@ -40,45 +108,31 @@ export const listMedia = async (req, res, next) => {
 
 export const uploadMediaFiles = async (req, res, next) => {
   try {
-    if (!req.files?.length)
-      return res.status(400).json({ success: false, message: 'No media files supplied' })
-
+    if (!req.files?.length) return res.status(400).json({ success: false, message: 'No media files supplied' })
     const { folder, alt, tags } = uploadSchema.parse(req.body)
-    const tagList = tags
-      ? tags
-          .split(',')
-          .map((tag) => tag.trim())
-          .filter(Boolean)
-          .slice(0, 20)
-      : []
-
-    const uploaded = await Promise.all(
-      req.files.map(async (file) => {
-        const result = await uploadBuffer(file.buffer, {
-          folder: resolveFolder(folder),
-          resourceType: file.mimetype.startsWith('video/') ? 'video' : 'image',
-        })
-
-        const media = await Media.create({
-          publicId: result.public_id,
-          url: result.url,
-          secureUrl: result.secure_url,
-          resourceType: result.resource_type,
-          format: result.format,
-          folder: result.folder || resolveFolder(folder),
-          filename: file.originalname,
-          bytes: result.bytes,
-          width: result.width,
-          height: result.height,
-          duration: result.duration,
-          alt: alt || '',
-          tags: tagList,
-        })
-
-        return media.toObject()
-      }),
-    )
-
+    const tagList = tags ? tags.split(',').map((tag) => tag.trim()).filter(Boolean).slice(0, 20) : []
+    const uploaded = await Promise.all(req.files.map(async (file) => {
+      const result = await uploadBuffer(file.buffer, {
+        folder: resolveFolder(folder),
+        resourceType: file.mimetype.startsWith('video/') ? 'video' : 'image',
+      })
+      const media = await Media.create({
+        publicId: result.public_id,
+        url: result.url,
+        secureUrl: result.secure_url,
+        resourceType: result.resource_type,
+        format: result.format,
+        folder: result.folder || resolveFolder(folder),
+        filename: file.originalname,
+        bytes: result.bytes,
+        width: result.width,
+        height: result.height,
+        duration: result.duration,
+        alt: alt || '',
+        tags: tagList,
+      })
+      return media.toObject()
+    }))
     res.status(201).json({ success: true, data: uploaded })
   } catch (error) {
     next(error)
@@ -89,10 +143,8 @@ export const deleteMedia = async (req, res, next) => {
   try {
     const media = await Media.findById(req.params.id)
     if (!media) return res.status(404).json({ success: false, message: 'Media not found' })
-
     await destroyMedia(media.publicId, media.resourceType)
     await media.deleteOne()
-
     res.json({ success: true, message: 'Media deleted' })
   } catch (error) {
     next(error)
