@@ -32,6 +32,7 @@ import SEO from './components/SEO.jsx'
 import { OrganizationSchema } from './components/StructuredData.jsx'
 import TestimonialsSection from './components/TestimonialsSection.jsx'
 import QuoteCalculator from './components/QuoteCalculator.jsx'
+import CloudinaryVideo from './components/CloudinaryVideo.jsx'
 import './styles/figma-home.css'
 import './styles/hero-collage.css'
 
@@ -47,6 +48,15 @@ const industryIcons = [
 ]
 const serviceIcons = [Smartphone, PlaySquare, PenTool, Megaphone, BarChart3, Laptop]
 const processIcons = [Users, CalendarDays, PenTool, ImageIcon, Rocket, ArrowRight]
+
+const isVideoMedia = (media) => {
+  const url = media?.secureUrl || media?.url || ''
+  return (
+    media?.resourceType === 'video' ||
+    /\/video\/upload\//i.test(url) ||
+    /\.(mp4|webm|mov)(\?|$)/i.test(url)
+  )
+}
 
 function Logo() {
   return (
@@ -166,14 +176,27 @@ function ContactForm({ servicesList }) {
 }
 
 function ProjectCard({ project }) {
+  const cover = project.coverImage
+  const video = isVideoMedia(cover)
   return (
     <a className="figma-project-card" href={`/work/${project.slug}`}>
-      {project.coverImage?.url ? (
-        <img
-          src={project.coverImage.url}
-          alt={project.coverImage.alt || project.title}
-          loading="lazy"
-        />
+      {cover?.url ? (
+        video ? (
+          <CloudinaryVideo
+            src={cover.url}
+            poster={cover.poster || cover.thumbnail}
+            className="figma-project-media"
+            controls={false}
+            aria-label={cover.alt || project.title}
+          />
+        ) : (
+          <img
+            src={cover.url}
+            alt={cover.alt || project.title}
+            loading="lazy"
+            className="figma-project-media"
+          />
+        )
       ) : (
         <div className="figma-project-placeholder" />
       )}
@@ -244,11 +267,22 @@ function HeroSection({ hero, projects }) {
               aria-label={project ? `View ${project.title}` : 'View Grow With Me work'}
             >
               {project?.coverImage?.url ? (
-                <img
-                  src={project.coverImage.url}
-                  alt={project.coverImage.alt || project.title}
-                  loading={index < 2 ? 'eager' : 'lazy'}
-                />
+                isVideoMedia(project.coverImage) ? (
+                  <CloudinaryVideo
+                    src={project.coverImage.url}
+                    poster={project.coverImage.poster || project.coverImage.thumbnail}
+                    className="hero-collage-media"
+                    controls={false}
+                    aria-label={project.coverImage.alt || project.title}
+                  />
+                ) : (
+                  <img
+                    src={project.coverImage.url}
+                    alt={project.coverImage.alt || project.title}
+                    loading={index < 2 ? 'eager' : 'lazy'}
+                    className="hero-collage-media"
+                  />
+                )
               ) : (
                 <div className="hero-collage-brand-card">
                   <span>GROW</span>
@@ -301,409 +335,5 @@ function TrustSection() {
         ))}
       </div>
     </section>
-  )
-}
-function ServicesSection({ servicesList }) {
-  return (
-    <section id="services" className="row-section row-white">
-      <div className="row-container">
-        <SectionHeading eyebrow="What we do" title="Our Services" />
-        <div className="row-service-grid">
-          {servicesList.map((service, index) => {
-            const Icon = serviceIcons[index] || PenTool
-            return (
-              <Link
-                className="row-service-card"
-                key={service._id || service.title}
-                to={`/services/${(service.title || '')
-                  .trim()
-                  .toLowerCase()
-                  .replace(/&/g, 'and')
-                  .replace(/[^a-z0-9]+/g, '-')
-                  .replace(/^-|-$/g, '')}`}
-                aria-label={`View ${service.title} portfolio`}
-              >
-                <Icon className="row-service-icon" size={42} />
-                <h3>{service.title}</h3>
-                <p>{service.text || service.description || ''}</p>
-                <ArrowRight className="row-service-arrow" size={22} />
-              </Link>
-            )
-          })}
-        </div>
-      </div>
-    </section>
-  )
-}
-function WorkSection({ projects }) {
-  return (
-    <section id="work" className="row-section row-soft">
-      <div className="row-container">
-        <SectionHeading
-          eyebrow="Our work"
-          title="We Create. You Grow."
-          description="Explore some of our creative work and see how we help businesses present themselves professionally online."
-        />
-        <div className="row-work-filters">
-          {['All', 'Posters', 'Reels', 'Advertisements', 'Social Media', 'Websites'].map(
-            (filter, index) => (
-              <button key={filter} className={index === 0 ? 'selected' : ''}>
-                {filter}
-              </button>
-            ),
-          )}
-        </div>
-        <div className="row-work-grid">
-          {projects.length ? (
-            projects.map((project) => <ProjectCard key={project._id} project={project} />)
-          ) : (
-            <div className="row-empty-work">
-              Publish featured projects from the CMS to populate this section.
-            </div>
-          )}
-        </div>
-        <a className="figma-yellow-button row-centered-button" href="/work">
-          View Full Portfolio <ArrowRight size={17} />
-        </a>
-      </div>
-    </section>
-  )
-}
-function ProcessSection({ processItems }) {
-  return (
-    <section className="row-section row-light">
-      <div className="row-container">
-        <SectionHeading
-          eyebrow="How we work"
-          title="Our Process"
-          description="A simple and effective process that turns ideas into impactful results."
-        />
-        <div className="row-process-grid">
-          {processItems.map((item, index) => {
-            const Icon = processIcons[index] || ArrowRight
-            return (
-              <article key={item.number}>
-                <div className="row-process-icon">
-                  <Icon size={24} />
-                </div>
-                <strong>{item.number}</strong>
-                <h3>{item.title}</h3>
-                <p>{item.text}</p>
-              </article>
-            )
-          })}
-        </div>
-      </div>
-    </section>
-  )
-}
-function IndustriesSection({ industriesList }) {
-  return (
-    <section className="row-section row-soft">
-      <div className="row-container row-industry-container">
-        <SectionHeading
-          eyebrow="Who we work with"
-          title="Industries We Serve"
-          description="We work with businesses, professionals and brands looking to build a strong digital presence."
-        />
-        <div className="row-industries-grid">
-          {industriesList.map((industry, index) => {
-            const Icon = industryIcons[index] || BriefcaseBusiness
-            return (
-              <article key={industry}>
-                <Icon size={32} />
-                <b>{industry}</b>
-              </article>
-            )
-          })}
-        </div>
-      </div>
-    </section>
-  )
-}
-function AboutSection({ about, aboutImage }) {
-  return (
-    <section id="about" className="row-section row-about">
-      <div className="row-container">
-        <div className="row-about-grid">
-          <div className="row-about-copy">
-            <p className="figma-eyebrow">{about?.eyebrow || 'About us'}</p>
-            <h2>{about?.title || 'About Grow With Me'}</h2>
-            <p className="row-about-kicker">Creative Digital Solutions Since 2020</p>
-            <p>
-              {about?.description ||
-                'Grow With Me is a creative digital service company founded with the aim of helping businesses build a strong and professional online presence.'}
-            </p>
-            <p>
-              Since 2020, we have been working on creative content, video editing, graphic
-              designing, social media and digital promotion.
-            </p>
-            <p>
-              From a single promotional creative to complete social media management, we provide
-              digital solutions according to your business needs.
-            </p>
-          </div>
-          <div className="row-about-image">
-            {aboutImage ? (
-              <img src={aboutImage} alt="Grow With Me creative work" loading="lazy" />
-            ) : (
-              <div className="row-about-placeholder">
-                GROW
-                <br />
-                WITH
-                <br />
-                <strong>ME</strong>
-              </div>
-            )}
-          </div>
-        </div>
-        <blockquote className="row-quote">
-          <span>“</span>
-          <p>
-            Your Business Deserves to Be Seen.
-            <br />
-            Grow With Me.
-          </p>
-        </blockquote>
-      </div>
-    </section>
-  )
-}
-function CtaCupAnimation() {
-  return (
-    <div className="row-cup-stage" aria-label="Animated coffee cup" role="img">
-      <div className="row-cup-halo" />
-      <div className="row-cup-steam row-cup-steam-one" />
-      <div className="row-cup-steam row-cup-steam-two" />
-      <div className="row-cup">
-        <Coffee className="row-cup-icon" size={76} strokeWidth={2.4} />
-        <span className="row-cup-spark">✦</span>
-      </div>
-    </div>
-  )
-}
-function CtaSection({ cta, ctaImage }) {
-  return (
-    <section className="row-section row-cta">
-      <div className="row-container row-cta-grid">
-        <div className="row-cta-copy">
-          <p className="figma-eyebrow">{cta?.eyebrow || 'Ready to grow?'}</p>
-          <h2>{cta?.title || "Let's Build Your Digital Presence Together."}</h2>
-          <p>
-            Whether you need social media management, professional videos, creative design,
-            advertising or a website — Grow With Me is here to help.
-          </p>
-          <div className="figma-actions">
-            <a className="figma-yellow-button" href={cta?.primaryLink || '#contact'}>
-              {cta?.primaryText || 'Get Started'} <ArrowRight size={17} />
-            </a>
-            <a
-              className="figma-outline-button"
-              href="https://wa.me/918434305404"
-              target="_blank"
-              rel="noreferrer"
-            >
-              WhatsApp Us <ArrowUpRight size={15} />
-            </a>
-          </div>
-        </div>
-        <div className="row-cta-image">
-          {ctaImage ? (
-            <img src={ctaImage} alt="Grow With Me project" loading="lazy" />
-          ) : (
-            <CtaCupAnimation />
-          )}
-        </div>
-      </div>
-    </section>
-  )
-}
-function ContactSection({ servicesList }) {
-  return (
-    <section id="contact" className="row-section row-contact">
-      <div className="row-container row-contact-grid">
-        <div className="row-contact-copy">
-          <p className="figma-eyebrow">Start a project</p>
-          <h2>Ready to grow?</h2>
-          <p>
-            Tell us what you are building and we will help turn the idea into a stronger digital
-            presence.
-          </p>
-        </div>
-        <ContactForm servicesList={servicesList} />
-      </div>
-    </section>
-  )
-}
-function Footer() {
-  return (
-    <footer className="figma-footer row-footer">
-      <div className="row-footer-contact">
-        <a href="tel:+918434305404">
-          <span>Call Us</span>
-          <strong>8434305404</strong>
-        </a>
-        <a href="mailto:growwithmeayush@gmail.com">
-          <span>Email Us</span>
-          <strong>growwithmeayush@gmail.com</strong>
-        </a>
-        <a href="https://wa.me/918434305404" target="_blank" rel="noreferrer">
-          <span>Chat on WhatsApp</span>
-          <strong>8434305404</strong>
-        </a>
-      </div>
-      <div className="row-container row-footer-main">
-        <div>
-          <Logo />
-          <p>
-            Social Media · Design · Video · Digital Marketing
-            <br />
-            Since 2020
-          </p>
-        </div>
-        <div>
-          <h3>Quick Links</h3>
-          <a href="#top">Home</a>
-          <a href="#services">Services</a>
-          <a href="#work">Portfolio</a>
-          <a href="#about">About Us</a>
-          <a href="#contact">Contact</a>
-        </div>
-        <div>
-          <h3>Contact</h3>
-          <a href="tel:+918434305404">8434305404</a>
-          <a href="mailto:growwithmeayush@gmail.com">growwithmeayush@gmail.com</a>
-        </div>
-      </div>
-      <div className="row-footer-bottom">
-        <span>© 2026 Grow With Me. All Rights Reserved.</span>
-        <span>GST details, if applicable, should be displayed only after GST registration.</span>
-      </div>
-    </footer>
-  )
-}
-
-export default function App() {
-  const [menuOpen, setMenuOpen] = useState(false)
-  const [projects, setProjects] = useState([])
-  const [homepage, setHomepage] = useState(null)
-  const [servicesList, setServicesList] = useState(services)
-  useEffect(() => {
-    let active = true
-    getProjects({ featured: true })
-      .then((result) => {
-        if (active)
-          setProjects(Array.isArray(result) ? result : result?.projects || result?.data || [])
-      })
-      .catch(() => {})
-    getHomepage()
-      .then((result) => {
-        if (active) setHomepage(result)
-      })
-      .catch(() => {})
-    getServices()
-      .then((result) => {
-        if (active && Array.isArray(result) && result.length) setServicesList(result)
-      })
-      .catch(() => {})
-    return () => {
-      active = false
-    }
-  }, [])
-  const hero = homepage?.hero
-  const about = homepage?.about
-  const cta = homepage?.cta
-  const liveIndustries = useMemo(
-    () =>
-      homepage?.industries?.length
-        ? homepage.industries
-            .filter((item) => item.active)
-            .sort((a, b) => a.order - b.order)
-            .map((item) => item.name)
-        : industries,
-    [homepage],
-  )
-  const liveProcess = homepage?.process?.length
-    ? homepage.process.slice().sort((a, b) => a.order - b.order)
-    : process.map(([number, title, text], index) => ({ number, title, text, order: index }))
-  const featuredProjects = projects.slice(0, 6)
-  const aboutImage = featuredProjects[1]?.coverImage?.url
-  const ctaImage = cta?.media?.url || featuredProjects[2]?.coverImage?.url
-  return (
-    <div className="figma-site row-layout-site">
-      <SEO
-        title="Creative Digital Solutions"
-        description="Grow With Me helps businesses grow online through social media management, creative content, video editing, graphic design, digital marketing and web design."
-        path="/"
-      />
-      <OrganizationSchema />
-      <header className="figma-header row-header">
-        <div className="row-container row-header-inner">
-          <Logo />
-          <nav className="figma-nav" aria-label="Primary navigation">
-            <a className="active" href="#top">
-              Home
-            </a>
-            <a href="#services">Services</a>
-            <a href="#work">Portfolio</a>
-            <a href="#about">About Us</a>
-            <a href="#contact">Contact</a>
-          </nav>
-          <a className="figma-yellow-button header-cta" href="#contact">
-            Get Started <ArrowUpRight size={14} />
-          </a>
-          <button
-            type="button"
-            className="figma-menu-button"
-            aria-expanded={menuOpen}
-            aria-controls="gwm-mobile-navigation"
-            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-            onClick={() => setMenuOpen((open) => !open)}
-          >
-            {menuOpen ? <X size={22} /> : <Menu size={22} />}
-          </button>
-        </div>
-        {menuOpen ? (
-          <nav
-            id="gwm-mobile-navigation"
-            className="figma-mobile-nav row-mobile-nav"
-            aria-label="Mobile navigation"
-          >
-            <a href="#top" onClick={() => setMenuOpen(false)}>
-              Home
-            </a>
-            <a href="#services" onClick={() => setMenuOpen(false)}>
-              Services
-            </a>
-            <a href="#work" onClick={() => setMenuOpen(false)}>
-              Portfolio
-            </a>
-            <a href="#about" onClick={() => setMenuOpen(false)}>
-              About Us
-            </a>
-            <a href="#contact" onClick={() => setMenuOpen(false)}>
-              Contact
-            </a>
-            <a className="mobile-nav-cta" href="#contact" onClick={() => setMenuOpen(false)}>
-              Get Started <ArrowUpRight size={15} />
-            </a>
-          </nav>
-        ) : null}
-      </header>
-      <main id="top">
-        <HeroSection hero={hero} projects={featuredProjects} />
-        <TrustSection />
-        <ServicesSection servicesList={servicesList} />
-        <WorkSection projects={featuredProjects} />
-        <TestimonialsSection />
-        <QuoteCalculator />
-        <ProcessSection processItems={liveProcess} />
-        <IndustriesSection industriesList={liveIndustries} />
-        <AboutSection about={about} aboutImage={aboutImage} />
-        <CtaSection cta={cta} ctaImage={ctaImage} />
-        <ContactSection servicesList={servicesList} />
-      </main>
-      <Footer />
-    </div>
   )
 }
