@@ -11,7 +11,8 @@ if (!source.includes("import CloudinaryVideo from './components/CloudinaryVideo.
   )
 }
 
-const iconMarker = "const processIcons = [Users, CalendarDays, PenTool, ImageIcon, Rocket, ArrowRight]\n"
+const iconMarker =
+  'const processIcons = [Users, CalendarDays, PenTool, ImageIcon, Rocket, ArrowRight]\n'
 if (!source.includes('const isVideoMedia =')) {
   source = source.replace(
     iconMarker,
