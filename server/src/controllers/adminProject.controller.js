@@ -7,6 +7,7 @@ const imageSchema = z.object({
   url: z.string().url(),
   publicId: z.string().optional().default(''),
   alt: z.string().max(200).optional().default(''),
+  resourceType: z.literal('video').optional(),
 })
 const videoSchema = z.object({
   url: z.string().url(),
