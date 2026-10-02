@@ -9,7 +9,12 @@ const projectSchema = new mongoose.Schema(
     category: { type: String, required: true, trim: true, lowercase: true, maxlength: 160 },
     year: { type: Number, min: 2000, max: 2100 },
     liveUrl: { type: String, trim: true, maxlength: 500 },
-    coverImage: { url: String, publicId: String, alt: String },
+    coverImage: {
+      url: String,
+      publicId: String,
+      alt: String,
+      resourceType: { type: String, enum: ['image', 'video'], default: 'image' },
+    },
     gallery: [{ url: String, publicId: String, alt: String }],
     videos: [{ url: String, publicId: String, thumbnail: String }],
     services: [{ type: String, trim: true }],
