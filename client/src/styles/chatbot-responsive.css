@@ -1,4 +1,25 @@
 /* Grow With Me chatbot — responsive/professional layout */
+html,
+body,
+#root {
+  max-width: 100%;
+}
+
+@media (max-width: 600px) {
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
+  #root {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+  }
+}
+
 .gwm-chatbot,
 .gwm-chatbot * {
   box-sizing: border-box;
@@ -9,7 +30,7 @@
   right: max(20px, env(safe-area-inset-right)) !important;
   bottom: max(20px, env(safe-area-inset-bottom)) !important;
   left: auto !important;
-  z-index: 1200 !important;
+  z-index: 2147483000 !important;
   width: auto !important;
   max-width: none !important;
   margin: 0 !important;
@@ -84,11 +105,11 @@
 }
 
 @media (max-width: 600px) {
-  /* Compact professional floating launcher */
   .gwm-chatbot {
     right: max(12px, env(safe-area-inset-right)) !important;
     bottom: max(12px, env(safe-area-inset-bottom)) !important;
     left: auto !important;
+    transform: none !important;
   }
 
   .gwm-chat-launcher {
@@ -103,12 +124,10 @@
     box-shadow: 0 10px 28px rgba(17, 17, 17, 0.24) !important;
   }
 
-  /* Hide text on the floating launcher; icon-only is cleaner on phones. */
   .gwm-chat-launcher > span {
     display: none !important;
   }
 
-  /* Bottom-sheet style chat: contained in the viewport, not wider than the phone. */
   .gwm-chat-window {
     position: fixed !important;
     left: max(10px, env(safe-area-inset-left)) !important;
@@ -280,7 +299,6 @@
     flex-shrink: 0 !important;
   }
 
-  /* Project form */
   .gwm-chat-project-wrap,
   .gwm-chat-estimate {
     flex: 1 1 0 !important;
@@ -337,7 +355,6 @@
     min-height: 48px !important;
   }
 
-  /* Estimate */
   .gwm-chat-estimate {
     padding: 15px 12px max(15px, env(safe-area-inset-bottom)) !important;
   }
