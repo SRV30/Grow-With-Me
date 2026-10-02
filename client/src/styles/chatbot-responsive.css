@@ -1,18 +1,21 @@
-/* Grow With Me chatbot — responsive layer
-   Keeps the desktop widget compact while switching to a mobile-first
-   full-screen chat surface on phones and short viewports. */
-
+/* Grow With Me chatbot responsive overrides */
 .gwm-chatbot,
 .gwm-chatbot * {
   box-sizing: border-box;
 }
 
 .gwm-chatbot {
-  max-width: 100vw;
+  position: fixed;
+  z-index: 1200;
+  right: max(16px, env(safe-area-inset-right));
+  bottom: max(16px, env(safe-area-inset-bottom));
+  max-width: calc(100vw - 32px);
 }
 
 .gwm-chat-window {
   min-height: 0;
+  max-width: calc(100vw - 32px);
+  overflow: hidden;
 }
 
 .gwm-chat-messages,
@@ -41,8 +44,6 @@
   touch-action: manipulation;
 }
 
-/* Tablet / small laptops: use almost the full available viewport without
-   allowing the widget to collide with the edges. */
 @media (min-width: 601px) and (max-width: 900px) {
   .gwm-chatbot {
     right: max(16px, env(safe-area-inset-right));
@@ -51,38 +52,48 @@
 
   .gwm-chat-window {
     width: min(420px, calc(100vw - 32px));
+    max-width: calc(100vw - 32px);
     height: min(680px, calc(100dvh - 96px));
+    max-height: calc(100dvh - 32px);
   }
 }
 
-/* Phones: the open chatbot becomes a true viewport-sized chat surface.
-   This avoids cramped 360–430px panels and keeps the composer above the
-   browser safe area / mobile keyboard. */
 @media (max-width: 600px) {
   .gwm-chatbot {
-    right: max(8px, env(safe-area-inset-right));
+    left: 8px;
+    right: 8px;
     bottom: max(8px, env(safe-area-inset-bottom));
-    left: auto;
+    width: auto;
+    max-width: none;
+    margin: 0;
   }
 
   .gwm-chat-launcher {
-    min-width: 52px;
+    width: min(100%, 190px);
+    max-width: calc(100vw - 16px);
+    min-width: 0;
     min-height: 52px;
+    margin-left: auto;
   }
 
   .gwm-chat-window {
     position: fixed;
-    inset: 0;
+    left: max(0px, env(safe-area-inset-left));
+    right: max(0px, env(safe-area-inset-right));
+    top: max(0px, env(safe-area-inset-top));
+    bottom: max(0px, env(safe-area-inset-bottom));
+    inset: auto;
     z-index: 1201;
-    width: 100vw;
-    max-width: 100vw;
-    height: 100dvh;
-    max-height: 100dvh;
+    width: auto;
+    max-width: none;
+    height: auto;
+    max-height: none;
     min-height: 0;
     margin: 0;
     border-width: 0;
     border-radius: 0;
     box-shadow: none;
+    overflow: hidden;
     animation: gwm-chat-mobile-in 0.2s ease both;
   }
 
@@ -91,7 +102,7 @@
   }
 
   .gwm-chat-header {
-    min-height: max(68px, calc(60px + env(safe-area-inset-top)));
+    min-height: 68px;
     padding-top: max(12px, env(safe-area-inset-top));
     padding-right: max(12px, env(safe-area-inset-right));
     padding-left: max(12px, env(safe-area-inset-left));
@@ -99,16 +110,32 @@
 
   .gwm-chat-header-actions {
     gap: 6px;
+    flex-shrink: 0;
   }
 
   .gwm-chat-header-actions button {
     width: 42px;
     height: 42px;
+    flex: 0 0 42px;
+  }
+
+  .gwm-chat-brand {
+    min-width: 0;
+    flex: 1 1 auto;
   }
 
   .gwm-chat-brand-icon {
     width: 40px;
     height: 40px;
+    flex: 0 0 40px;
+  }
+
+  .gwm-chat-brand strong,
+  .gwm-chat-brand span {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .gwm-chat-context {
@@ -119,11 +146,16 @@
 
   .gwm-chat-messages {
     min-height: 0;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
     padding: 14px max(10px, env(safe-area-inset-left)) 12px;
   }
 
   .gwm-chat-message {
+    width: 100%;
     max-width: 100%;
+    min-width: 0;
     gap: 7px;
     margin-bottom: 11px;
   }
@@ -131,17 +163,36 @@
   .gwm-chat-avatar {
     width: 30px;
     height: 30px;
-    flex-basis: 30px;
+    flex: 0 0 30px;
   }
 
   .gwm-chat-bubble {
-    max-width: min(88%, 520px);
+    min-width: 0;
+    max-width: calc(100% - 37px);
+    overflow-wrap: anywhere;
+    word-break: break-word;
     padding: 11px 12px;
   }
 
   .gwm-chat-bubble p {
+    max-width: 100%;
+    overflow-wrap: anywhere;
     font-size: 14px;
     line-height: 1.5;
+  }
+
+  .gwm-chat-actions,
+  .gwm-chat-suggestions,
+  .gwm-chat-goals {
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .gwm-chat-actions::-webkit-scrollbar,
+  .gwm-chat-suggestions::-webkit-scrollbar,
+  .gwm-chat-goals::-webkit-scrollbar {
+    display: none;
   }
 
   .gwm-chat-actions button,
@@ -150,15 +201,21 @@
     min-height: 40px;
     padding: 8px 11px;
     font-size: 11px;
+    flex: 0 0 auto;
   }
 
   .gwm-chat-goals,
   .gwm-chat-suggestions {
+    width: 100%;
     padding-left: max(10px, env(safe-area-inset-left));
     padding-right: max(10px, env(safe-area-inset-right));
   }
 
   .gwm-chat-input {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    display: flex;
     gap: 8px;
     padding-top: 9px;
     padding-left: max(10px, env(safe-area-inset-left));
@@ -166,24 +223,28 @@
     padding-bottom: max(10px, env(safe-area-inset-bottom));
   }
 
-  /* 16px prevents iOS Safari from zooming the page when the input is focused. */
   .gwm-chat-input input,
   .gwm-chat-project-form input,
   .gwm-chat-project-form select,
   .gwm-chat-project-form textarea,
   .gwm-chat-estimate > label select {
+    min-width: 0;
+    max-width: 100%;
     font-size: 16px;
   }
 
   .gwm-chat-input input {
+    width: auto;
+    flex: 1 1 auto;
     height: 48px;
+    min-width: 0;
     border-radius: 13px;
   }
 
   .gwm-chat-input button {
     width: 48px;
     height: 48px;
-    flex-basis: 48px;
+    flex: 0 0 48px;
   }
 
   .gwm-chat-footer {
@@ -193,12 +254,28 @@
 
   .gwm-chat-project-wrap,
   .gwm-chat-estimate {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
     min-height: 0;
+    overflow-x: hidden;
   }
 
   .gwm-chat-project-form {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
     padding: 16px max(12px, env(safe-area-inset-left)) max(16px, env(safe-area-inset-bottom));
     gap: 10px;
+  }
+
+  .gwm-chat-form-heading {
+    min-width: 0;
+  }
+
+  .gwm-chat-form-heading strong,
+  .gwm-chat-form-heading span {
+    overflow-wrap: anywhere;
   }
 
   .gwm-chat-form-heading strong {
@@ -214,6 +291,7 @@
   .gwm-chat-project-form input,
   .gwm-chat-project-form select,
   .gwm-chat-project-form textarea {
+    width: 100%;
     min-height: 48px;
     padding: 11px 12px;
   }
@@ -229,12 +307,17 @@
 
   .gwm-chat-submit,
   .gwm-chat-estimate-cta {
+    width: 100%;
     min-height: 50px;
     font-size: 13px;
   }
 
   .gwm-chat-estimate {
     padding: 16px max(12px, env(safe-area-inset-left)) max(16px, env(safe-area-inset-bottom));
+  }
+
+  .gwm-chat-estimate-head {
+    min-width: 0;
   }
 
   .gwm-chat-estimate-head strong {
@@ -251,34 +334,35 @@
   }
 
   .gwm-chat-estimate-options button {
+    min-width: 0;
     min-height: 48px;
     font-size: 12px;
   }
 
   .gwm-chat-estimate-result {
+    max-width: 100%;
+    overflow: hidden;
     margin-top: 14px;
     padding: 15px;
   }
 
   .gwm-chat-estimate-result strong {
-    font-size: clamp(21px, 7vw, 28px);
+    font-size: clamp(20px, 7vw, 28px);
     overflow-wrap: anywhere;
+    word-break: break-word;
   }
 }
 
-@keyframes gwm-chat-mobile-in {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Very narrow phones: never allow long controls to create horizontal scroll. */
 @media (max-width: 360px) {
+  .gwm-chatbot {
+    left: 6px;
+    right: 6px;
+  }
+
+  .gwm-chat-launcher {
+    max-width: calc(100vw - 12px);
+  }
+
   .gwm-chat-brand {
     gap: 8px;
   }
@@ -286,6 +370,7 @@
   .gwm-chat-brand-icon {
     width: 36px;
     height: 36px;
+    flex-basis: 36px;
     border-radius: 11px;
   }
 
@@ -300,10 +385,11 @@
   .gwm-chat-header-actions button {
     width: 40px;
     height: 40px;
+    flex-basis: 40px;
   }
 
   .gwm-chat-bubble {
-    max-width: 86%;
+    max-width: calc(100% - 37px);
   }
 
   .gwm-chat-estimate-result strong {
@@ -311,7 +397,6 @@
   }
 }
 
-/* Landscape phones / short browser windows. */
 @media (max-width: 900px) and (max-height: 560px) {
   .gwm-chat-window {
     height: 100dvh;
@@ -327,6 +412,7 @@
   .gwm-chat-brand-icon {
     width: 34px;
     height: 34px;
+    flex-basis: 34px;
   }
 
   .gwm-chat-context {
@@ -357,6 +443,17 @@
 
   .gwm-chat-footer {
     display: none;
+  }
+}
+
+@keyframes gwm-chat-mobile-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
