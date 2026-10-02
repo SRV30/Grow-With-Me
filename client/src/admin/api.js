@@ -60,15 +60,50 @@ export const getMedia = async (params = {}) => {
   return data.data
 }
 
-export const uploadMedia = async (files, { folder, alt = '', tags = [] } = {}) => {
-  const formData = new FormData()
-  files.forEach((file) => formData.append('files', file))
-  if (folder) formData.append('folder', folder)
-  if (alt) formData.append('alt', alt)
-  if (tags.length) formData.append('tags', tags.join(','))
+const uploadDirectToCloudinary = async (file, options = {}) => {
+  const resourceType = file.type.startsWith('video/') ? 'video' : 'image'
+  const { folder, alt = '', tags = [] } = options
 
-  const { data } = await api.post('/admin/media/upload', formData)
+  const { data: signatureResponse } = await api.post('/admin/media/signature', {
+    folder,
+    resourceType,
+  })
+  const signature = signatureResponse.data
+
+  const body = new FormData()
+  body.append('file', file)
+  body.append('api_key', signature.apiKey)
+  body.append('timestamp', String(signature.timestamp))
+  body.append('signature', signature.signature)
+  body.append('folder', signature.folder)
+
+  const endpoint = `https://api.cloudinary.com/v1_1/${signature.cloudName}/${resourceType}/upload`
+  const response = await fetch(endpoint, {
+    method: 'POST',
+    body,
+  })
+
+  const result = await response.json()
+  if (!response.ok) {
+    throw new Error(result?.error?.message || 'Cloudinary upload failed')
+  }
+
+  const { data } = await api.post('/admin/media/complete', {
+    ...result,
+    original_filename: file.name,
+    alt,
+    tags: tags.join(','),
+  })
+
   return data.data
+}
+
+export const uploadMedia = async (files, options = {}) => {
+  const uploaded = []
+  for (const file of files) {
+    uploaded.push(await uploadDirectToCloudinary(file, options))
+  }
+  return uploaded
 }
 
 export const deleteMedia = async (id) => {
